@@ -2,11 +2,12 @@
  * File: Backend/src/server.ts
  * Author: Connor Vardakis
  * Date: 2/18/25
- * Updated: 2/18/25
+ * Updated: 2/19/25
  * Description: server.ts starts up DENO server and controls additional action
  */
 // @ts-ignore
 import { serve } from "std/http/server.ts";
+import { handleGameWebSocket } from "./routes/gameWebSockets.ts";
 
 // @ts-ignore
 const handler = async (req: Request):Promise<Response> => {
@@ -16,24 +17,7 @@ const handler = async (req: Request):Promise<Response> => {
     const searchParams = parsedURL.searchParams;
 
     if (pathway === "/ws" && req.headers.get("upgrade") === "websocket") {
-        // @ts-ignore
-        const { socket, response } = Deno.upgradeWebSocket(req);
-
-        socket.onopen = () => {
-            console.log("[INFO] Websocket opened");
-        };
-
-        socket.onmessage = (event) => {
-            console.log("[INFO] Websocket message received: " + JSON.stringify(event.data));
-
-            socket.send("Server received: " + JSON.stringify(event.data));
-        };
-
-        socket.onclose = () => {
-            console.log("[INFO] Websocket closed");
-        };
-
-        return response;
+        return handleGameWebSocket(req);
     }
 
     if (pathway == "/") {
