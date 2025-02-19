@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"]
+    "lib": ["dom", "dom.iterable", "esnext","ES2015"]
   },
   "tasks": {
     "start:backend": "deno run --allow-net --allow-env --allow-sys --allow-read backend/src/server.ts",
