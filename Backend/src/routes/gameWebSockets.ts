@@ -3,7 +3,7 @@
  * Author: Connor Vardakis
  * Date: 2/18/25
  * Updated: 2/19/25
- * Description: gameWebSockets.ts handles all socket logic for the game
+ * Description: gameWebSockets.ts handles upgrade from http to websocket
  */
 export function handleGameWebSocket(req: Request) {
     try {
