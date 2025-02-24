@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Car Flip and Move</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            <button> go </button>
+
+        }
+
+        #racetrack {
+            width: 100vw;
+            height: 100vh;
+            background-image: url("city track - Copy.png");
+            background-size: 85% auto;
+            background-repeat: repeat;
+            position: relative;
+        }
+
+        .car {
+            width: 250px;
+            height: 125px;
+            position: absolute;
+            top: 75%;
+            left: -5%;
+            transform: translate(-50%, -50%);
+        }
+        .move-button {
+            position: absolute;
+            top: 680px;
+            left: 400px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .stop-button {
+            position: absolute;
+            top: 680px;
+            left: 700px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: darkred;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id="racetrack">
+    <img id="car" class="car" src="Car1.png" alt="Car">
+</div>
+<button class = "move-button" onclick="startCar()">Move Car</button>
+<button class = "stop-button" onclick="stopCar()">Stop Car</button>
+<script>
+    const car = document.getElementById('car');
+    const flipFrames = ['car6.png', 'car7.png', 'car8.png'];
+    let moveSpeed = 5;
+    let currentSpeed = moveSpeed;
+    let isFlipping = false;
+    let moving = false;
+
+    // Convert 10% of screen width to pixels
+    const targetPosition = window.innerWidth * 0.10;
+    let carPosition = 20; // Initial position
+
+    function moveCar() {
+        if (moving && !isFlipping && carPosition < targetPosition) {
+            carPosition += currentSpeed;
+            car.style.left = carPosition + 'px';
+        } else {
+            moving = false; // Stop the movement when target is reached
+        }
+    }
+
+    function performFlip() {
+        if (!isFlipping) {
+            isFlipping = true;
+            let flipIndex = 0;
+            const flipInterval = setInterval(() => {
+                if (flipIndex < flipFrames.length) {
+                    car.src = flipFrames[flipIndex];
+                    flipIndex++;
+                } else {
+                    clearInterval(flipInterval);
+                    isFlipping = false;
+                    currentSpeed /= 2;
+                }
+            }, 100);
+        }
+    }
+
+
+    function startCar() {
+        moving = true;
+    }
+
+    function stopCar() {
+        moving = false;
+    }
+
+    window.addEventListener('keydown', (event) => {
+        if (event.code === 'Space') {
+            performFlip();
+        }
+    });
+
+    setInterval(moveCar, 20);
+    function intro() {
+        moving = true;
+        const interval = setInterval(() => {
+            moveCar();
+            if (!moving) {
+                clearInterval(interval);
+            }
+        }, 20);
+    }
+    window.onload = intro;
+</script>
+
+</body>
+</html>
+
+
+
+
