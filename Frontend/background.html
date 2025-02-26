@@ -5,19 +5,15 @@
     <title>Car Flip and Move</title>
     <style>
         body {
+            /*https://wallpaperaccess.com/full/4107787.jpg*/
             margin: 0;
-            overflow: hidden;
-            <button> go </button>
-
-        }
-
-        #racetrack {
-            width: 100vw;
             height: 100vh;
-            background-image: url("city track - Copy.png");
-            background-size: 85% auto;
-            background-repeat: repeat;
-            position: relative;
+            background-image: url('../Assets/track.png'), url("https://wallpaperaccess.com/full/4107787.jpg");
+            background-size: 120% 30%, 120% 80%;
+            background-repeat: repeat-x, repeat-x;
+            background-position: bottom center, center -40%;
+            overflow: hidden;
+
         }
 
         .car {
@@ -54,14 +50,37 @@
 </head>
 <body>
 
-<div id="racetrack">
-    <img id="car" class="car" src="Car1.png" alt="Car">
+<div>
+    <img id="car" class="car" src="../Assets/Car1.png" alt="Car">
 </div>
 <button class = "move-button" onclick="startCar()">Move Car</button>
 <button class = "stop-button" onclick="stopCar()">Stop Car</button>
+
 <script>
+
+    let offset1 = 0; // Initial offset position of the first background
+    let offset2 = 0; // Initial offset position of the second background
+
+    let speed1 = 0; // city, etc..
+    let speed2 = 0; // race track
+
+    function animateBackground() {
+        offset1 -= speed1;
+        speed1 = Math.min(speed1 + 0.001, 2);
+
+        offset2 -= speed2;
+        speed2 = Math.min(speed2 + 0.1, 1000);
+
+        // Update the background positions for each background image
+        document.body.style.backgroundPosition = `${offset2}px bottom, ${offset1}px 0`;
+
+        // Call the function again on the next frame for smooth animation
+        requestAnimationFrame(animateBackground);
+    }
+    // Start the animation
+    animateBackground();
     const car = document.getElementById('car');
-    const flipFrames = ['car6.png', 'car7.png', 'car8.png'];
+    const flipFrames = ['../Assets/Car6.png', '../Assets/Car7.png', '../Assets/Car8.png'];
     let moveSpeed = 5;
     let currentSpeed = moveSpeed;
     let isFlipping = false;
@@ -96,6 +115,7 @@
             }, 100);
         }
     }
+
 
 
     function startCar() {
