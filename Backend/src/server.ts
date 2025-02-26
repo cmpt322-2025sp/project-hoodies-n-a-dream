@@ -17,6 +17,7 @@ const handler = async (req: Request):Promise<Response> => {
     const searchParams = parsedURL.searchParams;
 
     if (pathway === "/ws" && req.headers.get("upgrade") === "websocket") {
+        // console.log("[INFO] Request received:", req);
         return handleGameWebSocket(req);
     }
 

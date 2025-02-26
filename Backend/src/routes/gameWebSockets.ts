@@ -2,9 +2,13 @@
  * File: Backend/src/routes/gameWebSockets.ts
  * Author: Connor Vardakis
  * Date: 2/18/25
- * Updated: 2/19/25
+ * Updated: 2/24/25
  * Description: gameWebSockets.ts handles upgrade from http to websocket
  */
+
+
+import { handleGameMessages } from "../controllers/gameController.ts";
+
 export function handleGameWebSocket(req: Request) {
     try {
         const {socket, response} = Deno.upgradeWebSocket(req);
@@ -16,26 +20,12 @@ export function handleGameWebSocket(req: Request) {
         };
 
         socket.onmessage = (event) => {
-
+            console.log("[INFO] Request received - sending to handler")
+            // console.log(event);
+            // console.log(JSON.stringify(event.data));
             const data = JSON.parse(event.data);
 
-            switch (data.type) {
-                case "createGame":
-                    break;
-
-                case "joinGame":
-                    break;
-
-                case "gameStart":
-                    break;
-
-                case "nextQuestion":
-                    break;
-
-                default:
-                    console.error(`[ERROR] Unknown request from ${clientIp}\n>>>\t ${JSON.stringify(data)}\n`);
-                    socket.send(JSON.stringify({type: "ERROR", message: "Unknown type"}));
-            }
+            handleGameMessages(socket, data)
 
         }
 
