@@ -1,5 +1,5 @@
 /**
- * File: Backend/src/services/gameServices.ts
+ * File: backend/src/services/gameServices.ts
  * Author: Connor Vardakis
  * Date: 2/24/25
  * Updated: 3/3/25

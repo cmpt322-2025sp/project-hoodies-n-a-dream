@@ -1,5 +1,5 @@
 /**
- * File: Backend/src/controllers/gameController.ts
+ * File: backend/src/controllers/gameController.ts
  * Author: Connor Vardakis
  * Date: 2/19/25
  * Updated: 2/24/25

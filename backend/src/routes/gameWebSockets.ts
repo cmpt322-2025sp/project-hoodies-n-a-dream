@@ -1,5 +1,5 @@
 /**
- * File: Backend/src/routes/gameWebSockets.ts
+ * File: backend/src/routes/gameWebSockets.ts
  * Author: Connor Vardakis
  * Date: 2/18/25
  * Updated: 2/24/25
