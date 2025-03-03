@@ -21,6 +21,26 @@ Purpose: front end of the game
             text-align: center;
             font-family: Arial, sans-serif;
         }
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, .5);
+            z-index: 1000;
+        }
+
+        #removeOverlayBtn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 1001;
+        }
 
         #racetrack {
             width: 100vw;
@@ -45,38 +65,67 @@ Purpose: front end of the game
             top: 80%;
             left: 10%;
             padding: 10px 20px;
-            font-size: 16px;
+            font-size: 32px;
             color: white;
             border: none;
             cursor: pointer;
             margin: 20px;
+
         }
-        .right {
-            background-color: red;
+        #right {
+            background-color: white;
         }
 
-        .wrong {
-            background-color: red;
+        #wrong {
+            background-color: white;
         }
-        #game-content {
+        .game-content {
             position: absolute;
             top: 10%;
             left: 50%;
             transform: translateX(-50%);
             text-align: center;
             z-index: 10;
+            font-size: 30px;
+        }
+        #bt1 {
+            border: rebeccapurple 10px inset;
+            border-radius: 20px 20px 20px 20px;
+            padding: 36px 36px;
+            font-size: 60px;
+
+        }
+        #bt2 {
+            border: rebeccapurple 10px inset;
+            border-radius: 20px 20px 20px 20px;
+            padding: 36px 36px;
+            font-size: 60px;
+        }
+        #math {
+            color: white;
+        }
+        #result {
+            color: white;
+        }
+        button:hover {
+            transform: scale(1.3);
         }
     </style>
 </head>
 <body>
 
+<div id="overlay"></div>
+
+<button id="removeOverlayBtn" onclick="removeOverlay()">Start Game</button>
+
 <div>
     <img id="car" class="car" src="../Assets/Car1.png" alt="Car">
 </div>
-<div id="game-content">
+<div class="game-content">
     <h1 id="math"></h1>
     <button id="bt1" class="button" onclick="checkAnswer(this)"></button>
     <button id="bt2" class="button" onclick="checkAnswer(this)"></button>
+
     <h2 id="result"></h2>
 </div>
 
@@ -92,6 +141,7 @@ Purpose: front end of the game
 
     const targetPosition = window.innerWidth * 0.10;
     let carPosition = 20;
+
     let offset1 = 0; // Initial offset position of the first background
     let offset2 = 0; // Initial offset position of the second background
 
@@ -102,11 +152,11 @@ Purpose: front end of the game
 
     function animateBackground() {
         offset1 -= speed1;
-        speed1 = Math.min(speed1 + 0.001, 2);
+        speed1 = Math.min(speed1 + 0.001, 0.5);
 
 
         offset2 -= speed2;
-        speed2 = Math.min(speed2 + 0.03, 1000);
+        speed2 = Math.min(speed2 + 0.25, 45);
 
 
         // Update the background positions for each background image
@@ -195,7 +245,12 @@ Purpose: front end of the game
         moving = true;
         moveCar();
     }
-    animateBackground()
+
+    function removeOverlay() {
+        document.getElementById("overlay").style.display = "none";
+        document.getElementById("removeOverlayBtn").style.display = "none";
+        animateBackground()
+    }
 
     window.onload = function () {
         console.log("Window loaded!");
@@ -210,3 +265,5 @@ Purpose: front end of the game
 
 </body>
 </html>
+
+
