@@ -1,5 +1,5 @@
 
-import { generateRandomMathQuestion } from "/Users/timxu/project-hoodies-n-a-dream/Backend/src/controllers/mathcontroller.ts";
+import { generateRandomMathQuestion } from "./mathcontroller.ts";
 
 type QuizQuestion = {
     id: number;

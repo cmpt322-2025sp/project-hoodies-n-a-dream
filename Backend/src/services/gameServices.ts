@@ -2,10 +2,33 @@
  * File: Backend/src/services/gameServices.ts
  * Author: Connor Vardakis
  * Date: 2/24/25
- * Updated: 2/24/25
+ * Updated: 3/3/25
  * Description: gameServices.ts controls the creation of the game and how users get added
  *              to other player games
  */
+
+interface Player {
+    name: string;
+    attempts: number;
+    score: number;
+    status: "waiting" | "racing" | "completed";
+}
+
+interface Question {
+    id: number;
+    question: string;
+    correct_answer: number;
+    incorrect_answers: number[];
+}
+
+interface Game {
+    id: string;
+    players: Player[];
+    status: "open" | "racing" | "full" | "ended";
+    level: "easy" | "medium" | "hard";
+    questions: [];
+    startTime: date;
+}
 
 const gameRooms = new Map<string, {
     host: WebSocket,
