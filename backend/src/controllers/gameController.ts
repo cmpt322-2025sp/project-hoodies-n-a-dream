@@ -2,7 +2,7 @@
  * File: backend/src/controllers/gameController.ts
  * Author: Connor Vardakis
  * Date: 2/19/25
- * Updated: 2/24/25
+ * Updated: 3/3/25
  * Description: gameController.ts processes all websocket communication
  *              regarding controlling the game
  */
@@ -18,8 +18,13 @@ export function handleGameMessages(socket: WebSocket, data: string) {
             case "createGame": {
                 console.log("[INFO] Triggered game creation")
                 const gameID = createGame(socket);
-                socket.send(JSON.stringify({ type: "gameCreated", gameID: gameID }));
-                break;
+                if (gameID != "ERROR") {
+                    socket.send(JSON.stringify({type: "gameCreated", gameID: gameID}));
+                    break;
+                } else {
+                    socket.send(JSON.stringify({type: "ERROR", message: "Unable to make Game Room"}));
+                    break;
+                }
             }
 
             case "joinGame": {

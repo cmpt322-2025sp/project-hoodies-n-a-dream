@@ -6,45 +6,51 @@
  * Description: gameServices.ts controls the creation of the game and how users get added
  *              to other player games
  */
+import { GameStore } from "./gameStore.ts";
+import { getQuestions } from "./mathServices.ts";
 
-interface Player {
-    name: string;
-    attempts: number;
-    score: number;
-    status: "waiting" | "racing" | "completed";
-}
-
-interface Question {
-    id: number;
-    question: string;
-    correct_answer: number;
-    incorrect_answers: number[];
-}
-
-interface Game {
-    id: string;
-    players: Player[];
-    status: "open" | "racing" | "full" | "ended";
-    level: "easy" | "medium" | "hard";
-    questions: [];
-    startTime: date;
-}
-
-const gameRooms = new Map<string, {
-    host: WebSocket,
-    players: Map<WebSocket, { answered:number }>
-}>();
+const gameRooms = new GameStore();
 
 function generateRoomCode(): string {
     return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
-export function createGame(host: WebSocket): string {
+export function createGame(hostSocket: WebSocket): string {
+    console.log("[INFO] Attempting Game Creation");
+    // Create GameID
     const gameID = generateRoomCode();
-    gameRooms.set(gameID, { host, players: new Map() });
-    console.log("[INFO] Created game room: ", gameID);
-    console.log(">>>\t", gameRooms);
-    return gameID;
+    console.log("[INFO] Game Id Created: ", gameID);
+    // Get Questions Based on difficulty level
+    const questions = getQuestions("easy");
+    // Add first player (host)
+    const player: Player = {
+        name: "player1",
+        websocket: hostSocket,
+        attempts: 0,
+        score: 0,
+        status: "waiting"
+    }
+
+    // Generate Game instance and save to gameStore
+    console.log("[INFO] Creating Game interface");
+    const game: Game = {
+        id: gameID,
+        players: [player],
+        status: "open",
+        level: "easy",
+        questions: questions,
+        startTime: new Date(),
+    }
+    console.log(game);
+    // Save Game
+    console.log("[INFO] Attempting Saving");
+    const result = gameRooms.createGame(game);
+    if(result){
+        console.log("[INFO] Sending gameID");
+        return gameID;
+    }
+    console.log("[INFO] Failed Game Create");
+    return "ERROR";
 }
 
 export function joinGame(gameID: string, player: Websocket): boolean {
