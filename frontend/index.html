@@ -60,7 +60,7 @@
 
     function joinGame() {
         let roomCode = document.getElementById("roomCode").value;
-        ws.send(JSON.stringify({ type: "joinGame", gameID: roomCode }));
+        ws.send(JSON.stringify({ type: "joinGame", gameID: roomCode, name: "player69"  }));
     }
 
     function submitScore() {

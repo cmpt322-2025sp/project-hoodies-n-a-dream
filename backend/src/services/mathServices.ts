@@ -5,7 +5,7 @@
  * Updated: 3/3/25
  * Description: mathServices generates question sets based on selected difficulty level
  */
-import {generateRandomMathQuestion} from "../controllers/mathController.ts";
+import { generateRandomMathQuestion } from "../controllers/mathController.ts";
 
 type QuizQuestion = {
     id: number;

@@ -19,6 +19,6 @@
       "**/node_modules"
     ],
     "include": [],
-    "entrypoint": "Backend/src/server.ts"
+    "entrypoint": "backend/src/server.ts"
   }
 }

@@ -2,7 +2,7 @@
  * File: backend/src/services/gameServices.ts
  * Author: Connor Vardakis
  * Date: 2/24/25
- * Updated: 3/3/25
+ * Updated: 3/4/25
  * Description: gameServices.ts controls the creation of the game and how users get added
  *              to other player games
  */
@@ -15,16 +15,17 @@ function generateRoomCode(): string {
     return Math.floor(1000 + Math.random() * 9000).toString();
 }
 
-export function createGame(hostSocket: WebSocket): string {
+export function createGame(gameDifficulty: string, hostName: string, hostSocket: WebSocket): string {
     console.log("[INFO] Attempting Game Creation");
     // Create GameID
     const gameID = generateRoomCode();
     console.log("[INFO] Game Id Created: ", gameID);
     // Get Questions Based on difficulty level
-    const questions = getQuestions("easy");
+    const questions = getQuestions(gameDifficulty);
     // Add first player (host)
+
     const player: Player = {
-        name: "player1",
+        name: hostName,
         websocket: hostSocket,
         attempts: 0,
         score: 0,
@@ -37,7 +38,7 @@ export function createGame(hostSocket: WebSocket): string {
         id: gameID,
         players: [player],
         status: "open",
-        level: "easy",
+        level: gameDifficulty,
         questions: questions,
         startTime: new Date(),
     }
@@ -53,20 +54,46 @@ export function createGame(hostSocket: WebSocket): string {
     return "ERROR";
 }
 
-export function joinGame(gameID: string, player: Websocket): boolean {
-    const game = gameRooms.get(gameID);
+export function joinGame(gameID: string, playerName: string, playerSocket: Websocket): string {
+    console.log("[INFO] Join game called in gameServices")
+    const game = gameRooms.getGame(gameID);
+    console.log("[TROUBLESHOOT] Game was found: ");
     if (!game) {
-        return false;
+        console.log("[ERROR] Failed to update player game count");
+        return JSON.stringify( {"type": "ERROR", "message": "Game not found"}) ;
+    } else if (game.status != "open") {
+        console.log("[ERROR] Game status: ", game.status);
+        return JSON.stringify( {"type": "ERROR", "message": "Game not join-able"}) ;
     }
-    game.players.set(player, { answered: 0 });
-    console.log("[INFO] Joined game: ", gameID);
-    return true;
+    console.log("[TROUBLESHOOT] Skipped If statements ");
+    const newPlayer: Player = {
+        name: playerName,
+        websocket: playerSocket,
+        attempts: 0,
+        score: 0,
+        status: "waiting"
+    }
+    console.log("[TROUBLESHOOT] Created Player ", newPlayer);
+    const updatedPlayers = [...game.players, newPlayer];
+    console.log("Attempting Player addition");
+    console.log(updatedPlayers);
+    gameRooms.updateGame(gameID, { players: updatedPlayers });
+    const message = JSON.stringify({ "type": "playerJoined", "name": playerName });
+    broadcast(gameID, message, newPlayer.name);
+    // console.log(gameRooms.getGame(gameID));
+
+    return JSON.stringify({"type": "joinedGame", "gameID": game.id});
 }
 
-export function updatePlayerProgress(gameID: string, player: WebSocket) {
+export function updatePlayerProgress(gameID: string, player: WebSocket): string {
     const game = gameRooms.get(gameID);
     if (!game) {
         console.log("[ERROR] Failed to update player game count");
+        return JSON.stringify( {"type": "ERROR", "message": "Game not found"}) ;
+    } else if (game.status != "open") {
+        return JSON.stringify( {"type": "ERROR", "message": "Game not join-able"}) ;
+    } else {
+
     }
     game.players.get(player)!.answered++;
     console.log("[INFO] Updated players score: ", game.players.get(player).answered);
@@ -99,5 +126,23 @@ export function endGame(gameID: string) {
     gameRooms.delete(gameID);
     console.log("[INFO] Ended Game: ", gameID);
     console.log(">>>\t", gameRooms);
+    return;
+}
+
+function broadcast(gameID:string, message:string, triggerPlayer:string){
+    const game = gameRooms.getGame(gameID);
+    if (!game) {
+        console.log("[ERROR] Game does not exist");
+    }
+
+    game.players.forEach(player => {
+        if (player.name != triggerPlayer) {
+            try {
+                player.websocket.send(message);
+            } catch (err) {
+                console.error("[ERROR] Failed to send game message: ", err);
+            }
+        }
+    })
     return;
 }

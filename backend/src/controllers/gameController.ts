@@ -2,7 +2,7 @@
  * File: backend/src/controllers/gameController.ts
  * Author: Connor Vardakis
  * Date: 2/19/25
- * Updated: 3/3/25
+ * Updated: 3/4/25
  * Description: gameController.ts processes all websocket communication
  *              regarding controlling the game
  */
@@ -10,14 +10,16 @@ import { createGame, joinGame, updatePlayerProgress, getPlayerProgress, endGame 
 
 export function handleGameMessages(socket: WebSocket, data: string) {
     try{
-        // console.log("[INFO] Handler Triggered: ", data);
+        console.log("[INFO] Handler Triggered: ", data);
         // const message = JSON.parse(data);
         // console.log("[INFO] Parsed Data: ", message);
         // console.log("[INFO] Parsed Type: ", message.type);
         switch (data.type) {
             case "createGame": {
-                console.log("[INFO] Triggered game creation")
-                const gameID = createGame(socket);
+                console.log("[INFO] Triggered game creation");
+                const difficulty = data.difficulty || "easy";
+                const name = data.name || "player1";
+                const gameID = createGame(difficulty, name, socket);
                 if (gameID != "ERROR") {
                     socket.send(JSON.stringify({type: "gameCreated", gameID: gameID}));
                     break;
@@ -28,13 +30,11 @@ export function handleGameMessages(socket: WebSocket, data: string) {
             }
 
             case "joinGame": {
-                console.log("[INFO] Triggered game creation")
-                const gameID = message;
-                if (joinGame(gameID, socket)) {
-                    socket.send(JSON.stringify({ type: "joinedGame", gameID }));
-                } else {
-                    socket.send(JSON.stringify({ type: "ERROR", message: "Game not found" }));
-                }
+                console.log("[INFO] New Player")
+                const gameID = data.gameID;
+                const name = data.name || "player"+Math.floor(Math.random() * (100 - 1 + 1)) + 1;
+                const response = joinGame(gameID, name, socket);
+                socket.send(response);
                 break;
             }
 

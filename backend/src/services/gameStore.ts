@@ -2,7 +2,7 @@
  * File: backend/src/services/gameStore.ts
  * Author: Connor Vardakis
  * Date: 3/3/25
- * Updated: 3/3/25
+ * Updated: 3/4/25
  * Description: gameStore.ts is a class file the helps organize the data storage for the game
  */
 
@@ -11,14 +11,7 @@ interface Player {
     websocket: WebSocket;
     attempts: number;
     score: number;
-    status: "waiting" | "racing" | "completed";
-}
-
-interface Question {
-    id: number;
-    question: string;
-    correct_answer: number;
-    incorrect_answers: number[];
+    status: "waiting" | "ready" | "completed";
 }
 
 interface Game {
@@ -53,6 +46,7 @@ export class GameStore {
 
     updateGame(id: string, updateData: Partial<Game>): boolean {
         const game = this.games.get(id);
+        console.log("[INFO] Testing updating game: ", game);
         if (!game) {
             console.log("[ERROR] Game not found.");
             return false;

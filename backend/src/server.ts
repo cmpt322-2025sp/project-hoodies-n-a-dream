@@ -2,7 +2,7 @@
  * File: backend/src/server.ts
  * Author: Connor Vardakis
  * Date: 2/18/25
- * Updated: 3/3/25
+ * Updated: 3/4/25
  * Description: server.ts starts up DENO server and controls additional action
  */
 // @ts-ignore
