@@ -1,7 +1,7 @@
 <!--
 Author: Rasheed & Keli'i
 Made: 3/1/2025
-Update:2/25/2025
+Update:3/25/2025
 Purpose: Intro for start screen and linking it to background
 
 -->
@@ -15,7 +15,7 @@ Purpose: Intro for start screen and linking it to background
         body {
             margin: 0;
             height: 100vh;
-            background-image: url("../Assets/Startscreen(1).png");
+            background-image: url("../assets/StartBackground.png");
             background-size: 100% 100%;
             background-repeat: repeat-x;
             background-position: bottom center, center -40%;
@@ -93,13 +93,64 @@ Purpose: Intro for start screen and linking it to background
                 bottom: 10%;
             }
         }
+        .car {
+            position: absolute;
+            bottom: -10%;
+            left: 50%;
+            width: 400px;
+            height: 300px;
+            animation:  flipCar .5s infinite;
+        }
+
+        @keyframes flipCar {
+            0% { content: url("../Assets/Car5.png"); }
+            25% { content: url("../Assets/Car6.png"); }
+            50% { content: url("../Assets/Car7.png"); }
+            75% { content: url("../Assets/Car8.png"); }
+            100% { content: url("../Assets/Car5.png"); }
+        }
+        .car2 {
+            position: absolute;
+            bottom: -10%;
+            left: 40%;
+            width: 400px;
+            height: 300px;
+            animation:  flipCar .75s infinite;
+        }
+
+        @keyframes flipCar {
+            0% { content: url("../Assets/Car5.png"); }
+            25% { content: url("../Assets/Car6.png"); }
+            50% { content: url("../Assets/Car7.png"); }
+            75% { content: url("../Assets/Car8.png"); }
+            100% { content: url("../Assets/Car5.png"); }
+        }
+        .car3 {
+            position: absolute;
+            bottom: -10%;
+            left: 30%;
+            width: 400px;
+            height: 300px;
+            animation:  flipCar 1s infinite;
+        }
+
+        @keyframes flipCar {
+            0% { content: url("../Assets/Car5.png"); }
+            25% { content: url("../Assets/Car6.png"); }
+            50% { content: url("../Assets/Car7.png"); }
+            75% { content: url("../Assets/Car8.png"); }
+            100% { content: url("../Assets/Car5.png"); }
+        }
     </style>
 </head>
 <body>
 
-<img src="../Assets/NitroNumbers.png" class="title" alt="NitroNumbers"/>
-<img src ="../Assets/Start.png" class = "Start" alt = "Start" onclick="Create()"/>
-<img src ="../Assets/Join.png" class = "Join" alt = "Join" onclick="Code()"/>
+<img src="../assets/NitroNumbers.png" class="title" alt="NitroNumbers"/>
+<img src ="../assets/Start.png" class = "Start" alt = "Start" onclick="Create()"/>
+<img src ="../assets/Join.png" class = "Join" alt = "Join" onclick="Code()"/>
+<img src ="../assets/Car0.png" class = "car" alt = "car"/>
+<img src ="../assets/Car0.png" class = "car2" alt = "car"/>
+<img src ="../assets/Car0.png" class = "car3" alt = "car"/>
 </body>
 <script>
     const ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
@@ -119,8 +170,8 @@ Purpose: Intro for start screen and linking it to background
         console.log("🔴 WebSocket Disconnected");
     };
     function Create() {
-        window.location.href = "background.html";
-        
+        window.location.href = "Game_Animation.html";
+
     }
     function Code() {
         let userCode = prompt("Enter your code:");
