@@ -25,6 +25,8 @@
     <button onclick="joinGame()">🎮 Join Game</button>
 </div>
 
+<button onclick="startGame()">🏎️ Start Game</button>
+
 <button onclick="submitScore()">📊 Submit Score</button>
 
 <button onclick="gameEnd()">❌ Game End</button>
@@ -47,7 +49,14 @@
             gameID = response.gameID;
             logMessage(`🎲 Game Created: ${gameID}`);
         }
+
+        if (response.type === "questions") {
+            ws.send(JSON.stringify({ type: "questionsReceived", gameID: gameID, status: "200" }));
+            logMessage("Sent Received Question Response");
+        }
+
     };
+
     ws.onclose = () => logMessage("🔴 WebSocket Disconnected");
 
     function logMessage(msg) {
@@ -60,7 +69,14 @@
 
     function joinGame() {
         let roomCode = document.getElementById("roomCode").value;
-        ws.send(JSON.stringify({ type: "joinGame", gameID: roomCode, name: "player69"  }));
+        gameID = roomCode;
+        const name = "player" + Math.random();
+        ws.send(JSON.stringify({ type: "joinGame", gameID: roomCode, name: name  }));
+    }
+
+    function startGame() {
+        logMessage("🏎️ Starting Game!")
+        ws.send(JSON.stringify({ type: "startGame", gameID: gameID}));
     }
 
     function submitScore() {
