@@ -33,7 +33,7 @@
 <div id="log"></div>
 
 <script>
-    let ws = new WebSocket("ws://localhost:8000/ws");
+    let ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
     let gameID = null;
 
     ws.onopen = () => logMessage("✅ WebSocket Connected");
