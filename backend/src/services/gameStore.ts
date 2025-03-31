@@ -46,14 +46,14 @@ export class GameStore {
 
     updateGame(id: string, updateData: Partial<Game>): boolean {
         const game = this.games.get(id);
-        console.log("[INFO] Testing updating game: ", game);
+        // console.log("[INFO] Testing updating game: ", game);
         if (!game) {
             console.log("[ERROR] Game not found.");
             return false;
         }
         const updateGame = {...game, ...updateData};
         this.games.set(id,updateGame);
-        console.log("[INFO] Updated game room: ", game);
+        // console.log("[INFO] Updated game room: ", game);
     }
 
     deleteGame(id: string): boolean {

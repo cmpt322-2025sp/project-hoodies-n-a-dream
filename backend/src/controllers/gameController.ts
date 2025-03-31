@@ -6,7 +6,7 @@
  * Description: gameController.ts processes all websocket communication
  *              regarding controlling the game
  */
-import { createGame, joinGame, updatePlayerProgress, getPlayerProgress, endGame } from "../services/gameServices.ts";
+import { createGame, joinGame, startGame, updatePlayerStatus, updatePlayerProgress, getPlayerProgress, endGame } from "../services/gameServices.ts";
 
 export function handleGameMessages(socket: WebSocket, data: string) {
     try{
@@ -38,11 +38,16 @@ export function handleGameMessages(socket: WebSocket, data: string) {
                 break;
             }
 
-            case "gameStart": {
+            case "startGame": {
+                console.log("[INFO] Game Start")
+                const gameID = data.gameID;
+                startGame(gameID);
                 break;
             }
 
-            case "questions": {
+            case "questionsReceived": {
+                const gameID = data.gameID;
+                updatePlayerStatus(gameID, socket, "ready");
                 break;
             }
 
@@ -53,7 +58,6 @@ export function handleGameMessages(socket: WebSocket, data: string) {
 
                 const progress = getPlayerProgress(gameID);
                 socket.send(JSON.stringify({ type: "progressUpdate", progress }));
-
                 break;
             }
 
