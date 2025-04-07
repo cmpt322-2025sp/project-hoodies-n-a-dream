@@ -78,6 +78,11 @@ function checkAnswer(button) {
     if (parseInt(button.innerText) === answer) {
         document.getElementById(button.id).classList.add("right-buttons");
         moving = true;
+        // Increment the question count and check if 20 questions have been answered
+        questionCount++;
+        if (questionCount >= 5) {
+            window.location.href = "FinishLine.html"; // Redirect to finish page
+        }
         moveCar();
         setTimeout(() => {
 
@@ -97,11 +102,7 @@ function checkAnswer(button) {
         performFlip();
     }
 
-    // Increment the question count and check if 20 questions have been answered
-    questionCount++;
-    if (questionCount >= 20) {
-        window.location.href = "Startsection.html"; // Redirect to finish page
-    }
+
 
 
 }
