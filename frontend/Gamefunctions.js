@@ -4,7 +4,7 @@
 //Purpose: Car movement and game functions
 
 const car = document.getElementById('car');
-const flipFrames = ['../Assets/Car6.png', '../Assets/Car7.png', '../Assets/Car8.png'];
+const flipFrames = ['../Assets/Car6.png', '../Assets/Car7.png', '../Assets/Car8.png', '../Assets/Car1.png'];
 let moveSpeed = 5;
 let isFlipping = false;
 let moving = false;
@@ -24,27 +24,59 @@ let positionB = 0; // Map1 - left viewport
 let positionTrack = 0;
 let speedTrack = 0;
 let speedB = 0; // speed of Map background
-let speedT = 31; // speed of Transition background
+let speedT = 45; // speed of Transition background
+let carSpeed = 0 //speed of Car
+let maxMapSpeed = 1;
+let maxTrackSpeed = 35;
 
 let maps = [map1, map2, map3];
 let index = 0;
 
 let flag = true; //To make sure index is changed once when needed
+let start = false;
+let ending = false;
+let ended = false;
 
-function animateMap() {
+const countDown1 = document.getElementById('countDown');
+
+
+const carShield = document.getElementById("carShield");
+
+
+function animateGame() {
     maps[index].style.backgroundPosition = `${positionB}px`;
-    if (speedB < 1) {
+    if (speedB < maxMapSpeed) {
         speedB = speedB + .01;
     }
     positionB -= speedB;
 
     track.style.backgroundPosition = `${positionTrack}px`;
-    if (speedTrack < 30) {
+    if (speedTrack < maxTrackSpeed) {
         speedTrack = speedTrack + .25;
     }
     positionTrack -= speedTrack;
 
-    requestAnimationFrame(animateMap);
+    if (ending === false) {
+        requestAnimationFrame(animateGame);
+
+    }
+}
+
+function stopGame() {
+    maps[index].style.backgroundPosition = `${positionB}px`;
+    if (speedB > 0) {
+        speedB = speedB - .01;
+        positionB -= speedB;
+    }
+
+    track.style.backgroundPosition = `${positionTrack}px`;
+    if (speedTrack > 0) {
+        speedTrack = speedTrack - .05;
+        positionTrack -= speedTrack;
+    }
+
+    requestAnimationFrame(stopGame);
+
 }
 
 function animateTransition() {
@@ -66,13 +98,40 @@ function animateTransition() {
         flag = false;
     }
 
-    requestAnimationFrame(animateTransition);
+    if (ending === false || positionT  > -window.innerWidth - transition.offsetWidth) {
+        requestAnimationFrame(animateTransition);
+    }
 }
 
 function resetTransition() {
     positionT = 0;
 }
 let totalTime = 0;
+
+// Function to create sparks
+function createSpark(x, y) {
+    const spark = document.createElement('div');
+    spark.classList.add('spark');
+
+    if (streak >= 12) {
+        spark.style.backgroundColor = 'aqua';
+    }
+    // Randomize the speed of each spark
+    const randomSpeed = Math.random() * 0.5 + 0.5; // Random speed between 0.5s and 1s
+    spark.style.animationDuration = `${randomSpeed}s`;  // Set random speed for the animation
+
+    // Set initial position of the spark
+    spark.style.left = `${x}px`;
+    spark.style.top = `${y}px`;
+
+    // Add the spark to the body
+    document.body.appendChild(spark);
+
+    // Remove the spark after animation completes
+    setTimeout(() => {
+        spark.remove();
+    }, randomSpeed * 1000); // Matches the duration of the animation
+}
 
 function GameClock() {
     let ones = 0;
@@ -117,6 +176,30 @@ function moveCar() {
     }
 }
 
+function animateCar() {
+    car.style.left = carPosition + 'px';
+    carStreak.style.transform = `translateX(${carPosition}px)`;
+    carShield.style.transform = `translateX(${carPosition}px)`;
+
+    if (ending && carSpeed < 6) {
+        carSpeed += 1;
+    }
+
+    else if (carSpeed < 1 && carPosition <= window.innerWidth/4) {
+        carSpeed += 0.01;
+    }
+
+    else if (carSpeed > -1 && carPosition >= window.innerWidth/4) {
+        carSpeed -= 0.01;
+    }
+
+    carPosition += carSpeed;
+
+
+    requestAnimationFrame(animateCar);
+}
+
+
 function performFlip() {
     if (!isFlipping) {
         isFlipping = true;
@@ -143,16 +226,42 @@ function intro() {
     moving = true;
     moveCar();
 }
-
-function removeOverlay() {
+function countDown() {
     document.getElementById("overlay").style.display = "none";
-    document.getElementById("removeOverlayBtn").style.display = "none";
+    document.getElementById("startGame").style.display = "none";
 
-    maps[index].style.visibility = "visible";
-    animateMap();
+    let counter = 4;
+
+    let countInterval = setInterval(() => {
+        counter--;
+
+        countDown1.innerHTML = counter.toString();
+
+        countDown1.style.opacity = "1";
+        countDown1.style.animation = "none";
+        countDown1.offsetHeight;
+        countDown1.style.animation = "fadeOut2 1.3s ease 1 forwards";
+
+        if (counter === 0) {
+            countDown1.innerHTML = "Go!";
+            startGame();
+        }
+        else if (counter < 0) {
+            clearInterval(countInterval);
+            document.querySelector(".equation-container").style.visibility = "visible";
+            countDown1.style.visibility = "hidden";
+        }
+    }, 1300);
+}
+
+function startGame() {
+
+    animateGame();
+    animateCar();
 
     setTimeout(() => {
         animateTransition();
+
         setInterval(resetTransition, 25000);
     }, 30000);
     GameClock();
