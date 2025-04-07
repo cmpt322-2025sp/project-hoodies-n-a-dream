@@ -41,10 +41,19 @@ function joinGame() {
 function startGame() {
     sendMessage({ type: "startGame", gameID: currentGameID });
 }
+function requestNewQuestion(difficulty) {
+    // example: difficulty can be "easy", "medium", "hard"
+    sendMessage({
+        type: "requestNextQuestion",
+        difficulty: difficulty
+    });
+}
 
 // 4️⃣ HANDLE SERVER MESSAGES
 let currentGameID = null;
-
+let currentQuestionSet = [];       // Will hold the 20 questions
+let currentQuestionIndex = 0;      // Which one we’re on
+let currentCorrectAnswer = null;   // Track the correct answer for the displayed question
 function handleServerMessage(data) {
     switch (data.type) {
         case "gameCreated":
