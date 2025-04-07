@@ -13,7 +13,7 @@ Purpose: front end of the game
         body {
             margin: 0;
             height: 100vh;
-            background-image: url('../assets/track.png'), url("https://wallpaperaccess.com/full/4107787.jpg");
+            background-image: url('../Assets/track.png'), url("https://wallpaperaccess.com/full/4107787.jpg");
             background-size: 120% 30%, 120% 80%;
             background-repeat: repeat-x, repeat-x;
             background-position: bottom center, center -40%;
@@ -45,7 +45,7 @@ Purpose: front end of the game
         #racetrack {
             width: 100vw;
             height: 100vh;
-            background-image: url("../assets/city track - Copy.png");
+            background-image: url("../Assets/city track - Copy.png");
             background-size: 85% auto;
             background-repeat: repeat;
             position: relative;
@@ -119,7 +119,7 @@ Purpose: front end of the game
 <button id="removeOverlayBtn" onclick="removeOverlay()">Start Game</button>
 
 <div>
-    <img id="car" class="car" src="../assets/Car1.png" alt="Car">
+    <img id="car" class="car" src="../Assets/Car1.png" alt="Car">
 </div>
 <div class="game-content">
     <h1 id="math"></h1>
@@ -133,7 +133,7 @@ Purpose: front end of the game
 
     let answer = 0;
     const car = document.getElementById('car');
-    const flipFrames = ['../assets/Car6.png', '../assets/Car7.png', '../assets/Car8.png'];
+    const flipFrames = ['../Assets/Car6.png', '../Assets/Car7.png', '../Assets/Car8.png'];
     let moveSpeed = 5;
     let isFlipping = false;
     let moving = false;

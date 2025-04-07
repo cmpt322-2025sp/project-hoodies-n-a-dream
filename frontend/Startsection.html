@@ -1,7 +1,7 @@
 <!--
 Author: Rasheed & Keli'i
 Made: 3/1/2025
-Update:2/25/2025
+Update:3/25/2025
 Purpose: Intro for start screen and linking it to background
 
 -->
@@ -9,13 +9,13 @@ Purpose: Intro for start screen and linking it to background
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <title>Car Flip and Move</title>
+    <title>Start</title>
 
     <style>
         body {
             margin: 0;
             height: 100vh;
-            background-image: url("../Assets/Startscreen(1).png");
+            background-image: url("../assets/Startscreen(1).png");
             background-size: 100% 100%;
             background-repeat: repeat-x;
             background-position: bottom center, center -40%;
@@ -96,12 +96,18 @@ Purpose: Intro for start screen and linking it to background
     </style>
 </head>
 <body>
+<div id="buttonContainer" style="display: none; position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); text-align: center;">
+    <button onclick="startGame()" style="margin: 10px; padding: 10px 20px; font-size: 1.2em;">Easy</button>
+    <button onclick="startGame()" style="margin: 10px; padding: 10px 20px; font-size: 1.2em;"> Medium</button>
+    <button onclick="startGame()" style="margin: 10px; padding: 10px 20px; font-size: 1.2em;">Hard</button>
+</div>
 
-<img src="../Assets/NitroNumbers.png" class="title" alt="NitroNumbers"/>
-<img src ="../Assets/Start.png" class = "Start" alt = "Start" onclick="Create()"/>
-<img src ="../Assets/Join.png" class = "Join" alt = "Join" onclick="Code()"/>
+<img src="../assets/NitroNumbers.png" class="title" alt="NitroNumbers"/>
+<img src ="../assets/Start.png" class = "Start" alt = "Start" onclick="Create()"/>
+<img src ="../assets/Join.png" class = "Join" alt = "Join" onclick="Code()"/>
 </body>
 <script>
+
     const ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
     ws.onopen = () => {
         console.log("✅ WebSocket Connected");
@@ -119,8 +125,13 @@ Purpose: Intro for start screen and linking it to background
         console.log("🔴 WebSocket Disconnected");
     };
     function Create() {
-        window.location.href = "background.html";
-        
+        // Show the three option buttons instead of navigating immediately
+        document.getElementById("buttonContainer").style.display = "block";
+    }
+
+    function startGame() {
+        // When a player clicks one of the three buttons, proceed to game
+        window.location.href = "Game_Animation.html";
     }
     function Code() {
         let userCode = prompt("Enter your code:");
