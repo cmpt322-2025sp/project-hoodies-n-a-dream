@@ -3,9 +3,19 @@
 //Update:2/25/2025
 //Purpose: Question functions for game
 
-
 let answer = 0;
 let questionCount = 0; // Track the number of questions answered
+let streak = 0;
+const carStreak = document.getElementById('carStreak');
+let sparkInterval;
+const clock = document.getElementById('clock');
+const equation = document.getElementById('equation');
+const player_border = document.getElementById('player-border');
+const game_border = document.getElementById('game-border');
+let sparkIntervals = [];
+let flag2 = true;
+
+const answerStreak = document.getElementById('answerStreak');
 
 // Library of equations (you can populate this with specific equations)
 let equationLibrary = []
@@ -46,63 +56,179 @@ function generateEquation() {
         wrongAnswer4 = x + (Math.floor(Math.random() * 10));
     } while (numbers.includes(wrongAnswer4));
 
-    document.getElementById("equation").innerHTML = `${x} + ${y} = ?`;
+    equation.innerHTML = `${x} + ${y} = ?`;
 
-    document.getElementById("bt1").innerText = wrongAnswer1;
-    document.getElementById("bt2").innerText = wrongAnswer2;
-    document.getElementById("bt3").innerText = wrongAnswer3;
-    document.getElementById("bt4").innerText = wrongAnswer4;
+    document.getElementById("bt1span").innerText = wrongAnswer1;
+    document.getElementById("bt2span").innerText = wrongAnswer2;
+    document.getElementById("bt3span").innerText = wrongAnswer3;
+    document.getElementById("bt4span").innerText = wrongAnswer4;
 
     let val = Math.floor(Math.random() * 4);
     switch (val) {
         case 0: {
-            document.getElementById("bt1").innerText = answer;
+            document.getElementById("bt1span").innerText = answer;
             break;
         } case 1: {
-            document.getElementById("bt2").innerText = answer;
+            document.getElementById("bt2span").innerText = answer;
             break;
         }
         case 2: {
-            document.getElementById("bt3").innerText = answer
+            document.getElementById("bt3span").innerText = answer
             break;
         }
         case 3: {
-            document.getElementById("bt4").innerText = answer;
+            document.getElementById("bt4span").innerText = answer;
             break;
         }
     }
 }
 
 function checkAnswer(button) {
-    document.getElementById(button.id).style.animation = "none";
-    if (parseInt(button.innerText) === answer) {
-        document.getElementById(button.id).classList.add("right-buttons");
+    button.style.animation = "none";
+    let Span = button.querySelector('span');
+    let buttonSpanIds = document.querySelectorAll('span');
+    const buttonIds = document.querySelectorAll('button')
+    if (parseInt(button.querySelector('span').innerText) === answer) {
+
+        button.classList.add("right-buttons");
+        if (streak >= 8) {
+            button.classList.add('right-buttons');
+            Span.style.color = "white";
+        }
+
         moving = true;
-        moveCar();
+        //moveCar();
         setTimeout(() => {
-
-            const buttonIds = document.querySelectorAll('button')
-
             buttonIds.forEach(button => {
-                document.getElementById(button.id).classList.remove("right-buttons");
-                document.getElementById(button.id).classList.remove("wrong-buttons");
+                button.classList.remove("right-buttons");
+                button.classList.remove("wrong-buttons");
+                button.style.opacity = "1";
+                button.style.animation = "none";
             });
 
+            questionCount++;
+            streak++;
+
+            switch(streak) {
+                case 1:
+                    break;
+
+                case 2:
+                    carStreak.style.animation = "op 0.01s linear infinite";
+                    carStreak.style.visibility = "visible";
+                    break;
+                case 6:
+                    game_border.style.animation = "flashingBorder 2s linear infinite";
+                    //answerStreak.innerHTML = "Streak 6!";
+                    //answerStreak.style.visibility = "visible";
+                    //answerStreak.style.animation = "fadeOut2 1.5s ease 1";
+                    break;
+
+                case 8:
+                    buttonSpanIds.forEach(Span => {
+                        Span.style.color = "transparent";
+                        Span.style.textShadow = "0 0 10px mediumspringgreen";
+                    });
+                    carStreak.style.backgroundImage = "linear-gradient(to right, transparent 50%, mediumSpringgreen 100%)";
+                    player_border.style.color = "transparent";
+                    clock.style.color = "transparent";
+                    equation.style.color = "transparent";
+                    equation.style.textShadow = "0 0 10px mediumspringgreen";
+                    break;
+
+                case 12:
+                    game_border.style.animation = "flashingBorder2 2s linear infinite";
+                    carShield.style.animation = "fadeOut 0.001s linear infinite";
+                    carShield.style.visibility = "visible";
+                    break;
+
+                case 15:
+                    game_border.style.animation = "flashingBorder3 2s linear infinite";
+                    clock.style.color = "aqua";
+                    player_border.style.color = "aqua";
+                    equation.style.background = "linear-gradient(to right, deepskyblue, aqua), -webkit-background-clip: text";
+                    equation.style.textShadow = "0 0 10px aqua";
+                    carStreak.style.backgroundImage = "linear-gradient(to right, transparent 50%, aqua 100%)";
+                    carShield.style.borderRight = "5px solid aqua";
+                    carShield.style.background = "linear-gradient(to right, transparent 0%, transparent 80%, aqua 100%)";
+                    buttonSpanIds.forEach(Span => {
+                        Span.style.textShadow = "0 0 10px aqua";
+                        Span.style.background = "linear-gradient(to right, deepskyblue, aqua), -webkit-background-clip: text";
+                    });
+                    document.querySelector(".spark").style.backgroundColor = "aqua";
+
+            }
+
+
+            if (streak >= 4) {
+                buttonIds.forEach(button => {
+                    button.style.animation = "rotateBorders 1s linear infinite";
+
+                });
+                maxMapSpeed += .05;
+                maxTrackSpeed += 0.5;
+            }
+
+            if (streak >= 8) {
+                Span.style.color = "transparent";
+            }
+
+            if (streak >= 10) {
+                sparkInterval = setInterval(() => {
+                    const x = Math.random() * window.innerWidth;  // Random X position on the screen
+                    const y = Math.random() * window.innerHeight; // Random Y position on the screen
+                    createSpark(x, y);
+                }, 50); // Creates a spark every 50ms
+                sparkIntervals.push(sparkInterval);
+            }
+
+            flag2 = true;
+            //answerStreak.visibility = "hidden";
+            //answerStreak.style.animation = "none";
+
+            if (questionCount >= 20) {
+                ending = true
+                stopGame();
+                //window.location.href = "Startsection.html"; // Redirect to finish page
+            }
             generateEquation();
         }, 800);
+
     } else {
-        document.getElementById(button.id).style.animation = "shake 0.3s ease-in-out 3";
-        document.getElementById(button.id).classList.add("wrong-buttons");
+        if (flag2) {
+            buttonIds.forEach(button => {
+                button.style.animation = "none";
+                flag2 = false;
+            });
+        }
+        button.style.animation = "shake 0.3s ease-in-out 3, fadeOut 4s forwards";
+        button.classList.add("wrong-buttons");
         moving = false;
         performFlip();
-    }
+        streak = 0;
+        carStreak.style.animation = "none";
+        carStreak.style.visibility = "hidden";
+        game_border.style.animation = "none";
+        buttonSpanIds.forEach(Span => {
+            Span.style.color = "white";
+            Span.style.textShadow = "none";
+        });
+        carStreak.style.backgroundImage = "linear-gradient(to right, transparent 50%, lightpink 60%, lightsalmon 70%, lightcoral 80%, orange 90%, orangered 100%, transparent 100%)";
+        player_border.style.color = "white";
+        player_border.style.textShadow = "none";
+        clock.style.color = "white";
+        equation.style.color = "white";
+        equation.style.textShadow = "none";
+        for (let i = 0; i < sparkIntervals.length; i++) {
+            clearInterval(sparkIntervals[i]);
+        }
+        sparkIntervals = [];
+        carShield.style.animation = "none";
+        carShield.style.visibility = "hidden";
+        maxMapSpeed = 1;
+        maxTrackSpeed = 35;
 
-    // Increment the question count and check if 20 questions have been answered
-    questionCount++;
-    if (questionCount >= 20) {
-        window.location.href = "Startsection.html"; // Redirect to finish page
     }
-
 
 }
 generateEquation();

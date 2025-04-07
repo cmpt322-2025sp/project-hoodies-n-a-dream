@@ -21,15 +21,16 @@ Purpose: front end of the game
         }
 
         #game-border {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100vw;
             height: 100vh;
-            box-shadow: inset 20px 20px 20px 0 lightsalmon,
-            inset -20px -20px 20px 0 lightsalmon;
-            z-index: 9000;
-            overflow: visible;
+            z-index: 95;
         }
 
         #transition {
+
             display : flex;
             align-items: flex-start;
             position: absolute;
@@ -137,7 +138,7 @@ Purpose: front end of the game
             left: 50%;
             transform: translate(-50%, -50%);
             border: 10px solid red;
-            z-index: 50;
+            z-index: 110;
         }
 
         .button-container {
@@ -146,7 +147,7 @@ Purpose: front end of the game
             display: flex;
             justify-content: space-between;
             align-items: center;  /* Centers elements horizontally */
-            z-index: 50;
+            z-index: 110;
 
         }
 
@@ -169,7 +170,7 @@ Purpose: front end of the game
             box-shadow: 10px 10px 0 0 rgba(0, 0, 0, 0.2);
             font-size: 60px;
             text-align: center;
-            z-index: 50;
+            z-index: 110;
             color: white;
             /*
             animation: rotateBorders 1s linear infinite;
@@ -264,33 +265,56 @@ Purpose: front end of the game
         @keyframes rotateBorders {
             0% {
                 border-top: 10px solid lightcoral;
+                box-shadow: 0 0 15px 5px lightcoral;
                 border-right: 10px solid pink;
                 border-bottom: 10px solid lightsalmon;
                 border-left: 10px solid hotpink;
             }
             25% {
                 border-top: 10px solid pink;
+                box-shadow: 0 0 15px 5px pink;
                 border-right: 10px solid lightsalmon;
                 border-bottom: 10px solid hotpink;
                 border-left: 10px solid lightcoral;
             }
             50% {
                 border-top: 10px solid lightsalmon;
+                box-shadow: 0 0 15px 5px lightsalmon;
                 border-right: 10px solid hotpink;
                 border-bottom: 10px solid lightcoral;
                 border-left: 10px solid pink;
             }
             75% {
                 border-top: 10px solid hotpink;
+                box-shadow: 0 0 15px 5px hotpink;
                 border-right: 10px solid lightcoral;
                 border-bottom: 10px solid pink;
                 border-left: 10px solid lightsalmon;
             }
             100% {
                 border-top: 10px solid lightcoral;
+                box-shadow: 0 0 15px 5px lightcoral;
                 border-right: 10px solid pink;
                 border-bottom: 10px solid lightsalmon;
                 border-left: 10px solid hotpink;
+            }
+        }
+
+        @keyframes flashingBorder {
+            0% {
+                box-shadow: inset 0 0 25px 25px lightcoral;
+            }
+            25% {
+                box-shadow: inset 0 0 25px 25px pink;
+            }
+            50% {
+                box-shadow: inset 0 0 25px 25px lightsalmon;
+            }
+            75% {
+                box-shadow: inset 0 0 25px 25px pink;
+            }
+            100% {
+                box-shadow: inset 0 0 25px 25px lightcoral;
             }
         }
 
@@ -319,12 +343,12 @@ Purpose: front end of the game
 <button id="removeOverlayBtn" onclick="removeOverlay()">Start Race</button>
 
 <div>
-    <img id="car" class="car" src="../assets/Car1.png" alt="Car">
+    <img id="car" class="car" src="../Assets/Car1.png" alt="Car">
 </div>
 
 <div class="players">
     <div class="player1">
-        <img id="car1-model" src="../assets/Car1.png">
+        <img id="car1-model" src="../Assets/Car1.png">
         <h1 id="player-border"> Player1</h1>
     </div>
 </div>
@@ -345,6 +369,7 @@ Purpose: front end of the game
 </div>
 
 <div id="game-border"></div>
+
 <script src = "Questions.js"></script>
 <script src = "Gamefunctions.js"></script>
 
