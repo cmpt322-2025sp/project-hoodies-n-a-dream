@@ -98,7 +98,7 @@ export function joinGame(gameID: string, playerName: string, playerSocket: Webso
     return JSON.stringify({"type": "joinedGame", "gameID": game.id, "players": currentPlayers});
 }
 
-export function startGame(gameID: string) {
+export async function startGame(gameID: string) {
     console.log("[INFO] Starting Game ", gameID);
     const game = gameRooms.getGame(gameID);
     if (!game) {
@@ -107,10 +107,31 @@ export function startGame(gameID: string) {
     }
 
     gameRooms.updateGame(gameID, { status: "racing" });
-    sendQuestions(gameID);
+    await sendQuestions(gameID);
     sendCountdown(gameID, 3);
 }
 
+export async function updatePlayerScore(gameID: string, socket: WebSocket, score: number, attempts: number) {
+    const game = gameRooms.getGame(gameID);
+    if (!game) {
+        console.log("[ERROR] Game not found");
+        // return JSON.stringify( {"type": "ERROR", "message": "Game not found"}) ;
+    }
+
+    let playerName = null;
+    const updatedPlayers = game.players.map(player => {
+        if (player.websocket === socket) {
+            playerName = player.name;
+            return { ...player, attempts: attempts, score: score };
+        }
+    });
+
+    // Use the updateGame function to update the game with the new players array
+    gameRooms.updateGame(gameID, { players: updatedPlayers });
+
+    const message = JSON.stringify({"type": "scoreReport", "name": playerName, "score": score});
+    broadcast(gameID, message, playerName, true);
+}
 
 export function updatePlayerProgress(gameID: string, player: WebSocket): string {
     const game = gameRooms.get(gameID);
@@ -176,32 +197,54 @@ const sendCountdown = async (gameID: string, seconds: number = 3) => {
     broadcast(gameID, startMessage, null, false);
 };
 
-
-async function sendQuestions(gameID: string) {
+async function sendQuestions(gameID: string, targetPlayer?: Player, retryCount: number = 0) {
     const game = gameRooms.getGame(gameID);
-    const players = game.players;
     const questions = game.questions;
-    console.log("[TROUBLESHOOT] Sending questions");
+    // If a specific player is provided, only send to that player.
+    const players = targetPlayer ? [targetPlayer] : game.players;
+
+    if (targetPlayer) {
+        console.log(`[TROUBLESHOOT] Sending questions to ${targetPlayer.name} (attempt ${retryCount + 1})`);
+    } else {
+        console.log("[TROUBLESHOOT] Sending questions to all players");
+    }
+
     await Promise.all(players.map(async (player) => {
         try {
-            // Send questions using the WebSocket connection
+            // Send questions using the WebSocket connection.
             player.websocket.send(JSON.stringify({
                 type: "questions",
                 questions: questions,
             }));
 
-            // // Wait for the player's acknowledgment. You could implement a helper that waits for a specific message.
-            // const response = await waitForPlayerResponse(player, "questionsReceived");
-            // if (response.status !== "200") {
-            //     // Handle the error case: re-send questions or remove player if necessary.
-            //     console.error(`Player ${player.name} did not confirm receiving questions.`);
-            // }
+            // Wait for the player's acknowledgment.
+            await sleep(500);
+
+            // Re-fetch the updated game and find the player by a unique reference.
+            const updatedGame = gameRooms.getGame(gameID);
+            const updatedPlayer = updatedGame.players.find(p => p.websocket === player.websocket);
+            if (updatedPlayer?.status !== "ready") {
+                console.error(`Player ${player.name} did not confirm receiving questions.`);
+                if (retryCount + 1 < 3) {
+                    // Retry by recursively calling sendQuestions with an incremented retry count.
+                    await sendQuestions(gameID, player, retryCount + 1);
+                } else {
+                    console.error(`Player ${player.name} failed to confirm after 3 attempts. Removing player.`);
+                    // Placeholder for removePlayer functionality:
+                    // removePlayer(gameID, player);
+                }
+            } else {
+                console.log(`Player ${player.name} confirmed receiving questions.`);
+            }
         } catch (error) {
             console.error(`Error sending questions to player ${player.name}:`, error);
         }
     }));
-    console.log("[INFO] All Players received questions");
+
+    console.log("[INFO] Finished sending questions for targeted players");
 }
+
+
 
 function waitForPlayerResponse(player: Player, expectedType: string, timeout = 5000): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -231,9 +274,8 @@ function waitForPlayerResponse(player: Player, expectedType: string, timeout = 5
     });
 }
 
-
 export function updatePlayerStatus(gameID: string, socket: WebSocket, newStatus: string) {
-    const game = gameRooms.getGame(gameID)
+    let game = gameRooms.getGame(gameID)
     if (!game) {
         console.log("[ERROR] Game does not exist");
     }
@@ -248,6 +290,7 @@ export function updatePlayerStatus(gameID: string, socket: WebSocket, newStatus:
 
     // Use the updateGame function to update the game with the new players array
     return gameRooms.updateGame(gameID, { players: updatedPlayers });
+
 
 }
 
