@@ -4,6 +4,8 @@ Made: 2/17/2025
 Update:2/25/2025
 Purpose: front end of the game
 -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,6 +20,20 @@ Purpose: front end of the game
             text-align: center;
             font-family: Arial, sans-serif;
 
+        }
+
+        #room-code {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 10px;
+            z-index: 5000;
         }
 
         #game-border {
@@ -318,6 +334,8 @@ Purpose: front end of the game
 
 <button id="removeOverlayBtn" onclick="removeOverlay()">Start Race</button>
 
+
+<div id="room-code">Game ID: Loading...</div>
 <div>
     <img id="car" class="car" src="../assets/Car1.png" alt="Car">
 </div>
@@ -355,4 +373,60 @@ Purpose: front end of the game
 </body>
 </html>
 
+//websocket connection
+<script>
+    // ✅ Retrieve the gameID from localStorage
+    let gameID = localStorage.getItem("gameID");
+
+    // ✅ Display it on the screen
+    if (gameID) {
+        document.getElementById("room-code").innerText = `Game ID: ${gameID}`;
+    } else {
+        document.getElementById("room-code").innerText = "⚠️ No Game ID Found!";
+    }
+
+    // ✅ WebSocket Connection Setup
+    const ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
+
+    ws.onopen = () => console.log("✅ WebSocket Connected");
+    ws.onmessage = (event) => handleServerMessage(JSON.parse(event.data));
+    ws.onerror = (error) => console.error("❌ WebSocket Error:", error);
+    ws.onclose = () => console.log("🔴 WebSocket Disconnected");
+
+    function handleServerMessage(data) {
+        if (data.type === "questions") {
+            displayQuestion(data.questions);
+            sendMessage({ type: "questionsReceived", status: "200" });
+        } else if (data.type === "scoreReport") {
+            console.log(`🏁 Score Update: ${data.name} - ${data.score}`);
+        } else if (data.type === "gameCompleted") {
+            displayResults(data.players);
+        } else if (data.type === "playerJoined") {
+            console.log(`🚗 Player Joined: ${data.name}`);
+        } else if (data.type === "ERROR") {
+            alert(`⚠️ Error: ${data.message}`);
+        }
+    }
+
+    function displayQuestion(questions) {
+        console.log("📩 New Question:", questions[0].question);
+        // Implement UI logic to show the question
+    }
+
+    function displayResults(players) {
+        let resultsText = "🏆 Game Over! \n\n";
+        players.forEach(player => {
+            resultsText += `${player.name} - Time: ${player.time} - Attempts: ${player.attempts}\n`;
+        });
+        alert(resultsText);
+    }
+
+    function sendMessage(message) {
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify(message));
+        } else {
+            console.error("⚠️ WebSocket is not open.");
+        }
+    }
+</script>
 
