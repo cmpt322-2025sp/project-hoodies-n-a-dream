@@ -98,6 +98,12 @@ function checkAnswer(button) {
 
         moving = true;
         //moveCar();
+        // Increment the question count and check if 20 questions have been answered
+        questionCount++;
+        if (questionCount >= 5) {
+            window.location.href = "FinishLine.html"; // Redirect to finish page
+        }
+        moveCar();
         setTimeout(() => {
             buttonIds.forEach(button => {
                 button.classList.remove("right-buttons");
@@ -227,6 +233,8 @@ function checkAnswer(button) {
         carShield.style.visibility = "hidden";
         maxMapSpeed = 1;
         maxTrackSpeed = 35;
+
+
 
     }
 

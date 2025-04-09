@@ -106,6 +106,7 @@ function animateTransition() {
 function resetTransition() {
     positionT = 0;
 }
+let totalTime = 0;
 
 // Function to create sparks
 function createSpark(x, y) {
@@ -140,22 +141,28 @@ function GameClock() {
 
     setInterval(() => {
         ones++;
+        totalTime++;
         if (ones === 10) {
             tens++;
             ones = 0;
             if (tens === 6) {
                 hunds++;
-                tens = 0
+                tens = 0;
                 if (hunds === 10) {
                     thous++;
                     hunds = 0;
                 }
             }
         }
-        document.getElementById('clock').innerText = thous.toString() + hunds + ':' + tens + ones;
+
+        let finalTime = thous.toString() + hunds + ':' + tens + ones;
+        document.getElementById('clock').innerText = finalTime;
+
+        // Store the final time string in localStorage
+        localStorage.setItem('finalTime', finalTime);
+
     }, 1000);
 }
-
 function moveCar() {
     if (moving) {
         if (introPlaying && carPosition >= targetPosition) {
