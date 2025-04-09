@@ -7,7 +7,7 @@
  *              regarding controlling the game
  */
 import { createGame, joinGame, startGame, updatePlayerStatus, updatePlayerProgress, getPlayerProgress, endGame } from "../services/gameServices.ts";
-import {getQuestions} from "../services/mathServices";
+import {getQuestions} from "../services/mathServices.ts";
 
 export function handleGameMessages(socket: WebSocket, data: string) {
     try{
