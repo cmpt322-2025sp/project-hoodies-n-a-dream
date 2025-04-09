@@ -4,8 +4,6 @@ Made: 2/17/2025
 Update:2/25/2025
 Purpose: front end of the game
 -->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,7 +42,6 @@ Purpose: front end of the game
         }
 
         #transition {
-
             display : flex;
             align-items: flex-start;
             position: absolute;
@@ -61,7 +58,7 @@ Purpose: front end of the game
         }
 
         #track {
-            background-image: url('../Assets/track.png');
+            background-image: url('../assets/track.png');
             background-repeat: repeat-x;
             background-size: 100% 100%;
             position: absolute;
@@ -73,7 +70,7 @@ Purpose: front end of the game
         }
 
         #map1 {
-            background-image: url('../Assets/map1.jpg');
+            background-image: url('../assets/map1.jpg');
             background-repeat: repeat-x;
             background-size: 100% 100%;
             position: absolute;
@@ -218,6 +215,7 @@ Purpose: front end of the game
             color: white;
 
         }
+
         .buttons span {
             background: linear-gradient(to right, mediumspringgreen, springgreen);
             -webkit-background-clip: text;
@@ -246,7 +244,7 @@ Purpose: front end of the game
         }
         @font-face {
             font-family: 'game-font';
-            src: url('Dragna-ywpOm.ttf') format('truetype');
+            src: url('../assets/Dragna-ywpOm.ttf') format('truetype');
         }
 
         #equation {
@@ -334,35 +332,30 @@ Purpose: front end of the game
         @keyframes rotateBorders {
             0% {
                 border-top: 10px solid lightcoral;
-                box-shadow: 0 0 15px 5px lightcoral;
                 border-right: 10px solid pink;
                 border-bottom: 10px solid lightsalmon;
                 border-left: 10px solid hotpink;
             }
             25% {
                 border-top: 10px solid pink;
-                box-shadow: 0 0 15px 5px pink;
                 border-right: 10px solid lightsalmon;
                 border-bottom: 10px solid hotpink;
                 border-left: 10px solid lightcoral;
             }
             50% {
                 border-top: 10px solid lightsalmon;
-                box-shadow: 0 0 15px 5px lightsalmon;
                 border-right: 10px solid hotpink;
                 border-bottom: 10px solid lightcoral;
                 border-left: 10px solid pink;
             }
             75% {
                 border-top: 10px solid hotpink;
-                box-shadow: 0 0 15px 5px hotpink;
                 border-right: 10px solid lightcoral;
                 border-bottom: 10px solid pink;
                 border-left: 10px solid lightsalmon;
             }
             100% {
                 border-top: 10px solid lightcoral;
-                box-shadow: 0 0 15px 5px lightcoral;
                 border-right: 10px solid pink;
                 border-bottom: 10px solid lightsalmon;
                 border-left: 10px solid hotpink;
@@ -553,12 +546,12 @@ Purpose: front end of the game
 
 <div id="room-code">Game ID: Loading...</div>
 <div>
-    <img id="car" class="car" src="../Assets/Car1.png" alt="Car">
+    <img id="car" class="car" src="../assets/Car1.png" alt="Car">
 </div>
 
 <div class="players">
     <div class="player1">
-        <img id="car1-model" src="../Assets/Car1.png">
+        <img id="car1-model" src="../assets/Car1.png">
         <h1 id="player-border"> Player   1</h1>
     </div>
 </div>
@@ -579,13 +572,9 @@ Purpose: front end of the game
 </div>
 
 <div id="game-border"></div>
-
 <script>
         document.getElementById("myButton").innerText = window.code;
 </script>
-
-
-
 <script src = "Questions.js"></script>
 <script src = "Gamefunctions.js"></script>
 

@@ -97,16 +97,14 @@ function checkAnswer(button) {
         }
 
         moving = true;
-
-        // Increment the question count and check if 20 questions have been answered
-        // questionCount++;
-        // if (questionCount >= 5) {
-        //     window.location.href = "FinishLine.html"; // Redirect to finish page
-        // }
-        moveCar();
-
         //moveCar();
-
+        // Increment the question count and check if 20 questions have been answered
+        questionCount+=1;
+        console.log(">>> Question Count: " + questionCount);
+        if (questionCount >= 20) {
+            window.location.href = "FinishLine.html"; // Redirect to finish page
+        }
+        // moveCar();
         setTimeout(() => {
             buttonIds.forEach(button => {
                 button.classList.remove("right-buttons");
@@ -115,7 +113,7 @@ function checkAnswer(button) {
                 button.style.animation = "none";
             });
 
-            questionCount++;
+            // questionCount++;
             streak++;
 
             switch(streak) {
@@ -238,8 +236,8 @@ function checkAnswer(button) {
         maxTrackSpeed = 35;
 
 
-    }
 
+    }
 
 }
 generateEquation();

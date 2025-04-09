@@ -4,7 +4,7 @@
 //Purpose: Car movement and game functions
 
 const car = document.getElementById('car');
-const flipFrames = ['../Assets/Car6.png', '../Assets/Car7.png', '../Assets/Car8.png', '../Assets/Car1.png'];
+const flipFrames = ['../assets/Car6.png', '../assets/Car7.png', '../assets/Car8.png', '../assets/Car1.png'];
 let moveSpeed = 5;
 let isFlipping = false;
 let moving = false;
