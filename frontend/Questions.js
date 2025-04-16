@@ -14,6 +14,7 @@ const player_border = document.getElementById('player-border');
 const game_border = document.getElementById('game-border');
 let sparkIntervals = [];
 let flag2 = true;
+const fireStreaks = document.getElementsByClassName("fireStreak");
 
 const answerStreak = document.getElementById('answerStreak');
 
@@ -84,6 +85,8 @@ function generateEquation() {
 }
 
 function checkAnswer(button) {
+    maxMapSpeed += .05;
+    maxTrackSpeed += 0.5;
     button.style.animation = "none";
     let Span = button.querySelector('span');
     let buttonSpanIds = document.querySelectorAll('span');
@@ -98,6 +101,8 @@ function checkAnswer(button) {
 
         moving = true;
         //moveCar();
+
+
         setTimeout(() => {
             buttonIds.forEach(button => {
                 button.classList.remove("right-buttons");
@@ -117,12 +122,16 @@ function checkAnswer(button) {
                     carStreak.style.animation = "op 0.01s linear infinite";
                     carStreak.style.visibility = "visible";
                     break;
+                case 4:
+                    answerStreak.innerHTML = "Streak 4!";
+                    answerStreak.style.visibility = "visible";
+                    answerStreak.style.animation = "fadeOut2 1.5s ease forwards";
+                    fireStreaks[0].style.visibility = "visible";
+                    break;
                 case 6:
                     game_border.style.animation = "flashingBorder 2s linear infinite";
-                    //answerStreak.innerHTML = "Streak 6!";
-                    //answerStreak.style.visibility = "visible";
-                    //answerStreak.style.animation = "fadeOut2 1.5s ease 1";
                     break;
+
 
                 case 8:
                     buttonSpanIds.forEach(Span => {
@@ -134,12 +143,29 @@ function checkAnswer(button) {
                     clock.style.color = "transparent";
                     equation.style.color = "transparent";
                     equation.style.textShadow = "0 0 10px mediumspringgreen";
+                    answerStreak.innerHTML = "Streak 8!";
+                    answerStreak.style.animation = "none";
+                    answerStreak.offsetWidth;
+                    answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
+                    fireStreaks[1].style.visibility = "visible";
                     break;
 
                 case 12:
                     game_border.style.animation = "flashingBorder2 2s linear infinite";
                     carShield.style.animation = "fadeOut 0.001s linear infinite";
                     carShield.style.visibility = "visible";
+                    answerStreak.innerHTML = "Streak 12!";
+                    answerStreak.style.background = "linear-gradient(to right, mediumseagreen, mediumspringgreen, springgreen)";
+                    answerStreak.style.textShadow = "0 0 10px mediumspringgreen";
+                    answerStreak.style.webkitBackgroundClip = "text";
+                    answerStreak.style.color = "transparent";
+                    answerStreak.style.animation = "none";
+                    answerStreak.offsetWidth;
+                    answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
+                    fireStreaks[0].src = "../Assets/fireStreak3.png";
+                    fireStreaks[1].src = "../Assets/fireStreak3.png";
+                    fireStreaks[2].src = "../Assets/fireStreak3.png";
+                    fireStreaks[2].style.visibility = "visible";
                     break;
 
                 case 15:
@@ -156,24 +182,35 @@ function checkAnswer(button) {
                         Span.style.background = "linear-gradient(to right, deepskyblue, aqua), -webkit-background-clip: text";
                     });
                     document.querySelector(".spark").style.backgroundColor = "aqua";
+                    answerStreak.innerHTML = "Streak 15!";
+                    answerStreak.style.background = "linear-gradient(to right, darkturquoise, cyan, aqua)";
+                    answerStreak.style.webkitBackgroundClip = "text";
+                    answerStreak.style.color = "transparent";
+                    answerStreak.style.textShadow = "0 0 10px aqua";
+                    answerStreak.style.animation = "none";
+                    answerStreak.offsetWidth;
+                    answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
+                    break;
+                case 18:
+                    answerStreak.innerHTML = "Streak 18!";
+                    answerStreak.style.animation = "none";
+                    answerStreak.offsetWidth;
+                    answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
 
             }
-
 
             if (streak >= 4) {
                 buttonIds.forEach(button => {
                     button.style.animation = "rotateBorders 1s linear infinite";
 
                 });
-                maxMapSpeed += .05;
-                maxTrackSpeed += 0.5;
             }
 
             if (streak >= 8) {
                 Span.style.color = "transparent";
             }
 
-            if (streak >= 10) {
+            if (streak >= 12) {
                 sparkInterval = setInterval(() => {
                     const x = Math.random() * window.innerWidth;  // Random X position on the screen
                     const y = Math.random() * window.innerHeight; // Random Y position on the screen
@@ -183,52 +220,55 @@ function checkAnswer(button) {
             }
 
             flag2 = true;
-            //answerStreak.visibility = "hidden";
-            //answerStreak.style.animation = "none";
 
             if (questionCount >= 20) {
                 ending = true
+                stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 stopGame();
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }
             generateEquation();
         }, 800);
 
-    } else {
-        if (flag2) {
-            buttonIds.forEach(button => {
-                button.style.animation = "none";
-                flag2 = false;
-            });
-        }
+    }
+    else {
+        stopStreakAnimation(button, buttonIds, buttonSpanIds);
         button.style.animation = "shake 0.3s ease-in-out 3, fadeOut 4s forwards";
         button.classList.add("wrong-buttons");
         moving = false;
         performFlip();
         streak = 0;
-        carStreak.style.animation = "none";
-        carStreak.style.visibility = "hidden";
-        game_border.style.animation = "none";
-        buttonSpanIds.forEach(Span => {
-            Span.style.color = "white";
-            Span.style.textShadow = "none";
-        });
-        carStreak.style.backgroundImage = "linear-gradient(to right, transparent 50%, lightpink 60%, lightsalmon 70%, lightcoral 80%, orange 90%, orangered 100%, transparent 100%)";
-        player_border.style.color = "white";
-        player_border.style.textShadow = "none";
-        clock.style.color = "white";
-        equation.style.color = "white";
-        equation.style.textShadow = "none";
-        for (let i = 0; i < sparkIntervals.length; i++) {
-            clearInterval(sparkIntervals[i]);
-        }
-        sparkIntervals = [];
-        carShield.style.animation = "none";
-        carShield.style.visibility = "hidden";
-        maxMapSpeed = 1;
-        maxTrackSpeed = 35;
-
     }
 
+}
+
+function stopStreakAnimation(button, buttonIds, buttonSpanIds) {
+    if (flag2) {
+        buttonIds.forEach(button => {
+            button.style.animation = "none";
+            flag2 = false;
+        });
+    }
+    carStreak.style.animation = "none";
+    carStreak.style.visibility = "hidden";
+    game_border.style.animation = "none";
+    buttonSpanIds.forEach(Span => {
+        Span.style.color = "white";
+        Span.style.textShadow = "none";
+    });
+    carStreak.style.backgroundImage = "linear-gradient(to right, transparent 50%, lightpink 60%, lightsalmon 70%, lightcoral 80%, orange 90%, orangered 100%, transparent 100%)";
+    player_border.style.color = "white";
+    player_border.style.textShadow = "none";
+    clock.style.color = "white";
+    equation.style.color = "white";
+    equation.style.textShadow = "none";
+    for (let i = 0; i < sparkIntervals.length; i++) {
+        clearInterval(sparkIntervals[i]);
+    }
+    sparkIntervals = [];
+    carShield.style.animation = "none";
+    carShield.style.visibility = "hidden";
+    maxMapSpeed = 1;
+    maxTrackSpeed = 35;
 }
 generateEquation();
