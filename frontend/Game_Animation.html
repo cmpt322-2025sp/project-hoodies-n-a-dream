@@ -28,8 +28,7 @@ Purpose: front end of the game
         }
 
         #transition {
-
-            display : flex;
+            display: flex;
             align-items: flex-start;
             position: absolute;
             top: -2%;
@@ -120,10 +119,12 @@ Purpose: front end of the game
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: white;
+            color: transparent;
+            background: linear-gradient(to bottom, antiquewhite, floralwhite);
+            -webkit-background-clip: text;
             z-index: 1001;
             font-family: 'game-font', sans-serif;
-            text-shadow: 5px 5px 50px hotpink;
+            text-shadow: 5px 5px 50px white;
         }
 
         #answerStreak {
@@ -135,10 +136,10 @@ Purpose: front end of the game
             transform: translate(-50%, -50%);
             z-index: 110;
             visibility: hidden;
-            background: linear-gradient(to right, coral, orangered);
+            background: linear-gradient(to right, coral, lightcoral, lightsalmon);
             -webkit-background-clip: text;
             color: transparent;
-            text-shadow: none;
+            text-shadow: 0 0 10px lightsalmon;
         }
 
         .car {
@@ -149,7 +150,6 @@ Purpose: front end of the game
             left: -5%;
             transform: translate(-50%, -50%);
             z-index: 100;
-            box-shadow: 0 5px 15px red;
         }
 
         .equation-container{
@@ -163,7 +163,6 @@ Purpose: front end of the game
             top: 30%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 5px 15px red;
             z-index: 110;
             visibility: hidden;
         }
@@ -256,7 +255,6 @@ Purpose: front end of the game
             right: 1.7%;
             font-size: 60px;
             color: white;
-            box-shadow: 0 5px 15px red;
             z-index: 80;
             font-family: 'game-font', sans-serif;
             background: linear-gradient(to right, mediumspringgreen, springgreen);
@@ -273,7 +271,6 @@ Purpose: front end of the game
             width: 20%;
             top: 2%;
             left: 1%;
-            box-shadow: 0 5px 15px red;
             z-index: 80;
 
         }
@@ -288,9 +285,18 @@ Purpose: front end of the game
             justify-content: center;
             width: 60%;
             height: 70%;
-            box-shadow: 0 5px 15px red;
             z-index: 80;
 
+        }
+        .fireStreak {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 6.4%;
+            width: 13%;
+            height: 22%;
+            z-index: 80;
+            visibility: hidden;
         }
         #player-border{
             display: flex;
@@ -303,7 +309,6 @@ Purpose: front end of the game
             font-size: 18px;
             font-family: 'game-font', sans-serif;
             margin-top: 0;
-            box-shadow: 0 5px 15px red;
             z-index: 80;
             background: linear-gradient(to right, mediumspringgreen, springgreen);
             -webkit-background-clip: text;
@@ -540,8 +545,14 @@ Purpose: front end of the game
 
 <div class="players">
     <div class="player1">
-        <img id="car1-model" src="../Assets/Car1.png">
+]        <img id="car1-model" src="../Assets/Car1.png">
         <h1 id="player-border"> Player   1</h1>
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#1">
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#2">
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#3">
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#4">
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#5">
+
     </div>
 </div>
 
