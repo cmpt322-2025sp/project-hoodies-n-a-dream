@@ -113,7 +113,7 @@ function createSpark(x, y) {
     const spark = document.createElement('div');
     spark.classList.add('spark');
 
-    if (streak >= 12) {
+    if (streak >= 15) {
         spark.style.backgroundColor = 'aqua';
     }
     // Randomize the speed of each spark
@@ -262,8 +262,8 @@ function startGame() {
     setTimeout(() => {
         animateTransition();
 
-        setInterval(resetTransition, 25000);
-    }, 30000);
+        setInterval(resetTransition, 20000);
+    }, 15000);
     GameClock();
 }
 

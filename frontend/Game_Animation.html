@@ -133,10 +133,12 @@ Purpose: front end of the game
             top: 40%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: white;
+            color: transparent;
+            background: linear-gradient(to bottom, antiquewhite, floralwhite);
+            -webkit-background-clip: text;
             z-index: 1001;
             font-family: 'game-font', sans-serif;
-            text-shadow: 5px 5px 50px hotpink;
+            text-shadow: 5px 5px 50px white;
         }
 
         #answerStreak {
@@ -148,10 +150,10 @@ Purpose: front end of the game
             transform: translate(-50%, -50%);
             z-index: 110;
             visibility: hidden;
-            background: linear-gradient(to right, coral, orangered);
+            background: linear-gradient(to right, coral, lightcoral, lightsalmon);
             -webkit-background-clip: text;
             color: transparent;
-            text-shadow: none;
+            text-shadow: 0 0 10px lightsalmon;
         }
 
         .car {
@@ -306,6 +308,16 @@ Purpose: front end of the game
             z-index: 80;
 
         }
+        .fireStreak {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 6.4%;
+            width: 13%;
+            height: 22%;
+            z-index: 80;
+            visibility: hidden;
+        }
         #player-border{
             display: flex;
             align-items: center;
@@ -332,30 +344,35 @@ Purpose: front end of the game
         @keyframes rotateBorders {
             0% {
                 border-top: 10px solid lightcoral;
+                box-shadow: 0 0 15px 5px lightcoral;
                 border-right: 10px solid pink;
                 border-bottom: 10px solid lightsalmon;
                 border-left: 10px solid hotpink;
             }
             25% {
                 border-top: 10px solid pink;
+                box-shadow: 0 0 15px 5px pink;
                 border-right: 10px solid lightsalmon;
                 border-bottom: 10px solid hotpink;
                 border-left: 10px solid lightcoral;
             }
             50% {
                 border-top: 10px solid lightsalmon;
+                box-shadow: 0 0 15px 5px lightsalmon;
                 border-right: 10px solid hotpink;
                 border-bottom: 10px solid lightcoral;
                 border-left: 10px solid pink;
             }
             75% {
                 border-top: 10px solid hotpink;
+                box-shadow: 0 0 15px 5px hotpink;
                 border-right: 10px solid lightcoral;
                 border-bottom: 10px solid pink;
                 border-left: 10px solid lightsalmon;
             }
             100% {
                 border-top: 10px solid lightcoral;
+                box-shadow: 0 0 15px 5px lightcoral;
                 border-right: 10px solid pink;
                 border-bottom: 10px solid lightsalmon;
                 border-left: 10px solid hotpink;
@@ -553,6 +570,12 @@ Purpose: front end of the game
     <div class="player1">
         <img id="car1-model" src="../assets/Car1.png">
         <h1 id="player-border"> Player   1</h1>
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#1">
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#2">
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#3">
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#4">
+        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#5">
+
     </div>
 </div>
 
