@@ -18,6 +18,10 @@ const fireStreaks = document.getElementsByClassName("fireStreak");
 
 const answerStreak = document.getElementById('answerStreak');
 
+const rightSound = document.getElementById('rightSound');
+const wrongSound = document.getElementById('wrongSound');
+const streakSound = document.getElementById('streakSound');
+
 // Library of equations (you can populate this with specific equations)
 let equationLibrary = []
 function generateEquation() {
@@ -93,11 +97,16 @@ function checkAnswer(button) {
     const buttonIds = document.querySelectorAll('button')
     if (parseInt(button.querySelector('span').innerText) === answer) {
 
+        questionCount++;
+        streak++;
+
         button.classList.add("right-buttons");
         if (streak >= 8) {
             button.classList.add('right-buttons');
             Span.style.color = "white";
         }
+
+        rightSound.play();
 
         moving = true;
         //moveCar();
@@ -110,9 +119,6 @@ function checkAnswer(button) {
                 button.style.opacity = "1";
                 button.style.animation = "none";
             });
-
-            questionCount++;
-            streak++;
 
             switch(streak) {
                 case 1:
@@ -130,6 +136,7 @@ function checkAnswer(button) {
                     break;
                 case 6:
                     game_border.style.animation = "flashingBorder 2s linear infinite";
+                    fireStreaks[1].style.visibility = "visible";
                     break;
 
 
@@ -147,7 +154,9 @@ function checkAnswer(button) {
                     answerStreak.style.animation = "none";
                     answerStreak.offsetWidth;
                     answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
-                    fireStreaks[1].style.visibility = "visible";
+                    fireStreaks[0].src = "../Assets/fireStreak6.png";
+                    fireStreaks[1].src = "../Assets/fireStreak6.png";
+                    fireStreaks[2].style.visibility = "visible";
                     break;
 
                 case 12:
@@ -162,10 +171,7 @@ function checkAnswer(button) {
                     answerStreak.style.animation = "none";
                     answerStreak.offsetWidth;
                     answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
-                    fireStreaks[0].src = "../Assets/fireStreak3.png";
-                    fireStreaks[1].src = "../Assets/fireStreak3.png";
-                    fireStreaks[2].src = "../Assets/fireStreak3.png";
-                    fireStreaks[2].style.visibility = "visible";
+                    fireStreaks[3].style.visibility = "visible";
                     break;
 
                 case 15:
@@ -190,13 +196,18 @@ function checkAnswer(button) {
                     answerStreak.style.animation = "none";
                     answerStreak.offsetWidth;
                     answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
+                    fireStreaks[0].src = "../Assets/fireStreak3.png";
+                    fireStreaks[1].src = "../Assets/fireStreak3.png";
+                    fireStreaks[2].src = "../Assets/fireStreak3.png";
+                    fireStreaks[3].src = "../Assets/fireStreak3.png";
+                    fireStreaks[4].style.visibility = "visible";
                     break;
                 case 18:
                     answerStreak.innerHTML = "Streak 18!";
                     answerStreak.style.animation = "none";
                     answerStreak.offsetWidth;
                     answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
-
+                    fireStreaks[5].style.visibility = "visible";
             }
 
             if (streak >= 4) {
@@ -224,7 +235,7 @@ function checkAnswer(button) {
             if (questionCount >= 20) {
                 ending = true
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
-                window.location.href = "FinishLine.html";
+                //window.location.href = "FinishLine.html";
                 stopGame();
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }
@@ -235,6 +246,10 @@ function checkAnswer(button) {
     else {
         stopStreakAnimation(button, buttonIds, buttonSpanIds);
         button.style.animation = "shake 0.3s ease-in-out 3, fadeOut 4s forwards";
+        wrongSound.play(8.4);
+        setTimeout(() => {
+            wrongSound.pause();
+        }, 1400);
         button.classList.add("wrong-buttons");
         moving = false;
         performFlip();
