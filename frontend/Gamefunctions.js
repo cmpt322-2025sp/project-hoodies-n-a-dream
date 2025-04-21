@@ -37,6 +37,20 @@ let start = false;
 let ending = false;
 let ended = false;
 
+const red = document.getElementById('red');
+const yellow = document.getElementById('yellow');
+const green = document.getElementById('green');
+const red2 = document.getElementById('red2');
+const yellow2 = document.getElementById('yellow2');
+const green2 = document.getElementById('green2');
+
+let light = document.querySelector(".traffic-light-box");
+let rightLight = document.getElementById("rightLight");
+let positionL = 0
+
+const countSound = document.getElementById("countSound");
+const soundTrack = document.getElementById("soundTrack");
+
 const countDown1 = document.getElementById('countDown');
 
 
@@ -226,36 +240,94 @@ function intro() {
     moving = true;
     moveCar();
 }
-function countDown() {
+
+function Lights() {
     document.getElementById("overlay").style.display = "none";
     document.getElementById("startGame").style.display = "none";
+
+    light.style.animation = "slideDown 2s ease-out forwards";
+    light.style.visibility = "visible";
+
+    setTimeout(() => {
+        countDown();
+    }, 2000);
+}
+
+
+function playCountDownSound(start, end) {
+    countSound.currentTime = start;
+    countSound.play();
+
+    let duration = (end - start) * 1000;
+    setTimeout(() => {
+        countSound.pause();
+        countSound.currentTime = 0;
+    }, duration);
+}
+
+function countDown() {
 
     let counter = 4;
 
     let countInterval = setInterval(() => {
         counter--;
+        game_border.style.animation = "none";
+        game_border.offsetWidth;
+        switch (counter) {
+            case 3:
+                red.classList.add('active');
+                game_border.style.boxShadow = "inset 0 0 50px 25px lightcoral";
+                game_border.style.animation = "flashingLight 1s ease-in forwards";
+                playCountDownSound(4.7, 5.7);
+                countSound.p
+                break;
+            case 2:
+                red.classList.remove('active');
+                yellow.classList.add('active');
+                game_border.style.boxShadow = "inset 0 0 50px 25px lightcoral";
+                game_border.style.animation = "flashingLight 1s ease-in forwards";
+                playCountDownSound(4.7, 5.7);
+                break;
+            case 1:
+                yellow.classList.remove('active');
+                yellow.classList.add('active');
+                game_border.style.boxShadow = "inset 0 0 50px 25px lightcoral";
+                game_border.style.animation = "flashingLight 1s ease-in forwards";
+                playCountDownSound(4.7, 5.7);
+                break;
+            case 0:
+                yellow.classList.remove('active');
+                green.classList.add('active');
+                game_border.style.boxShadow = "inset 0 0 50px 25px lightcoral";
+                game_border.style.animation = "flashingLight 1s ease-in forwards";
+                playCountDownSound(9.8, 10.7);
 
-        countDown1.innerHTML = counter.toString();
+                countDown1.innerHTML = "Go!";
+                startGame();
+                light.style.animation = "none";
+                light.offsetWidth;
+                light.style.animation = "slideDown 2s reverse forwards";
+                break;
+            default:
+                game_border.style.boxShadow = "none";
+                clearInterval(countInterval);
+                document.querySelector(".equation-container").style.visibility = "visible";
+                countDown1.style.visibility = "hidden";
+        }
+        if (counter > 0) {
+            countDown1.innerHTML = counter.toString();
+        }
 
         countDown1.style.opacity = "1";
         countDown1.style.animation = "none";
         countDown1.offsetHeight;
         countDown1.style.animation = "fadeOut2 1.3s ease 1 forwards";
-
-        if (counter === 0) {
-            countDown1.innerHTML = "Go!";
-            startGame();
-        }
-        else if (counter < 0) {
-            clearInterval(countInterval);
-            document.querySelector(".equation-container").style.visibility = "visible";
-            countDown1.style.visibility = "hidden";
-        }
     }, 1300);
 }
 
 function startGame() {
 
+    soundTrack.play();
     animateGame();
     animateCar();
 
