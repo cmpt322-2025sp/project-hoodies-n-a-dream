@@ -11,68 +11,13 @@ Purpose: Finish line with podium
 <head>
     <meta charset="UTF-8">
     <title> Finish</title>
+<link rel="stylesheet" href="Finishline.css">
 </head>
-<style>
-    body {
-        margin: 0;
-        width: 100vw;
-        height: 100vh;
-        overflow: hidden;
-        text-align: center;
-        font-family: Arial, sans-serif;
-
-    }
-
-    #track {
-        background-image: url('../assets/Finishline.png');
-        background-repeat: repeat-x;
-        background-size: 100% 225%;
-        position: absolute;
-        bottom: -3%;
-        left: -3%;
-        height: 55vh;
-        width: 110vw;
-        z-index: 90;
-    }
-
-    #cup {
-        background-image: url('../assets/Podium.png');
-        background-repeat: repeat-x;
-        background-size: 40% 45%;
-        position: absolute;
-        bottom: -10%;
-        left: 65%;
-        height: 55vh;
-        width: 110vw;
-        z-index: 100;
-    }
-
-    #map3 {
-        background-image: url('https://rare-gallery.com/resol/2560x1440/340062-Minimalist-Minimalism-City-Sunset-Buildings-Digital-Art.jpg');
-        background-repeat: repeat-x;
-        background-size: 100% 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 70vh;
-        width: 100vw;
-        z-index: 10;
-    }
-    .car {
-        width: 250px;
-        height: 125px;
-        position: absolute;
-        top: 75%;
-        left: -5%;
-        transform: translate(-50%, -50%);
-        z-index: 100;
-    }
-</style>
-<div id="map3"></div>
+<div id="finish"></div>
 <div id="cup"></div>
 <div id="track"></div>
 <div>
-    <img id="car" class="car" src="../assets/Car1.png" alt="Car">
+    <img id="car" class="carfl" src="../assets/Car1.png" alt="Car">
 </div>
 
 <body>
