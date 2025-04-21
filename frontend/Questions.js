@@ -235,7 +235,7 @@ function checkAnswer(button) {
             if (questionCount >= 20) {
                 ending = true
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
-                window.location.href = "FinishLine.html";
+                //window.location.href = "FinishLine.html";
                 stopGame();
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }

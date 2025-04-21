@@ -9,294 +9,16 @@ Purpose: front end of the game
 <head>
     <meta charset="UTF-8">
     <title>Nitro Numbers</title>
-    <style>
-        body {
-            margin: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            text-align: center;
-            font-family: Arial, sans-serif;
+    <link rel="stylesheet" href="general.css">
+    <link rel="stylesheet" href="countDown.css">
+    <link rel="stylesheet" href="answerStreak.css">
 
-        }
-
-        #game-border {
-            width: 100vw;
-            height: 100vh;
-            box-shadow: inset 20px 20px 20px 0 lightsalmon,
-            inset -20px -20px 20px 0 lightsalmon;
-            z-index: 9000;
-            overflow: visible;
-        }
-
-        #transition {
-            display : flex;
-            align-items: flex-start;
-            position: absolute;
-            top: -2%;
-            right: -700%;
-            height: 70vh;
-            width: 700vw;
-            z-index: 20;
-        }
-        #transition img {
-            width: 14.28%;
-            height: auto;
-
-        }
-
-        #track {
-            background-image: url('../Assets/track.png');
-            background-repeat: repeat-x;
-            background-size: 100% 100%;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 30vh;
-            width: 100vw;
-            z-index: 90;
-        }
-
-        #map1 {
-            background-image: url('../Assets/map1.jpg');
-            background-repeat: repeat-x;
-            background-size: 100% 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 70vh;
-            width: 100vw;
-            z-index: 12;
-        }
-
-        #map2 {
-            background-image: url('https://wallpapercave.com/wp/wp5830145.jpg');
-            background-repeat: repeat-x;
-            background-size: 100% 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 70vh;
-            width: 100vw;
-            z-index: 11;
-        }
-
-        #map3 {
-            background-image: url('https://rare-gallery.com/resol/2560x1440/340062-Minimalist-Minimalism-City-Sunset-Buildings-Digital-Art.jpg');
-            background-repeat: repeat-x;
-            background-size: 100% 100%;
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 70vh;
-            width: 100vw;
-            z-index: 10;
-        }
-
-
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, .5);
-            z-index: 1000;
-        }
-
-        #removeOverlayBtn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        .car {
-            width: 250px;
-            height: 125px;
-            position: absolute;
-            top: 75%;
-            left: -5%;
-            transform: translate(-50%, -50%);
-            z-index: 100;
-        }
-
-        .equation-container{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            height: 40vh;
-            width: 30vw;
-            position: absolute;
-            top: 30%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 10px solid red;
-            z-index: 50;
-        }
-
-        .button-container {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;  /* Centers elements horizontally */
-            z-index: 50;
-
-        }
-
-        .buttons {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 130px;
-            height: 165px;
-            border: 10px inset darkslategrey;
-            background-color: rgba(249, 58, 19, 0.8);
-            background-image: linear-gradient(
-                    20deg,
-                    rgba(181, 23, 216, 0.5),
-                    rgba(255, 0, 0, 0) 70.71%
-            ),
-            linear-gradient(150deg, rgba(182, 92, 255, 0.5), rgba(0, 255, 0, 0) 70.71%),
-            linear-gradient(330deg, rgba(221, 44, 121, 0.5), rgba(0, 0, 255, 0) 70.71%);
-            border-radius: 20px 20px 20px 20px;
-            box-shadow: 10px 10px 0 0 rgba(0, 0, 0, 0.2);
-            font-size: 60px;
-            text-align: center;
-            z-index: 50;
-            color: white;
-            /*
-            animation: rotateBorders 1s linear infinite;
-             */
-        }
-
-        .right-buttons {
-            transform: scale(1.3);
-            background-color: lawngreen;
-            background-image: none;
-            box-shadow: 0 0 40px lawngreen; /* Initial Glow */
-        }
-        .wrong-buttons {
-            background-color: red;
-            background-image: none;
-            box-shadow: 0 0 40px red; /* Initial Glow */
-
-        }
-        #equation {
-            font-size: 45px;
-            color: white;
-        }
-        #result {
-            font-size: 60px;
-            color: white;
-
-        }
-        button:hover {
-            transform: scale(1.3);
-        }
-        #clock {
-            position: absolute;
-            top: -2%;
-            right: 1.7%;
-            font-size: 60px;
-            color: white;
-            border: 10px solid red;
-            z-index: 80;
-
-        }
-
-        .players{
-            position: absolute;
-            display: flex;
-            align-items: flex-start;
-            justify-content: flex-start;
-            flex-direction: column;
-            height: 20%;
-            width: 20%;
-            top: 2%;
-            left: 1%;
-            border: 10px solid red;
-            z-index: 80;
-
-        }
-        .player1 {
-            display: flex;
-            align-items: start;
-            justify-content: start;
-        }
-        #car1-model {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 60%;
-            height: 70%;
-            border: 10px solid red;
-            z-index: 80;
-
-        }
-        #player-border{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40%;
-            height: 70%;
-            margin-left: -35%;
-            color: white;
-            font-size: 18px;
-            margin-top: 0;
-            border: 10px solid red;
-            z-index: 80;
-
-        }
-        @keyframes shake {
-            0% { transform: translateX(0) scale(1.3); }
-            25% { transform: translateX(-5px) scale(1.3); }
-            50% { transform: translateX(5px) scale(1.3); }
-            75% { transform: translateX(-5px) scale(1.3); }
-            100% { transform: translateX(0) scale(1.3); }
-        }
-        @keyframes rotateBorders {
-            0% {
-                border-top: 10px solid lightcoral;
-                border-right: 10px solid pink;
-                border-bottom: 10px solid lightsalmon;
-                border-left: 10px solid hotpink;
-            }
-            25% {
-                border-top: 10px solid pink;
-                border-right: 10px solid lightsalmon;
-                border-bottom: 10px solid hotpink;
-                border-left: 10px solid lightcoral;
-            }
-            50% {
-                border-top: 10px solid lightsalmon;
-                border-right: 10px solid hotpink;
-                border-bottom: 10px solid lightcoral;
-                border-left: 10px solid pink;
-            }
-            75% {
-                border-top: 10px solid hotpink;
-                border-right: 10px solid lightcoral;
-                border-bottom: 10px solid pink;
-                border-left: 10px solid lightsalmon;
-            }
-            100% {
-                border-top: 10px solid lightcoral;
-                border-right: 10px solid pink;
-                border-bottom: 10px solid lightsalmon;
-                border-left: 10px solid hotpink;
-            }
-        }
-
-    </style>
 </head>
 <body>
+
+<div id="carShield"></div>
+
+<div id = "carStreak"></div>
 
 <div id="map1"></div>
 <div id="map2"></div>
@@ -313,19 +35,26 @@ Purpose: front end of the game
     <img src="https://th.bing.com/th/id/R.1f4a53e7d20f061e3ac2616988fc024b?rik=Em5fLqVRGqZukQ&pid=ImgRaw&r=0" >
 </div>
 
-
 <div id="overlay"></div>
+<button id="startGame" onclick="Lights()">Start Race</button>
+<div id="countDown"></div>
 
-<button id="removeOverlayBtn" onclick="removeOverlay()">Start Race</button>
+<div id="answerStreak"></div>
 
 <div>
-    <img id="car" class="car" src="../Assets/Car1.png" alt="Car">
+    <img id="car" class="car" src="../assets/Car1.png" alt="Car">
 </div>
 
 <div class="players">
     <div class="player1">
-        <img id="car1-model" src="../Assets/Car1.png">
-        <h1 id="player-border"> Player1</h1>
+        <img id="car1-model" src="../assets/Car1.png">
+        <h1 id="player-border"> Player   1</h1>
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#1">
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#2">
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#3">
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#4">
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#5">
+
     </div>
 </div>
 
@@ -336,263 +65,95 @@ Purpose: front end of the game
 <div class="equation-container">
     <h1 id="equation"></h1>
     <div class="button-container">
-        <button id="bt1" class = "buttons" onclick="checkAnswer(this)"></button>
-        <button id="bt2" class = "buttons" onclick="checkAnswer(this)"></button>
-        <button id="bt3" class = "buttons" onclick="checkAnswer(this)"></button>
-        <button id="bt4" class = "buttons" onclick="checkAnswer(this)"></button>
+        <button id="bt1" class = "buttons" onclick="checkAnswer(this)"><span id = "bt1span"></span></button>
+        <button id="bt2" class = "buttons" onclick="checkAnswer(this)"><span id = "bt2span"></span></button>
+        <button id="bt3" class = "buttons" onclick="checkAnswer(this)"><span id = "bt3span"></span></button>
+        <button id="bt4" class = "buttons" onclick="checkAnswer(this)"><span id = "bt4span"></span></button>
     </div>
-    <h2 id="result"></h2>
 </div>
+
+<div id="room-code">Game ID: Loading...</div>
 
 <div id="game-border"></div>
 
+<div class="traffic-light-box">
+    <div id="red" class="light red"></div>
+    <div id="yellow" class="light yellow"></div>
+    <div id="green" class="light green"></div>
+</div>
+
+<audio id="countSound" src="../audio/countdown_Bell2.wav" preload="auto"></audio>
+<audio id="rightSound" src="../audio/rightSound.wav" preload="auto"></audio>
+<audio id="wrongSound" src="../audio/wrongSound2.mp3" preload="auto"></audio>
+<audio id="soundTrack" src="../audio/soundtrack.wav" preload="auto" loop></audio>
+<audio id="streakSound" src="../audio/streakSound.wav" preload="auto"></audio>
+
 <script>
-
-    let answer = 0;
-    const car = document.getElementById('car');
-    const flipFrames = ['../Assets/Car6.png', '../Assets/Car7.png', '../Assets/Car8.png'];
-    let moveSpeed = 5;
-    let isFlipping = false;
-    let moving = false;
-    let introPlaying = true;
-
-    const targetPosition = window.innerWidth * 0.10;
-    let carPosition = 20;
-
-    const map1 = document.getElementById("map1");
-    const map2 = document.getElementById("map2");
-    const map3 = document.getElementById("map3");
-    const track = document.getElementById("track");
-    const transition = document.getElementById("transition");
-
-    let positionT = 0; // Transition - right viewport
-    let positionB = 0; //Map1 - left viewport
-    let positionTrack = 0;
-    let speedTrack = 0;
-    let speedB = 0; // speed of Map background
-    let speedT = 31; // speed of Transition background
-
-    let maps = [map1, map2, map3];
-    let index = 0;
-
-    let flag = true; //To make sure index is changed once when needed
-
-    function animateMap() {
-
-        maps[index].style.backgroundPosition = `${positionB}px`;
-        if (speedB < 1) {
-            speedB = speedB + .01;
-        }
-        positionB -= speedB;
-
-        track.style.backgroundPosition = `${positionTrack}px`;
-        if (speedTrack < 30) {
-            speedTrack = speedTrack + .25;
-        }
-        positionTrack -= speedTrack;
-
-        requestAnimationFrame(animateMap);
-    }
-
-    function animateTransition() {
-
-        transition.style.transform = `translateX(${positionT}px)`;
-        if (positionT === 0) {
-            flag = true;
-        }
-        positionT -= speedT;
-
-
-        if (positionT < window.innerWidth-transition.offsetWidth && flag === true) {
-            maps[index].style.visibility = "hidden";
-            index++;
-            if (index === maps.length) {
-                index = 0;
-                //decided to toggle like this to avoid random lags from the toggling :( no me gusta
-                map1.style.visibility = "visible";
-                map2.style.visibility = "visible";
-                map3.style.visibility = "visible";
-            }
-            flag = false;
-        }
-
-        requestAnimationFrame(animateTransition);
-    }
-
-    function resetTransition() {
-        positionT = 0;
-    }
-
-    function GameClock() {
-        let ones = 0;
-        let tens = 0;
-        let hunds = 0;
-        let thous = 0;
-
-        //recursively calling setTimeOut() is slightly better (less drift), Date.now() is best and will not drift.
-        setInterval(() => {
-            ones++;
-            if (ones === 10) {
-                tens++;
-                ones = 0;
-                if (tens === 6) {
-                    hunds++;
-                    tens = 0
-                    if (hunds === 10) {
-                        thous++;
-                        hunds = 0;
-                    }
-                }
-            }
-            document.getElementById('clock').innerText = thous.toString() + hunds + ':' + tens + ones;
-
-        }, 1000);
-
-    }
-
-    function generateEquation() {
-        let wrongAnswer1, wrongAnswer2, wrongAnswer3, wrongAnswer4;
-        let x = Math.floor(Math.random() * 10);
-        let y = Math.floor(Math.random() * 10);
-        answer = x + y;
-
-        let numbers = []
-        numbers.push(answer)
-
-        do {
-            wrongAnswer1 = x + (Math.floor(Math.random() * 10));
-        } while (numbers.includes(wrongAnswer1));
-        numbers.push(wrongAnswer1);
-        do {
-            wrongAnswer2 = x + (Math.floor(Math.random() * 10));
-        } while (numbers.includes(wrongAnswer2));
-        numbers.push(wrongAnswer2);
-        do {
-            wrongAnswer3 = x + (Math.floor(Math.random() * 10));
-        } while (numbers.includes(wrongAnswer3));
-        numbers.push(wrongAnswer3);
-        do {
-            wrongAnswer4 = x + (Math.floor(Math.random() * 10));
-        } while (numbers.includes(wrongAnswer4));
-
-        document.getElementById("equation").innerHTML = `${x} + ${y} = ?`;
-
-        document.getElementById("bt1").innerText = wrongAnswer1;
-        document.getElementById("bt2").innerText = wrongAnswer2;
-        document.getElementById("bt3").innerText = wrongAnswer3;
-        document.getElementById("bt4").innerText = wrongAnswer4;
-
-        let val = Math.floor(Math.random() * 4);
-        switch (val) {
-            case 0: {
-                document.getElementById("bt1").innerText = answer;
-                break;
-            } case 1: {
-                document.getElementById("bt2").innerText = answer;
-                break;
-            }
-            case 2: {
-                document.getElementById("bt3").innerText = answer
-                break;
-            }
-            case 3: {
-                document.getElementById("bt4").innerText = answer;
-                break;
-            }
-
-            }
-
-    }
-
-    function moveCar() {
-        if (moving) {
-            if (introPlaying && carPosition >= targetPosition) {
-                moving = false;
-                introPlaying = false;
-                return;
-            }
-            carPosition += moveSpeed;
-            car.style.left = carPosition + 'px';
-            requestAnimationFrame(moveCar);
-        }
-    }
-
-    function performFlip() {
-        if (!isFlipping) {
-            isFlipping = true;
-            let flipIndex = 0;
-            const flipInterval = setInterval(() => {
-                if (flipIndex < flipFrames.length) {
-                    car.src = flipFrames[flipIndex];
-                    flipIndex++;
-                } else {
-                    clearInterval(flipInterval);
-                    isFlipping = false;
-                }
-            }, 100);
-        }
-    }
-
-    window.addEventListener('keydown', (event) => {
-        if (event.code === 'Space') {
-            performFlip();
-        }
-    });
-
-    function checkAnswer(button) {
-        //document.getElementById(button.id).classList.add("lock-expand-buttons");
-        if (parseInt(button.innerText) === answer) {
-            document.getElementById(button.id).classList.add("right-buttons");
-            moving = true;
-            moveCar();
-        } else {
-            document.getElementById(button.id).style.animation = "shake 0.3s ease-in-out infinite";
-            moving = false;
-            performFlip();
-            document.getElementById(button.id).classList.add("wrong-buttons");
-
-        }
-
-        setTimeout(() => {
-            document.getElementById(button.id).classList.remove("right-buttons");
-            document.getElementById(button.id).classList.remove("wrong-buttons");
-            //document.getElementById(button.id).classList.remove("lock-expand-buttons");
-            document.getElementById(button.id).style.animation = "none";
-            generateEquation();
-        }, 800);
-    }
-
-    function intro() {
-        moving = true;
-        moveCar();
-    }
-
-    function removeOverlay() {
-
-        document.getElementById("overlay").style.display = "none";
-        document.getElementById("removeOverlayBtn").style.display = "none";
-
-        maps[index].style.visibility = "visible";
-        animateMap();
-
-        setTimeout(() => {
-            animateTransition();
-
-            setInterval(resetTransition, 25000);
-        }, 30000);
-        GameClock();
-    }
-
-    window.onload = function () {
-        console.log("Window loaded!");
-        intro();
-        generateEquation();
-    };
-    console.log("Checking Elements...");
-    console.log("Math element:", document.getElementById("math"));
-    console.log("Button 1:", document.getElementById("bt1"));
-    console.log("Button 2:", document.getElementById("bt2"));
+    /*
+        document.getElementById("myButton").innerText = window.code;
+     */
 </script>
+<script src = "Questions.js"></script>
+<script src = "Gamefunctions.js"></script>
+
+<script>
+    /*
+    // ✅ Retrieve the gameID from localStorage
+    let gameID = localStorage.getItem("gameID");
+
+    // ✅ Display it on the screen
+    if (gameID) {
+        document.getElementById("room-code").innerText = `Game ID: ${gameID}`;
+    } else {
+        document.getElementById("room-code").innerText = "⚠️ No Game ID Found!";
+    }
+
+    // ✅ WebSocket Connection Setup
+    const ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
+
+    ws.onopen = () => console.log("✅ WebSocket Connected");
+    ws.onmessage = (event) => handleServerMessage(JSON.parse(event.data));
+    ws.onerror = (error) => console.error("❌ WebSocket Error:", error);
+    ws.onclose = () => console.log("🔴 WebSocket Disconnected");
+
+    function handleServerMessage(data) {
+        if (data.type === "questions") {
+            displayQuestion(data.questions);
+            sendMessage({ type: "questionsReceived", status: "200" });
+        } else if (data.type === "scoreReport") {
+            console.log(`🏁 Score Update: ${data.name} - ${data.score}`);
+        } else if (data.type === "gameCompleted") {
+            displayResults(data.players);
+        } else if (data.type === "playerJoined") {
+            console.log(`🚗 Player Joined: ${data.name}`);
+        } else if (data.type === "ERROR") {
+            alert(`⚠️ Error: ${data.message}`);
+        }
+    }
+
+    function displayQuestion(questions) {
+        console.log("📩 New Question:", questions[0].question);
+        // Implement UI logic to show the question
+    }
+
+    function displayResults(players) {
+        let resultsText = "🏆 Game Over! \n\n";
+        players.forEach(player => {
+            resultsText += `${player.name} - Time: ${player.time} - Attempts: ${player.attempts}\n`;
+        });
+        alert(resultsText);
+    }
+
+    function sendMessage(message) {
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify(message));
+        } else {
+            console.error("⚠️ WebSocket is not open.");
+        }
+    }
+     */
+</script>
+
 
 </body>
 </html>

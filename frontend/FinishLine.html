@@ -1,0 +1,122 @@
+
+<!--
+Author: Rasheed & Keli'i
+Made: 3/29/2025
+Update:3/31/2025
+Purpose: Finish line with podium
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Finish</title>
+</head>
+<style>
+    body {
+        margin: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        text-align: center;
+        font-family: Arial, sans-serif;
+
+    }
+
+    #track {
+        background-image: url('../assets/Finishline.png');
+        background-repeat: repeat-x;
+        background-size: 100% 225%;
+        position: absolute;
+        bottom: -3%;
+        left: -3%;
+        height: 55vh;
+        width: 110vw;
+        z-index: 90;
+    }
+
+    #cup {
+        background-image: url('../assets/Podium.png');
+        background-repeat: repeat-x;
+        background-size: 40% 45%;
+        position: absolute;
+        bottom: -10%;
+        left: 65%;
+        height: 55vh;
+        width: 110vw;
+        z-index: 100;
+    }
+
+    #map3 {
+        background-image: url('https://rare-gallery.com/resol/2560x1440/340062-Minimalist-Minimalism-City-Sunset-Buildings-Digital-Art.jpg');
+        background-repeat: repeat-x;
+        background-size: 100% 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 70vh;
+        width: 100vw;
+        z-index: 10;
+    }
+    .car {
+        width: 250px;
+        height: 125px;
+        position: absolute;
+        top: 75%;
+        left: -5%;
+        transform: translate(-50%, -50%);
+        z-index: 100;
+    }
+</style>
+<div id="map3"></div>
+<div id="cup"></div>
+<div id="track"></div>
+<div>
+    <img id="car" class="car" src="../assets/Car1.png" alt="Car">
+</div>
+
+<body>
+<script>
+    let moveSpeed = 5;
+    let moving = false;
+    let finishLine = false;
+    const targetPosition = window.innerWidth * 0.9;
+    let carPosition = 20;
+    let storedTime = localStorage.getItem('finalTime') || "00:00";
+
+    // Convert stored time (e.g., "01:15") to seconds
+    function timeToSeconds(timeStr) {
+        const [minutes, seconds] = timeStr.split(':').map(Number);
+        return minutes * 60 + seconds;
+    }
+
+    function moveCar() {
+        if (moving) {
+            if (carPosition >= targetPosition) {
+                moving = false;
+                setTimeout(() => {
+                    window.location.href = "Finishscreen.html";
+                }, 3000);
+                return;
+            }
+        }
+        carPosition += moveSpeed;
+        car.style.left = carPosition + 'px';
+        requestAnimationFrame(moveCar);
+    }
+
+    function finish() {
+        const totalSeconds = timeToSeconds(storedTime);
+        if (totalSeconds > 30 && totalSeconds < 60) {
+            document.getElementById('car').style.top = '85%';
+        } else if (totalSeconds > 60) {
+            document.getElementById('car').style.top = '95%';
+        }
+        moving = true;
+        moveCar();
+    }
+
+    window.onload = finish;
+</script>
+</body>
+</html>

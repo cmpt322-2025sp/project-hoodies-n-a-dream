@@ -6,16 +6,8 @@
  * Description: gameController.ts processes all websocket communication
  *              regarding controlling the game
  */
-import {
-    createGame,
-    joinGame,
-    startGame,
-    updatePlayerStatus,
-    updatePlayerProgress,
-    getPlayerProgress,
-    endGame,
-    updatePlayerScore
-} from "../services/gameServices.ts";
+import { createGame, joinGame, startGame, updatePlayerStatus, updatePlayerProgress, getPlayerProgress, endGame } from "../services/gameServices.ts";
+import {getQuestions} from "../services/mathServices.ts";
 
 export function handleGameMessages(socket: WebSocket, data: string) {
     try{
@@ -62,10 +54,11 @@ export function handleGameMessages(socket: WebSocket, data: string) {
 
             case "scoreUpdate": {
                 console.log("[INFO] Triggered score update")
-                const gameID  = data.gameID;
-                const score =  data.score;
-                const attempts =  data.attempts;
-                updatePlayerScore(gameID, socket, score, attempts);
+                const { gameID } = message;
+                updatePlayerProgress(gameID, socket);
+
+                const progress = getPlayerProgress(gameID);
+                socket.send(JSON.stringify({ type: "progressUpdate", progress }));
                 break;
             }
 
@@ -86,6 +79,23 @@ export function handleGameMessages(socket: WebSocket, data: string) {
                 break;
             }
 
+            case "requestNextQuestion": {
+                const difficulty = data.difficulty || "easy";
+
+                // 1) Generate the entire question set
+                let questionSet = getQuestions(difficulty);
+
+                // If you want EXACTLY 20 questions:
+                questionSet = questionSet.slice(0, 20);
+
+                // 2) Send them to the requesting socket
+                socket.send(JSON.stringify({
+                    type: "questions",
+                    questions: questionSet
+                }));
+
+                break;
+            }
             default:
                 console.error(`[ERROR] Unknown request from ${clientIp}\n>>>\t ${JSON.stringify(data)}\n`);
                 socket.send(JSON.stringify({type: "ERROR", message: "Unknown type"}))

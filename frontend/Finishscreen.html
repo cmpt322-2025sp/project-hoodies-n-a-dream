@@ -1,0 +1,207 @@
+
+<!--
+Author: Rasheed & Keli'i
+Made: 3/31/2025
+Update:3/31/2025
+Purpose: Finish screen with rematch and quit button
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FinishScreen</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-image: url("../assets/Finish.png");
+            background-size: 100% 100%;
+            background-repeat: repeat-x;
+            background-position: bottom center, center -40%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title {
+            width: 50%;
+            height: 50%; text-align: center;
+            position: absolute;
+            left: -50%;
+            top: 30%;
+            transform: translateY(-50%);
+            animation: slideIn 3s forwards, shine 1.5s 3s forwards;
+        }
+        @keyframes slideIn {
+            0% {
+                left: -50%;
+            }
+            100% {
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                filter: brightness(1);
+            }
+            50% {
+                filter: brightness(2);
+            }
+            100% {
+                filter: brightness(1);
+            }
+        }
+        .Rematch {
+            width: 35%;
+            height: auto;
+            position: absolute;
+            bottom: -200px; /* Start offscreen */
+            left: 20%;
+            transform: translateX(-50%);
+            animation: slideUp 2s 3s forwards, shine 1.5s 5s infinite alternate;
+        }
+
+        @keyframes slideUp {
+            0% {
+                bottom: -400px;
+
+            }
+            100% {
+                bottom: 10%;
+            }
+        }
+        .Quit {
+            width: 35%;
+            height: auto;
+            position: absolute;
+            bottom: -200px; /* Start offscreen */
+            left: 90%;
+            transform: translateX(-50%);
+            animation: slideUp 2s 3s forwards, shine 1.5s 5s infinite alternate;
+        }
+
+        @keyframes slideUp {
+            0% {
+                bottom: -400px;
+
+            }
+            100% {
+                bottom: 10%;
+            }
+        }
+        .car{
+            position: absolute;
+            bottom: 10%;
+            left: 35%;
+            width: 400px;
+            height: 300px;
+        animation:  flipCar .5s infinite;
+        }
+
+        @keyframes flipCar {
+            0% { content: url("../assets/Car5.png"); }
+            25% { content: url("../assets/Car6.png"); }
+            50% { content: url("../assets/Car7.png"); }
+            75% { content: url("../assets/Car8.png"); }
+            100% { content: url("../assets/Car5.png"); }
+        }
+
+        #clock {
+            display: flex;
+            align-items: start;
+            color: white;
+            z-index: 80;
+            margin-top: -25%;
+            margin-left: 30%;
+        }
+
+            .players{
+                position: absolute;
+                display: flex;
+                align-items: flex-start;
+                justify-content: flex-start;
+                flex-direction: column;
+                height: 20%;
+                width: 20%;
+                top: 2%;
+                left: 1%;
+                border: 10px solid red;
+                z-index: 80;
+
+            }
+            .player1 {
+                display: flex;
+                align-items: start;
+                justify-content: start;
+                color: white;
+            }
+            #car1-model {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 60%;
+                height: 70%;
+                border: 10px solid red;
+                z-index: 80;
+
+            }
+    </style>
+</head>
+<body>
+<div>
+<img id="car" class="car" src="../assets/Car1.png" alt="Car">
+</div>
+<div class="players">
+    <div class="player1">
+        <img id="car1-model" src="../assets/Car1.png">
+        <h1 id="player-border"> Player1</h1>
+    </div>
+    <h1 id="clock">00:00</h1>
+
+</div>
+<img src="../assets/CONGRATULATIONS.png" class="title" alt="NitroNumbers"/>
+<img src ="../assets/Rematch.png" class = "Rematch" alt = "Rematch" onclick="Start()"/>
+<img src ="../assets/Pitstop.png" class = "Quit" alt = "Quit" onclick="Quit()"/>
+</body>
+<script>
+    let storedTime = localStorage.getItem('finalTime') || "00:00"; // Default to "00:00" if no value exists
+    document.getElementById('clock').innerText = storedTime;
+    function timeToSeconds(timeStr) {
+        const [minutes, seconds] = timeStr.split(':').map(Number);
+        return minutes * 60 + seconds;
+    }
+    function podium() {
+        const car = document.getElementById('car');
+        const totalTime = timeToSeconds(storedTime);
+
+        // Add transition for smooth animation
+        car.style.transition = 'transform 2s ease-in-out';
+
+        if (totalTime < 30) {
+            car.style.bottom = '13%';
+            car.style.left = '35%';
+
+        } else if (totalTime >= 30 && totalTime < 60) {
+            car.style.bottom = '1%';
+            car.style.left = '25%';
+        } else if (totalTime >= 60) {
+            car.style.bottom = '1%';
+            car.style.left = '45%';
+
+        }
+    }
+
+    window.onload = podium();
+    function Start() {
+        window.location.href = "Game_Animation.html";
+    }
+    function Quit() {
+        window.location.href = "Startsection.html";
+    }
+</script>
+</html>
