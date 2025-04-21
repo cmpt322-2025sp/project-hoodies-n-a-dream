@@ -1,88 +1,121 @@
-<!--
-Author: Rasheed & Keli'i
-Made: 3/1/2025
-Update:3/25/2025
-Purpose: Intro for start screen and linking it to background
-
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <meta charset="UTF-8"/>
-        <title>Start</title>
-        <link rel="stylesheet" href="Startscreen.css">
-    </head>
+    <meta charset="UTF-8"/>
+    <title>Car Flip and Move</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-image: url("../Assets/Startscreen(1).png");
+            background-size: 100% 100%;
+            background-repeat: repeat-x;
+            background-position: bottom center, center -40%;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title {
+            width: 50%;
+            height: 50%;
+            text-align: center;
+            position: absolute;
+            left: -50%;
+            top: 30%;
+            transform: translateY(-50%);
+            animation: slideIn 3s forwards, shine 1.5s 3s forwards;
+        }
+
+        @keyframes slideIn {
+            0% { left: -50%; }
+            100% { left: 50%; transform: translate(-50%, -50%); }
+        }
+
+        @keyframes shine {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(2); }
+            100% { filter: brightness(1); }
+        }
+
+        .Start, .Join {
+            width: 35%;
+            height: auto;
+            position: absolute;
+            bottom: -200px;
+            transform: translateX(-50%);
+            animation: slideUp 2s 3s forwards, shine 1.5s 5s infinite alternate;
+        }
+
+        @keyframes slideUp {
+            0% { bottom: -400px; }
+            100% { bottom: 10%; }
+        }
+
+        .Start { left: 20%; }
+        .Join { left: 90%; }
+    </style>
+</head>
 <body>
-<div id="buttonContainer" style="display: none; position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); text-align: center;">
-    <button onclick="addition()" class="level-button">
-        <img src="../assets/Easy.png" alt="Easy">
-    </button>
-    <button onclick="subtraction()" class="level-button">
-        <img src="../assets/Medium.png" alt="Medium">
-    </button>
-    <button onclick="multiplication()" class="level-button">
-        <img src="../assets/Hard.png" alt="Hard">
-    </button>
-</div>
 
-<img src="../assets/NitroNumbers.png" class="title" alt="NitroNumbers"/>
-<img src ="../assets/Start.png" class = "Start" alt = "Start" onclick="Create()"/>
-<img src ="../assets/Join.png" class = "Join" alt = "Join" onclick="Code()"/>
-</body>
+<img src="../Assets/NitroNumbers.png" class="title" alt="NitroNumbers"/>
+<img src="../Assets/Start.png" class="Start" alt="Start" onclick="createGame()"/>
+<img src="../Assets/Join.png" class="Join" alt="Join" onclick="joinGame()"/>
+
 <script>
-
     const ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
-    ws.onopen = () => {
-        console.log("✅ WebSocket Connected");
-    };
 
-    ws.onmessage = (event) => {
-        console.log("📩 Received:", event.data);
-    };
+    ws.onopen = () => console.log("✅ WebSocket Connected");
+    ws.onmessage = (event) => handleServerMessage(JSON.parse(event.data));
+    ws.onerror = (error) => console.error("❌ WebSocket Error:", error);
+    ws.onclose = () => console.log("🔴 WebSocket Disconnected");
 
-    ws.onerror = (error) => {
-        console.error("❌ WebSocket Error:", error);
-    };
+    function handleServerMessage(data) {
+        if (data.type === "gameCreated") {
+            let gameID = data.gameID;
+            console.log(`🎲 Game Created: ${gameID}`);
 
-    ws.onclose = () => {
-        console.log("🔴 WebSocket Disconnected");
-    };
-    function Create() {
-        // Show the three option buttons instead of navigating immediately
-        document.getElementById("buttonContainer").style.display = "block";
+            // Store gameID locally
+            localStorage.setItem("gameID", gameID);
+
+            // Redirect to game page
+            window.location.href = "Game_Animation.html";
+        } else if (data.type === "joinedGame") {
+            console.log(`✅ Joined Game: ${data.gameID}`);
+
+            // Store gameID locally
+            localStorage.setItem("gameID", data.gameID);
+
+            // Redirect to game page
+            window.location.href = "Game_Animation.html";
+        } else if (data.type === "ERROR") {
+            alert(`⚠️ Error: ${data.message}`);
+        }
     }
 
-    function addition() {
-        let  value = "addition";
-        // Holds difficulty for questions
-        localStorage.setItem("difficulty",value);
-        // When a player clicks one of the three buttons, proceed to game
-        window.location.href = "Game_Animation.html";
+    function createGame() {
+        sendMessage({ type: "createGame", difficulty: "easy", name: "Player" });
     }
-    function subtraction() {
-        let  value = "subtraction";
-        // Holds difficulty
-        localStorage.setItem("difficulty",value);
-        // holds difficulty
-        window.location.href = "Game_Animation.html";
-    }
-    function multiplication() {
-      let  value = "multiplication";
-        // When a player clicks one of the three buttons, proceed to game
-localStorage.setItem("difficulty",value);
-        window.location.href = "Game_Animation.html";
-    }
-    function Code() {
-        let userCode = prompt("Enter your code:");
+
+    function joinGame() {
+        let userCode = prompt("Enter game ID:");
         if (userCode) {
-            alert("You entered: " + userCode); // You can change this to process the code
+            sendMessage({ type: "joinGame", gameID: userCode, name: "Player" });
         } else {
-            alert("No code entered.");
+            alert("⚠️ No code entered.");
+        }
+    }
+
+    function sendMessage(message) {
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify(message));
+        } else {
+            console.error("⚠️ WebSocket is not open.");
         }
     }
 </script>
+
+</body>
 </html>
-
-
-
-

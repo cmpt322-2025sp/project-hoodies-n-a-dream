@@ -10,6 +10,9 @@ Purpose: front end of the game
     <meta charset="UTF-8">
     <title>Nitro Numbers</title>
     <link rel="stylesheet" href="general.css">
+    <link rel="stylesheet" href="countDown.css">
+    <link rel="stylesheet" href="answerStreak.css">
+
 </head>
 <body>
 
@@ -32,15 +35,12 @@ Purpose: front end of the game
     <img src="https://th.bing.com/th/id/R.1f4a53e7d20f061e3ac2616988fc024b?rik=Em5fLqVRGqZukQ&pid=ImgRaw&r=0" >
 </div>
 
-
 <div id="overlay"></div>
-<button id="startGame" onclick="countDown()">Start Race</button>
+<button id="startGame" onclick="Lights()">Start Race</button>
 <div id="countDown"></div>
 
 <div id="answerStreak"></div>
 
-
-<div id="room-code">Game ID: Loading...</div>
 <div>
     <img id="car" class="car" src="../assets/Car1.png" alt="Car">
 </div>
@@ -49,11 +49,11 @@ Purpose: front end of the game
     <div class="player1">
         <img id="car1-model" src="../assets/Car1.png">
         <h1 id="player-border"> Player   1</h1>
-        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#1">
-        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#2">
-        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#3">
-        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#4">
-        <img class="fireStreak" src="../Assets/fireStreak1.png" alt="streak#5">
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#1">
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#2">
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#3">
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#4">
+        <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#5">
 
     </div>
 </div>
@@ -70,22 +70,34 @@ Purpose: front end of the game
         <button id="bt3" class = "buttons" onclick="checkAnswer(this)"><span id = "bt3span"></span></button>
         <button id="bt4" class = "buttons" onclick="checkAnswer(this)"><span id = "bt4span"></span></button>
     </div>
-    <h2 id="result"></h2>
 </div>
 
+<div id="room-code">Game ID: Loading...</div>
+
 <div id="game-border"></div>
+
+<div class="traffic-light-box">
+    <div id="red" class="light red"></div>
+    <div id="yellow" class="light yellow"></div>
+    <div id="green" class="light green"></div>
+</div>
+
+<audio id="countSound" src="../audio/countdown_Bell2.wav" preload="auto"></audio>
+<audio id="rightSound" src="../audio/rightSound.wav" preload="auto"></audio>
+<audio id="wrongSound" src="../audio/wrongSound2.mp3" preload="auto"></audio>
+<audio id="soundTrack" src="../audio/soundtrack.wav" preload="auto" loop></audio>
+<audio id="streakSound" src="../audio/streakSound.wav" preload="auto"></audio>
+
 <script>
+    /*
         document.getElementById("myButton").innerText = window.code;
+     */
 </script>
 <script src = "Questions.js"></script>
 <script src = "Gamefunctions.js"></script>
 
-
-</body>
-</html>
-
-//websocket connection
 <script>
+    /*
     // ✅ Retrieve the gameID from localStorage
     let gameID = localStorage.getItem("gameID");
 
@@ -139,5 +151,11 @@ Purpose: front end of the game
             console.error("⚠️ WebSocket is not open.");
         }
     }
+     */
 </script>
+
+
+</body>
+</html>
+
 
