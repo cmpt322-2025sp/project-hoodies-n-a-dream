@@ -118,3 +118,13 @@
         opacity: 0;
     }
 }
+
+/* hide every view by default */
+[data-view] {
+    display: none;
+}
+
+/* only the active one shows */
+[data-view].active {
+    display: block;
+}

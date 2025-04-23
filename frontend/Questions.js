@@ -232,11 +232,13 @@ function checkAnswer(button) {
 
             flag2 = true;
 
-            if (questionCount >= 20) {
+            if (questionCount >= 5) {
                 ending = true
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 //window.location.href = "FinishLine.html";
                 stopGame();
+                setTimeout(() => navigateTo('finishLine'), 2000);
+
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }
             generateEquation();

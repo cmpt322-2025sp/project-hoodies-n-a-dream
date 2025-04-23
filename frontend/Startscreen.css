@@ -106,3 +106,13 @@ body {
     transform: scale(1.05);
     transition: all 0.2s ease;
 }
+
+/* hide every view by default */
+[data-view] {
+    display: none;
+}
+
+/* only the active one shows */
+[data-view].active {
+    display: block;
+}
