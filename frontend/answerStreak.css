@@ -1,0 +1,210 @@
+#answerStreak {
+    font-family: 'game-font', sans-serif;
+    position: absolute;
+    font-size: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 110;
+    visibility: hidden;
+    background: linear-gradient(to right, coral, lightcoral, lightsalmon);
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px lightsalmon;
+}
+
+.fireStreak {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 6.4%;
+    width: 13%;
+    height: 22%;
+    z-index: 80;
+    visibility: hidden;
+    text-shadow: 5px 5px 50px darkorange;
+}
+
+@keyframes rotateBorders {
+    0% {
+        border-top: 10px solid lightcoral;
+        box-shadow: 0 0 15px 5px lightcoral;
+        border-right: 10px solid pink;
+        border-bottom: 10px solid lightsalmon;
+        border-left: 10px solid hotpink;
+    }
+    25% {
+        border-top: 10px solid pink;
+        box-shadow: 0 0 15px 5px pink;
+        border-right: 10px solid lightsalmon;
+        border-bottom: 10px solid hotpink;
+        border-left: 10px solid lightcoral;
+    }
+    50% {
+        border-top: 10px solid lightsalmon;
+        box-shadow: 0 0 15px 5px lightsalmon;
+        border-right: 10px solid hotpink;
+        border-bottom: 10px solid lightcoral;
+        border-left: 10px solid pink;
+    }
+    75% {
+        border-top: 10px solid hotpink;
+        box-shadow: 0 0 15px 5px hotpink;
+        border-right: 10px solid lightcoral;
+        border-bottom: 10px solid pink;
+        border-left: 10px solid lightsalmon;
+    }
+    100% {
+        border-top: 10px solid lightcoral;
+        box-shadow: 0 0 15px 5px lightcoral;
+        border-right: 10px solid pink;
+        border-bottom: 10px solid lightsalmon;
+        border-left: 10px solid hotpink;
+    }
+}
+
+@keyframes flashingBorder {
+    0% {
+        box-shadow: inset 0 0 25px 25px lightcoral;
+    }
+    25% {
+        box-shadow: inset 0 0 25px 25px pink;
+    }
+    50% {
+        box-shadow: inset 0 0 25px 25px lightsalmon;
+    }
+    75% {
+        box-shadow: inset 0 0 25px 25px pink;
+    }
+    100% {
+        box-shadow: inset 0 0 25px 25px lightcoral;
+    }
+}
+@keyframes flashingBorder2 {
+    0% {
+        box-shadow: inset 0 0 25px 25px darkseagreen;
+        opacity: 0.8;
+    }
+    25% {
+        box-shadow: inset 0 0 25px 25px mediumseagreen;
+    }
+    50% {
+        box-shadow: inset 0 0 25px 25px seagreen;
+    }
+    75% {
+        box-shadow: inset 0 0 25px 25px mediumseagreen;
+    }
+    100% {
+        box-shadow: inset 0 0 25px 25px darkseagreen;
+    }
+}
+
+@keyframes flashingBorder3 {
+    0% {
+        box-shadow: inset 0 0 25px 25px aqua;
+        opacity: 0.8;
+    }
+    25% {
+        box-shadow: inset 0 0 25px 25px aquamarine;
+    }
+    50% {
+        box-shadow: inset 0 0 25px 25px lightskyblue;
+    }
+    75% {
+        box-shadow: inset 0 0 25px 25px aquamarine;
+    }
+    100% {
+        box-shadow: inset 0 0 25px 25px aqua;
+    }
+}
+
+#carStreak {
+    position: absolute;
+    left: -20vw;
+    bottom: 23.4vh;
+    width: 18vw;
+    height: 0.5vh;
+    background-image: linear-gradient(to right, transparent 50%, lightpink 60%, lightsalmon 70%, lightcoral 80%, orange 90%, orangered 100%, transparent 100%);
+    filter: blur(0.1em);
+    visibility: hidden;
+    z-index: 99;
+}
+
+@keyframes op {
+    0% {
+        opacity: 1;
+        filter: blur(0.1em);
+    }
+    25% {
+        opacity: 0.8;
+        filter: blur(0.15em);
+    }
+    50% {
+        opacity: 0.5;
+        filter: blur(0.2em);
+    }
+    75% {
+        opacity: 0.8;
+        filter: blur(0.15em);
+    }
+    100% {
+        opacity: 1;
+        filter: blur(0.1em);
+    }
+
+}
+.spark {
+    position: absolute;
+    width: 50px; /* Make the sparks longer (wider) */
+    height: 5px; /* Set a height to make sparks longer */
+    background-color: springgreen;
+    border-radius: 50%;
+    opacity: 0.9;
+    pointer-events: none;
+    animation: flyLeft 2s linear infinite, fade 2s forwards; /* Increased duration */
+    z-index: 120
+}
+
+/* Animation for sparks flying to the left */
+@keyframes flyLeft {
+    0% {
+        transform: translate(0, 0); /* Start from the current position */
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-100vw, 0); /* Move to the left across the screen */
+        opacity: 0;
+    }
+}
+#carShield {
+    position: absolute;
+    width: 12vw;
+    height: 9vh;
+    bottom: 20vh;
+    left: -12vw;
+    border-right: 5px solid springgreen;
+    border-radius: 85%;
+    /* Apply box-shadow on the right side only */
+    background: linear-gradient(to right, transparent 0%, transparent 80%, springgreen 100%); /* Transparent until 90% */
+    z-index: 99;
+    visibility: hidden;
+}
+
+@keyframes fadeOut2 {
+    0% {
+        opacity: 1;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+[data-view]{
+    display: none;
+}
+[data-view].active{
+    display: block;
+}
