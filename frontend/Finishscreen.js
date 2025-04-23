@@ -25,16 +25,10 @@ function podium() {
     }
 }
 
-window.onload = podium();
-function Start() {
-   navigateTo("Game_animation");
-}
-function Quit() {
-    navigateTo("StartScreen");
-}
-[data-view]{
-    display: none;
-}
-[data-view].active{
-    display: block;
-}
+// window.onload = podium();
+// function Start() {
+//    navigateTo("Game_animation");
+// }
+// function Quit() {
+//     navigateTo("StartScreen");
+// }

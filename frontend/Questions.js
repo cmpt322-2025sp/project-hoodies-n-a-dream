@@ -237,12 +237,12 @@ function checkAnswer(button) {
 
             flag2 = true;
 
-            if (questionCount >= 1) {
+            if (questionCount >= 2) {
                 ending = true
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 //window.location.href = "FinishLine.html";
                 stopGame();
-                SetTimeout(() => navigateTo('finishLine'), 2000);
+                setTimeout ( () => navigateTo('finishLine'), 1500);
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }
             generateEquation();

@@ -1,282 +1,158 @@
 <!DOCTYPE html>
- <html lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WebSocket Game Client</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        input, button {
-            margin: 5px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        #log {
-            background: #f5f5f5;
-            padding: 10px;
-            border-radius: 5px;
-            height: 200px;
-            overflow-y: auto;
-            text-align: left;
-            margin-top: 20px;
-        }
-        #question-container {
-            margin: 20px 0;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 4px;
-            display: inline-block;
-            text-align: left;
-        }
-        .answer-button {
-            display: block;
-            margin: 5px 0;
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-    </style>
+    <title>Nitro Numbers</title>
+    <link rel="stylesheet" href="general.css" />
+    <link rel="stylesheet" href="Startscreen.css" />
+    <link rel="stylesheet" href="countDown.css" />
+    <link rel="stylesheet" href="answerStreak.css" />
+    <link rel="stylesheet" href="Finishline.css" />
+    <link rel="stylesheet" href="Finishscreen.css" />
+
 </head>
 <body>
+    <section data-view="startScreen" class="active StartScreen">
+        <div id="buttonContainer" style="display: none; position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); text-align: center;">
+            <button onclick="addition()" class="level-button">
+                <img src="../assets/Easy.png" alt="Easy">
+            </button>
+            <button onclick="subtraction()" class="level-button">
+                <img src="../assets/Medium.png" alt="Medium">
+            </button>
+            <button onclick="multiplication()" class="level-button">
+                <img src="../assets/Hard.png" alt="Hard">
+            </button>
+        </div>
 
-<h2>🎮 WebSocket Game Client</h2>
+        <img src="../assets/NitroNumbers.png" class="title" alt="NitroNumbers"/>
+        <img src ="../assets/Start.png" class = "Start" alt = "Start" onclick="Create()"/>
+        <img src ="../assets/Join.png" class = "Join" alt = "Join" onclick="Code()"/>
+    </section>
 
-<!-- ACTION BUTTONS -->
-<button onclick="createGame()">🏁 Create Game</button>
-<div>
-    <input type="text" id="roomCode" placeholder="Enter Room Code" />
-    <button onclick="joinGame()">🎮 Join Game</button>
-</div>
-<button onclick="startGame()">🏎️ Start Game</button>
-<button onclick="requestQuestion('easy')">❓ Request Question</button>
-<button onclick="submitScore()">📊 Submit Random Score</button>
-<button onclick="gameEnd()">❌ End Game</button>
 
-<!-- DISPLAY AREA -->
-<h3 id="game-info"></h3>
+    <section data-view="gameAnimation">
+        <div id="carShield"></div>
 
-<!-- QUESTION & ANSWERS -->
-<div id="question-container"></div>
+        <div id = "carStreak"></div>
 
-<!-- LOG SECTION -->
-<h3>📜 WebSocket Log:</h3>
-<div id="log"></div>
+        <div id="map1"></div>
+        <div id="map2"></div>
+        <div id="map3"></div>
+        <div id="track"></div>
 
-<script>
-    // 1) WebSocket Setup
-    let ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
+        <div id="transition">
+            <img src="https://i.pinimg.com/474x/df/65/67/df6567a6fa06656d909980e6fbdcfdf1.jpg" >
+            <img src="https://th.bing.com/th/id/R.602b95bb0daec842b69c42e007d79026?rik=%2bprgNhkUS1OsvA&pid=ImgRaw&r=0" >
+            <img src="https://th.bing.com/th/id/R.1f4a53e7d20f061e3ac2616988fc024b?rik=Em5fLqVRGqZukQ&pid=ImgRaw&r=0" >
+            <img src="https://th.bing.com/th/id/R.1f4a53e7d20f061e3ac2616988fc024b?rik=Em5fLqVRGqZukQ&pid=ImgRaw&r=0" >
+            <img src="https://i.pinimg.com/474x/df/65/67/df6567a6fa06656d909980e6fbdcfdf1.jpg" >
+            <img src="https://th.bing.com/th/id/R.602b95bb0daec842b69c42e007d79026?rik=%2bprgNhkUS1OsvA&pid=ImgRaw&r=0" >
+            <img src="https://th.bing.com/th/id/R.1f4a53e7d20f061e3ac2616988fc024b?rik=Em5fLqVRGqZukQ&pid=ImgRaw&r=0" >
+        </div>
 
-    // 2) Tracking the Current Game
-    let gameID = null;
 
-    // 3) Connection Handlers
-    ws.onopen = () => logMessage("✅ WebSocket Connected");
-    ws.onclose = () => logMessage("🔴 WebSocket Disconnected");
-    ws.onerror = (err) => console.error("❌ WebSocket Error:", err);
+        <div id="overlay"></div>
+        <button id="startGame" onclick="Lights()">Start Race</button>
+        <div id="countDown"></div>
 
-    ws.onmessage = (event) => {
-        logMessage("📩 " + event.data);
+        <div id="answerStreak"></div>
 
-        let response = JSON.parse(event.data);
 
-        switch (response.type) {
-            case "gameCreated":
-                // Save the new gameID
-                gameID = response.gameID;
-                document.getElementById("game-info").innerText = `Game Created! ID: ${gameID}`;
-                break;
+        <div id="room-code">Game ID: Loading...</div>
+        <div>
+            <img id="car" class="car" src="../assets/Car1.png" alt="Car">
+        </div>
 
-            case "joinedGame":
-                gameID = response.gameID;
-                document.getElementById("game-info").innerText = `Joined Game: ${gameID}`;
-                break;
+        <div class="players">
+            <div class="player1">
+                <img id="car1-model" src="../assets/Car1.png">
+                <h1 class="player-border"> Player   1</h1>
+                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#1">
+                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#2">
+                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#3">
+                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#4">
+                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#5">
 
-            case "playerJoined":
-                logMessage(`👤 Player Joined: ${response.name}`);
-                break;
+            </div>
+        </div>
 
-            case "gameStarting":
-                logMessage(`⏳ Game starting in ${response.countdown} seconds...`);
-                break;
+        <div>
+            <h1 id="clock">00:00</h1>
+        </div>
 
-            case "gameStarted":
-                logMessage("🏁 The race (game) has started!");
-                break;
+        <div class="equation-container">
+            <h1 id="equation"></h1>
+            <div class="button-container">
+                <button id="bt1" class = "buttons" onclick="checkAnswer(this)"><span id = "bt1span"></span></button>
+                <button id="bt2" class = "buttons" onclick="checkAnswer(this)"><span id = "bt2span"></span></button>
+                <button id="bt3" class = "buttons" onclick="checkAnswer(this)"><span id = "bt3span"></span></button>
+                <button id="bt4" class = "buttons" onclick="checkAnswer(this)"><span id = "bt4span"></span></button>
+            </div>
+        </div>
 
-            case "questions":
-                // The server sent an array of question objects
-                if (response.questions && response.questions.length > 0) {
-                    // 1) Store them
-                    currentQuestionSet = response.questions;
-                    // 2) Reset index
-                    currentQuestionIndex = 0;
-                    // 3) Display the first question
-                    displayQuestion(currentQuestionSet[currentQuestionIndex]);
-                }
+        <div id="game-border"></div>
 
-                // Optionally, acknowledge we got them
-                ws.send(JSON.stringify({
-                    type: "questionsReceived",
-                    gameID: gameID,
-                    status: "200"
-                }));
-                break;
+        <div class="traffic-light-box">
+            <div id="red" class="light red"></div>
+            <div id="yellow" class="light yellow"></div>
+            <div id="green" class="light green"></div>
+        </div>
 
-            case "scoreReport":
-                logMessage(`Score Update for ${response.name}: ${response.score}`);
-                break;
+        <audio id="countSound" src="../audio/countdown_Bell2.wav" preload="auto"></audio>
+        <audio id="rightSound" src="../audio/rightSound.wav" preload="auto"></audio>
+        <audio id="wrongSound" src="../audio/wrongSound2.mp3" preload="auto"></audio>
+        <audio id="soundTrack" src="../audio/soundtrack.wav" preload="auto" loop></audio>
+        <audio id="streakSound" src="../audio/streakSound.wav" preload="auto"></audio>
+    </section>
 
-            case "gameCompleted":
-                logMessage("🏆 Game Over! Results:");
-                response.players.forEach(player => {
-                    logMessage(` - ${player.name}: Score = ${player.score}, Time = ${player.time}`);
-                });
-                break;
 
-            case "ERROR":
-                logMessage(`❌ ERROR: ${response.message}`);
-                break;
+    <section data-view="finishLine">
+        <div id="finish"></div>
+        <div id="cup"></div>
+        <div id="finish_track"></div>
+        <div>
+            <img class="car carfl" src="../assets/Car1.png" alt="Car">
+        </div>
+    </section>
 
-            default:
-                logMessage("ℹ️ Unhandled response: " + JSON.stringify(response));
-        }
-    };
 
-    // 4) Utility to Log Messages
-    function logMessage(msg) {
-        const logDiv = document.getElementById("log");
-        // Prepend the new log line
-        logDiv.innerHTML = `<p>${msg}</p>` + logDiv.innerHTML;
-    }
+    <section data-view="finishScreen">
+        <div>
+            <img class="car carfs" src="../assets/Car1.png" alt="Car">
+        </div>
+        <div class="players">
+            <div class="player1">
+                <img id="car1-model" src="../assets/Car1.png">
+                <h1 id="player-border"> Player1</h1>
+            </div>
+            <h1 id="clockfs">00:00</h1>
 
-    // 5) Game Actions
-    function createGame() {
-        ws.send(JSON.stringify({ type: "createGame" }));
-    }
-
-    function joinGame() {
-        let roomCode = document.getElementById("roomCode").value;
-        gameID = roomCode;
-        const name = "Player_" + Math.floor(Math.random() * 1000);
-        ws.send(JSON.stringify({
-            type: "joinGame",
-            gameID: roomCode,
-            name: name
-        }));
-    }
-
-    function startGame() {
-        if (!gameID) {
-            logMessage("⚠️ No Game ID. Cannot start.");
-            return;
-        }
-        logMessage("🏎️ Starting Game!");
-        ws.send(JSON.stringify({
-            type: "startGame",
-            gameID: gameID
-        }));
-    }
-
-    // 6) Request a Question
-    function requestQuestion(difficulty) {
-        if (!gameID) {
-            logMessage("⚠️ No Game ID. Must join or create a game first.");
-            return;
-        }
-        // Ask server for 20 questions
-        ws.send(JSON.stringify({
-            type: "requestNextQuestion",
-            difficulty: difficulty
-        }));
-    }
-
-    // 7) Display the Question & Answers
-    let currentCorrectAnswer = null;
-    function displayQuestion(questionObj) {
-        // Clear old content
-        const container = document.getElementById("question-container");
-        container.innerHTML = "";
-
-        // Show the question text
-        const questionText = document.createElement("h3");
-        questionText.innerText = questionObj.question;
-        container.appendChild(questionText);
-
-        // Prepare 4 answers
-        const answers = [...questionObj.incorrect_answers, questionObj.correct_answer];
-        answers.sort(() => Math.random() - 0.5);
-
-        // Store the correct answer
-        currentCorrectAnswer = questionObj.correct_answer;
-
-        // Create a button for each possible answer
-        answers.forEach(answer => {
-            const btn = document.createElement("button");
-            btn.className = "answer-button";
-            btn.innerText = answer;
-            btn.onclick = () => {
-                checkAnswer(questionObj.id, answer);
-            };
-            container.appendChild(btn);
-        });
-    }
-
-    // 8) Check the selected answer
-    function checkAnswer(questionID, chosenAnswer) {
-        const isCorrect = (chosenAnswer === currentCorrectAnswer);
-        logMessage(isCorrect ? "✅ Correct!" : "❌ Wrong!");
-
-        const points = isCorrect ? 10 : 0;
-        ws.send(JSON.stringify({
-            type: "scoreUpdate",
-            gameID: gameID,
-            score: points,
-            attempts: 1,
-            questionID: questionID
-        }));
-
-        // Move to the next question, if any exist
-        setTimeout(() => {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < currentQuestionSet.length) {
-                displayQuestion(currentQuestionSet[currentQuestionIndex]);
-            } else {
-                logMessage("🎉 You’ve reached the end of the question set!");
-                // Optionally do something else: end game, show final results, etc.
-            }
-        }, 800);
-    }
-
-    // 9) Submit a Random Score (demo)
-    function submitScore() {
-        if (!gameID) {
-            logMessage("⚠️ No game started yet!");
-            return;
-        }
-        let score = Math.floor(Math.random() * 100);
-        ws.send(JSON.stringify({
-            type: "scoreUpdate",
-            gameID: gameID,
-            score: score
-        }));
-        logMessage("Score submitted: " + score);
-    }
-
-    // 🔟 End the Game
-    function gameEnd() {
-        if (!gameID) {
-            logMessage("⚠️ No game started yet!");
-            return;
-        }
-        ws.send(JSON.stringify({
-            type: "endGame",
-            gameID: gameID
-        }));
-        logMessage("❌ Game Ended");
-    }
-</script>
+        </div>
+        <img src="../assets/CONGRATULATIONS.png" class="Congrats" alt="NitroNumbers"/>
+        <img src ="../assets/Rematch.png" class = "Rematch" alt = "Rematch" onclick="Start()"/>
+        <img src ="../assets/Pitstop.png" class = "Quit" alt = "Quit" onclick="Quit()"/>
+    </section>
 
 </body>
+
+<script>
+    function navigateTo(viewName) {
+        // hide every view
+        document.querySelectorAll('[data-view]').forEach(sec => {
+            sec.classList.remove('active');
+        });
+
+        // show the one we want
+        const target = document.querySelector(`[data-view="${viewName}"]`);
+        if (target) target.classList.add('active');
+        else console.warn(`No view found for "${viewName}"`);
+    }
+</script>
+<script src="Gamefunctions.js"></script>
+<script src="Startscreen.js"></script>
+<script src="Questions.js"></script>
+<!--<script src="FinishLine.js"></script>-->
+<!--<script src="Finishscreen.js"></script>-->
+
 </html>

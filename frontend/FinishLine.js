@@ -1,8 +1,8 @@
-let moveSpeed = 5;
-let moving = false;
+moveSpeed = 5;
+moving = false;
 let finishLine = false;
-const targetPosition = window.innerWidth * 0.9;
-let carPosition = 20;
+targetPosition = window.innerWidth * 0.9;
+carPosition = 20;
 let storedTime = localStorage.getItem('finalTime') || "00:00";
 
 // Convert stored time (e.g., "01:15") to seconds
@@ -11,19 +11,19 @@ function timeToSeconds(timeStr) {
     return minutes * 60 + seconds;
 }
 
-function moveCar() {
+function shiftCar() {
     if (moving) {
         if (carPosition >= targetPosition) {
             moving = false;
             setTimeout(() => {
-                window.location.href = "Finishscreen.html";
+                navigateTo("finishScreen");
             }, 3000);
             return;
         }
     }
     carPosition += moveSpeed;
     car.style.left = carPosition + 'px';
-    requestAnimationFrame(moveCar);
+    requestAnimationFrame(shiftCar);
 }
 
 function finish() {
@@ -34,13 +34,7 @@ function finish() {
         document.getElementById('car').style.top = '95%';
     }
     moving = true;
-    moveCar();
+    shiftCar();
 }
 
 window.onload = finish;
-[data-view]{
-    display: none;
-}
-[data-view].active{
-    display: block;
-}

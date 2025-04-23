@@ -1,5 +1,5 @@
 /* For startsection */
-.StartScreen {
+body {
     margin: 0;
     height: 100vh;
     background-image: url("../assets/Startscreen(1).png");
@@ -108,3 +108,9 @@
     transform: scale(1.05);
 }
 
+[data-view]{
+    display: none;
+}
+[data-view].active{
+    display: block;
+}

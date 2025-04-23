@@ -10,7 +10,7 @@ let isFlipping = false;
 let moving = false;
 let introPlaying = true;
 
-const targetPosition = window.innerWidth * 0.10;
+let targetPosition = window.innerWidth * 0.10;
 let carPosition = 20;
 
 const map1 = document.getElementById("map1");
@@ -249,6 +249,18 @@ function playCountDownSound(start, end) {
     }, duration);
 }
 
+function moveCar() {
+    if (moving) {
+        if (introPlaying && carPosition >= targetPosition) {
+            moving = false;
+            introPlaying = false;
+            return;
+        }
+        carPosition += moveSpeed;
+        car.style.left = carPosition + 'px';
+        requestAnimationFrame(moveCar);
+    }
+}
 function countDown() {
 
     let counter = 4;

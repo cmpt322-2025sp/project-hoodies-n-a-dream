@@ -201,3 +201,10 @@
         opacity: 0;
     }
 }
+
+[data-view]{
+    display: none;
+}
+[data-view].active{
+    display: block;
+}

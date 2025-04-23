@@ -17,6 +17,7 @@ ws.onclose = () => {
 function Create() {
     // Show the three option buttons instead of navigating immediately
     document.getElementById("buttonContainer").style.display = "block";
+    navigateTo("gameAnimation");
 }
 
 function addition() {
@@ -46,10 +47,4 @@ function Code() {
     } else {
         alert("No code entered.");
     }
-}
-[data-view]{
-    display: none;
-}
-[data-view].active{
-    display: block;
 }

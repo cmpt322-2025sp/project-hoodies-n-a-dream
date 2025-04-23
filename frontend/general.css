@@ -1,4 +1,4 @@
-.general {
+body {
     margin: 0;
     width: 100vw;
     height: 100vh;
@@ -225,7 +225,7 @@ button:hover {
     height: 70%;
     z-index: 80;
 }
-#player-border{
+.player-border{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -254,4 +254,11 @@ button:hover {
     100% {
         opacity: 0;
     }
+}
+
+[data-view]{
+    display: none;
+}
+[data-view].active{
+    display: block;
 }

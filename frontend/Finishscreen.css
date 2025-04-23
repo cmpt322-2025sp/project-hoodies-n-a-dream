@@ -136,3 +136,10 @@
     z-index: 80;
 
 }
+
+[data-view]{
+    display: none;
+}
+[data-view].active{
+    display: block;
+}
