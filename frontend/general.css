@@ -1,4 +1,4 @@
-body {
+.general {
     margin: 0;
     width: 100vw;
     height: 100vh;
@@ -32,15 +32,15 @@ body {
     display: flex;
     align-items: flex-start;
     position: absolute;
-    top: -2%;
-    right: -700%;
+    top: 0;
+    right: -700vw;
     height: 70vh;
     width: 700vw;
     z-index: 20;
 }
 #transition img {
     width: 14.28%;
-    height: auto;
+    height: 100%;
 
 }
 
@@ -96,8 +96,8 @@ body {
     width: 14vw;
     height: 11vh;
     position: absolute;
-    top: 75%;
-    left: -5%;
+    top: 75vh;
+    left: -5vw;
     transform: translate(-50%, -50%);
     z-index: 100;
 }
@@ -110,8 +110,8 @@ body {
     height: 40vh;
     width: 30vw;
     position: absolute;
-    top: 30%;
-    left: 50%;
+    top: 30vh;
+    left: 50vw;
     transform: translate(-50%, -50%);
     z-index: 110;
     visibility: hidden;
