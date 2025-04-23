@@ -99,6 +99,11 @@ function checkAnswer(button) {
 
         questionCount++;
         streak++;
+        maxMapSpeed += .1;
+        maxTrackSpeed += 1;
+        if (questionCount%2 === 0) {
+            positionalIndex += 0.05;
+        }
 
         button.classList.add("right-buttons");
         if (streak >= 8) {
@@ -232,11 +237,12 @@ function checkAnswer(button) {
 
             flag2 = true;
 
-            if (questionCount >= 20) {
+            if (questionCount >= 1) {
                 ending = true
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 //window.location.href = "FinishLine.html";
                 stopGame();
+                SetTimeout(() => navigateTo('finishLine'), 2000);
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }
             generateEquation();
@@ -245,6 +251,16 @@ function checkAnswer(button) {
     }
     else {
         stopStreakAnimation(button, buttonIds, buttonSpanIds);
+        maxMapSpeed = 1;
+        speedB = 1;
+        maxTrackSpeed = 35;
+        speedTrack = 35;
+        carSpeed = -0.5;
+        for (let i = 0; i < fireStreaks.length; i++) {
+            fireStreaks[i].style.visibility = "hidden";
+        }
+        fireStreaks[0].src = "../Assets/fireStreak5.png";
+        fireStreaks[1].src = "../Assets/fireStreak5.png";
         button.style.animation = "shake 0.3s ease-in-out 3, fadeOut 4s forwards";
         wrongSound.play(8.4);
         setTimeout(() => {

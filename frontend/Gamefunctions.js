@@ -28,6 +28,7 @@ let speedT = 45; // speed of Transition background
 let carSpeed = 0 //speed of Car
 let maxMapSpeed = 1;
 let maxTrackSpeed = 35;
+let positionalIndex = 0.15;
 
 let maps = [map1, map2, map3];
 let index = 0;
@@ -35,18 +36,12 @@ let index = 0;
 let flag = true; //To make sure index is changed once when needed
 let start = false;
 let ending = false;
-let ended = false;
 
 const red = document.getElementById('red');
 const yellow = document.getElementById('yellow');
 const green = document.getElementById('green');
-const red2 = document.getElementById('red2');
-const yellow2 = document.getElementById('yellow2');
-const green2 = document.getElementById('green2');
 
 let light = document.querySelector(".traffic-light-box");
-let rightLight = document.getElementById("rightLight");
-let positionL = 0
 
 const countSound = document.getElementById("countSound");
 const soundTrack = document.getElementById("soundTrack");
@@ -62,6 +57,7 @@ function animateGame() {
     if (speedB < maxMapSpeed) {
         speedB = speedB + .01;
     }
+
     positionB -= speedB;
 
     track.style.backgroundPosition = `${positionTrack}px`;
@@ -177,18 +173,6 @@ function GameClock() {
 
     }, 1000);
 }
-function moveCar() {
-    if (moving) {
-        if (introPlaying && carPosition >= targetPosition) {
-            moving = false;
-            introPlaying = false;
-            return;
-        }
-        carPosition += moveSpeed;
-        car.style.left = carPosition + 'px';
-        requestAnimationFrame(moveCar);
-    }
-}
 
 function animateCar() {
     car.style.left = carPosition + 'px';
@@ -199,11 +183,11 @@ function animateCar() {
         carSpeed += 1;
     }
 
-    else if (carSpeed < 1 && carPosition <= window.innerWidth/4) {
+    else if (carSpeed < 1 && carPosition <= window.innerWidth * positionalIndex) {
         carSpeed += 0.01;
     }
 
-    else if (carSpeed > -1 && carPosition >= window.innerWidth/4) {
+    else if (carSpeed > -1 && carPosition >= window.innerWidth * positionalIndex) {
         carSpeed -= 0.01;
     }
 
