@@ -1,5 +1,6 @@
 moveSpeed = 5;
 moving = false;
+const finish_car = document.getElementById("finish_car")
 let finishLine = false;
 targetPosition = window.innerWidth * 0.9;
 carPosition = 20;
@@ -27,16 +28,16 @@ function shiftCar() {
         }
     }
     carPosition += moveSpeed;
-    car.style.left = carPosition + 'px';
+    finish_car.style.left = carPosition + 'px';
     requestAnimationFrame(shiftCar);
 }
 
 function finish() {
     const totalSeconds = timeToSeconds(storedTime);
     if (totalSeconds > 30 && totalSeconds < 60) {
-        document.getElementById('car').style.top = '85%';
+        finish_car.style.top = '85%';
     } else if (totalSeconds > 60) {
-        document.getElementById('car').style.top = '95%';
+        finish_car.style.top = '95%';
     }
     moving = true;
     shiftCar();

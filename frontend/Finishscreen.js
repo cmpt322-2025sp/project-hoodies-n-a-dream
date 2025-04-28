@@ -5,22 +5,22 @@ function timeToSeconds(timeStr) {
     return minutes * 60 + seconds;
 }
 function podium() {
-    const carl = document.getElementById('car3');
+    const last_car = document.getElementById('last_car');
     const totalTime = timeToSeconds(leaderboardtime);
 
     // Add transition for smooth animation
-    carl.style.transition = 'transform 2s ease-in-out';
+    last_car.style.transition = 'transform 2s ease-in-out';
 
     if (totalTime < 30) {
-        carl.style.bottom = '12%';
-        carl.style.left = '45%';
+        last_car.style.bottom = '12%';
+        last_car.style.left = '45%';
  
     } else if (totalTime >= 30 && totalTime < 60) {
-        carl.style.bottom = '2%';
-        carl.style.left = '30%';
+        last_car.style.bottom = '2%';
+        last_car.style.left = '30%';
     } else if (totalTime >= 60) {
-        carl.style.bottom = '2%';
-        carl.style.left = '50%';
+        last_car.style.bottom = '2%';
+        last_car.style.left = '50%';
 
     }
 }
