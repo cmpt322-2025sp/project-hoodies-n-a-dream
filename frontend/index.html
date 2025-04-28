@@ -147,13 +147,16 @@
         // show the one we want
         const target = document.querySelector(`[data-view="${viewName}"]`);
         if (target) target.classList.add('active');
-        else console.warn(`No view found for "${viewName}"`);
+        if (viewName === 'finishLine') {
+            finish();
+        }
+        else if (!target) console.warn(`No view found for "${viewName}"`);
     }
 </script>
 <script src="Gamefunctions.js"></script>
 <script src="Startscreen.js"></script>
 <script src="Questions.js"></script>
-<!--<script src="FinishLine.js"></script>-->
+<script src="FinishLine.js"></script>
 <script src="Finishscreen.js"></script>
 
 </html>

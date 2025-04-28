@@ -243,6 +243,8 @@ function checkAnswer(button) {
                 //window.location.href = "FinishLine.html";
                 stopGame();
                 setTimeout ( () => navigateTo('finishLine'), 1500);
+                
+                // carPosition = 20;
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }
             generateEquation();
