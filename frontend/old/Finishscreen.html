@@ -12,24 +12,30 @@ Purpose: Finish screen with rematch and quit button
 <head>
     <meta charset="UTF-8">
     <title>FinishScreen</title>
-    <link rel="stylesheet" href="Finishscreen.css">
+    <link rel="stylesheet" href="../Finishscreen.css">
 </head>
 <body>
 <div>
-<img id="car" class="carfs" src="../assets/Car1.png" alt="Car">
+<img id="car" class="carfs" src="../../assets/Car1.png" alt="Car">
 </div>
 <div class="players">
     <div class="player1">
-        <img id="car1-model" src="../assets/Car1.png">
+        <img id="car1-model" src="../../assets/Car1.png">
         <h1 id="player-border"> Player1</h1>
     </div>
     <h1 id="clockfs">00:00</h1>
 
 </div>
+<<<<<<< Updated upstream:frontend/Finishscreen.html
 
 <img src="../assets/CONGRATULATIONS.png" class="Congrats" alt="NitroNumbers"/>
 <img src ="../assets/Rematch.png" class = "Rematch" alt = "Rematch" onclick="Start()"/>
 <img src ="../assets/Pitstop.png" class = "Quit" alt = "Quit" onclick="Quit()"/>
+=======
+<img src="../../assets/CONGRATULATIONS.png" class="Congrats" alt="NitroNumbers"/>
+<img src ="../../assets/Rematch.png" class = "Rematch" alt = "Rematch" onclick="Start()"/>
+<img src ="../../assets/Pitstop.png" class = "Quit" alt = "Quit" onclick="Quit()"/>
+>>>>>>> Stashed changes:frontend/old/Finishscreen.html
 </body>
 <script>
     let storedTime = localStorage.getItem('finalTime') || "00:00"; // Default to "00:00" if no value exists
