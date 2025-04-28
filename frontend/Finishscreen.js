@@ -5,7 +5,7 @@ function timeToSeconds(timeStr) {
     return minutes * 60 + seconds;
 }
 function podium() {
-    const car = document.getElementById('car');
+    let car = document.getElementById('car');
     const totalTime = timeToSeconds(storedTime);
 
     // Add transition for smooth animation
