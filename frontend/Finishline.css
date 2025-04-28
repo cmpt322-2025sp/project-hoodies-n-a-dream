@@ -1,5 +1,5 @@
 /* ---------------------------------------------Finishline------------------------------------------- */
-body {
+.Finishline {
     margin: 0;
     width: 100vw;
     height: 100vh;
@@ -44,7 +44,7 @@ body {
     width: 100vw;
     z-index: 10;
 }
-.carfl {
+.car1  {
     width: 250px;
     height: 125px;
     position: absolute;

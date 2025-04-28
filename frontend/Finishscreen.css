@@ -1,15 +1,22 @@
 /* -----------------------------------------Finishscreen------------------------------------------- */
 .Finishscreen {
     margin: 0;
+    width: 100vw;
     height: 100vh;
-    background-image: url("../assets/Finish.png");
-    background-size: 100% 100%;
-    background-repeat: repeat-x;
-    background-position: bottom center, center -40%;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+#finishsection {
+    background-image: url('../Assets/Finish.png');
+    background-repeat: repeat-x;
+    background-size: 100% 100%;
+    position: absolute;
+    top: -17%;
+    left: -20%;
+    height: 100vh;
+    width: 120vw;
+    z-index: 12;
 }
 
 .Congrats {
@@ -20,6 +27,7 @@
     top: 30%;
     transform: translateY(-50%);
     animation: slideIn 3s forwards, shine 1.5s 3s forwards;
+    z-index: 100;
 }
 @keyframes slideIn {
     0% {
@@ -50,6 +58,7 @@
     left: 20%;
     transform: translateX(-50%);
     animation: slideUp 2s 3s forwards, shine 1.5s 5s infinite alternate;
+    z-index: 100;
 }
 
 @keyframes slideUp {
@@ -67,6 +76,7 @@
     position: absolute;
     bottom: -200px; /* Start offscreen */
     left: 90%;
+    z-index: 100;
     transform: translateX(-50%);
     animation: slideUp 2s 3s forwards, shine 1.5s 5s infinite alternate;
 }
@@ -86,6 +96,7 @@
     left: 35%;
     width: 400px;
     height: 300px;
+    z-index: 100;
     animation:  flipCar .5s infinite;
 }
 
@@ -126,7 +137,7 @@
     justify-content: start;
     color: white;
 }
-#car1-model {
+#car1-models {
     display: flex;
     align-items: center;
     justify-content: center;

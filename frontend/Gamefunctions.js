@@ -3,7 +3,7 @@
 //Update:2/25/2025
 //Purpose: Car movement and game functions
 
-const car = document.getElementById('car');
+const carElements = document.querySelectorAll('#car, #car1, #car2'); // Add more IDs if needed
 const flipFrames = ['../assets/Car6.png', '../assets/Car7.png', '../assets/Car8.png', '../assets/Car1.png'];
 let moveSpeed = 5;
 let isFlipping = false;
@@ -175,24 +175,21 @@ function GameClock() {
 }
 
 function animateCar() {
-    car.style.left = carPosition + 'px';
+    carElements.forEach(car => {
+        car.style.left = carPosition + 'px';
+    });
     carStreak.style.transform = `translateX(${carPosition}px)`;
     carShield.style.transform = `translateX(${carPosition}px)`;
 
     if (ending && carSpeed < 6) {
         carSpeed += 1;
-    }
-
-    else if (carSpeed < 1 && carPosition <= window.innerWidth * positionalIndex) {
+    } else if (carSpeed < 1 && carPosition <= window.innerWidth * positionalIndex) {
         carSpeed += 0.01;
-    }
-
-    else if (carSpeed > -1 && carPosition >= window.innerWidth * positionalIndex) {
+    } else if (carSpeed > -1 && carPosition >= window.innerWidth * positionalIndex) {
         carSpeed -= 0.01;
     }
 
     carPosition += carSpeed;
-
 
     requestAnimationFrame(animateCar);
 }
@@ -204,7 +201,9 @@ function performFlip() {
         let flipIndex = 0;
         const flipInterval = setInterval(() => {
             if (flipIndex < flipFrames.length) {
-                car.src = flipFrames[flipIndex];
+                carElements.forEach(car => {
+                    car.src = flipFrames[flipIndex];
+                });
                 flipIndex++;
             } else {
                 clearInterval(flipInterval);
@@ -213,6 +212,7 @@ function performFlip() {
         }, 100);
     }
 }
+
 
 window.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
@@ -257,7 +257,9 @@ function moveCar() {
             return;
         }
         carPosition += moveSpeed;
-        car.style.left = carPosition + 'px';
+        carElements.forEach(car => {
+            car.style.left = carPosition + 'px';
+        });
         requestAnimationFrame(moveCar);
     }
 }

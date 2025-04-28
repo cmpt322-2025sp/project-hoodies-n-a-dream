@@ -112,26 +112,27 @@
         <div id="cup"></div>
         <div id="finish_track"></div>
         <div>
-            <img class="car carfl" src="../assets/Car1.png" alt="Car">
+            <<img id="car2" class="car1" src="../assets/Car1.png" alt="Car1">
         </div>
     </section>
 
 
     <section data-view="finishScreen">
         <div>
-            <img class="car carfs" src="../assets/Car1.png" alt="Car">
+            <img id = "car3" class="carfs" src="../assets/Car1.png" alt="Car">
         </div>
         <div class="players">
             <div class="player1">
-                <img id="car1-model" src="../assets/Car1.png">
+                <img id="car1-models" src="../assets/Car1.png">
                 <h1 id="player-border"> Player1</h1>
             </div>
             <h1 id="clockfs">00:00</h1>
-
+            <div id="finishsection"></div>
         </div>
         <img src="../assets/CONGRATULATIONS.png" class="Congrats" alt="NitroNumbers"/>
-        <img src ="../assets/Rematch.png" class = "Rematch" alt = "Rematch" onclick="Start()"/>
-        <img src ="../assets/Pitstop.png" class = "Quit" alt = "Quit" onclick="Quit()"/>
+        <img src ="../assets/Rematch.png" class = "Rematch" alt = "Rematch" onclick="Restart()"/>
+        <img src ="../assets/Pitstop.png" class = "Quit" alt = "Quit" onclick="Pitstop()"/>
+
     </section>
 
 </body>
@@ -152,7 +153,6 @@
 <script src="Gamefunctions.js"></script>
 <script src="Startscreen.js"></script>
 <script src="Questions.js"></script>
-<!--<script src="FinishLine.js"></script>-->
-<!--<script src="Finishscreen.js"></script>-->
+
 
 </html>
