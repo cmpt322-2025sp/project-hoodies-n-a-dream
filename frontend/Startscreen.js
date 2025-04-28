@@ -1,21 +1,10 @@
-const ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
-ws.onopen = () => {
-    console.log("✅ WebSocket Connected");
-};
+function createGame() {
+    ws.send(JSON.stringify({ type: "createGame" }));
+}
 
-ws.onmessage = (event) => {
-    console.log("📩 Received:", event.data);
-};
-
-ws.onerror = (error) => {
-    console.error("❌ WebSocket Error:", error);
-};
-
-ws.onclose = () => {
-    console.log("🔴 WebSocket Disconnected");
-};
 function Create() {
-    // Show the three option buttons instead of navigating immediately
+    createGame();
+    // Show the three option buttons after creating the game
     document.getElementById("buttonContainer").style.display = "block";
 }
 
@@ -25,7 +14,7 @@ function addition() {
     localStorage.setItem("difficulty",value);
     // When a player clicks one of the three buttons, proceed to game
     navigateTo("gameAnimation");
-    d
+
 }
 function subtraction() {
     let  value = "subtraction";
