@@ -17,7 +17,6 @@ ws.onclose = () => {
 function Create() {
     // Show the three option buttons instead of navigating immediately
     document.getElementById("buttonContainer").style.display = "block";
-    navigateTo("gameAnimation");
 }
 
 function addition() {
@@ -25,20 +24,21 @@ function addition() {
     // Holds difficulty for questions
     localStorage.setItem("difficulty",value);
     // When a player clicks one of the three buttons, proceed to game
-    window.location.href = "Game_Animation.html";
+    navigateTo("gameAnimation");
+    d
 }
 function subtraction() {
     let  value = "subtraction";
     // Holds difficulty
     localStorage.setItem("difficulty",value);
     // holds difficulty
-    window.location.href = "Game_Animation.html";
+    navigateTo("gameAnimation");
 }
 function multiplication() {
     let  value = "multiplication";
     // When a player clicks one of the three buttons, proceed to game
     localStorage.setItem("difficulty",value);
-    window.location.href = "Game_Animation.html";
+    navigateTo("gameAnimation");
 }
 function Code() {
     let userCode = prompt("Enter your code:");
