@@ -33,6 +33,7 @@ export function createGame(gameDifficulty: string, hostName: string, hostSocket:
     const player: Player = {
         name: hostName,
         websocket: hostSocket,
+        time: "NF",
         attempts: 0,
         score: 0,
         status: "waiting"
@@ -77,6 +78,7 @@ export function joinGame(gameID: string, playerName: string, playerSocket: Webso
     const newPlayer: Player = {
         name: playerName,
         websocket: playerSocket,
+        time: "NF",
         attempts: 0,
         score: 0,
         status: "waiting"
@@ -111,19 +113,65 @@ export function startGame(gameID: string) {
     sendCountdown(gameID, 3);
 }
 
-
-export function updatePlayerProgress(gameID: string, player: WebSocket): string {
-    const game = gameRooms.get(gameID);
+export function scoreUpdate(gameID: string, player: WebSocket, score: number, attempts: number): string {
+    const game = gameRooms.getGame(gameID);
     if (!game) {
-        console.log("[ERROR] Failed to update player game count");
-        return JSON.stringify( {"type": "ERROR", "message": "Game not found"}) ;
-    } else if (game.status != "open") {
-        return JSON.stringify( {"type": "ERROR", "message": "Game not join-able"}) ;
-    } else {
-
+        console.log("[ERROR] Failed to update player score - game not found");
+        return JSON.stringify({ type: "ERROR", message: "Game not found" });
     }
-    game.players.get(player)!.answered++;
-    console.log("[INFO] Updated players score: ", game.players.get(player).answered);
+
+    // Find the player who answered
+    const playerEntry = game.players.find(p => p.websocket === player);
+    if (!playerEntry) {
+        console.log("[ERROR] Failed to update player score - player not in game");
+        return JSON.stringify({ type: "ERROR", message: "Player not in game" });
+    }
+
+    // Update attempts and score
+    playerEntry.attempts = attempts;
+    playerEntry.score = score;
+    console.log("[INFO] Updated player score: ", playerEntry.name, score, "attempts:", attempts);
+
+    // Persist updated players list
+    gameRooms.updateGame(gameID, { players: game.players });
+
+    // Broadcast the score update to other players
+    const report = JSON.stringify({ type: "scoreReport", name: playerEntry.name, score: score });
+    broadcast(gameID, report, playerEntry.name, true);
+
+    // Return the report for the caller
+    return report;
+}
+
+export function leaveGame(gameID: string, playerSocket: WebSocket): string {
+    console.log("[INFO] Leaving Game ", gameID);
+    const game = gameRooms.getGame(gameID);
+    if (!game) {
+        console.log("[ERROR] Leaving Game ", gameID);
+        return JSON.stringify({ "type": "ERROR", "message": "Game not found" });
+    }
+    // Find the player to remove
+    const removedPlayer = game.players.find(player => player.websocket === playerSocket);
+    if (!removedPlayer) {
+        return JSON.stringify({ "type": "ERROR", "message": "Player not in game" });
+    }
+    // Remove the player from the players array
+    const updatedPlayers = game.players.filter(player => player.websocket !== playerSocket);
+    // Update the game store with the new players list
+    gameRooms.updateGame(gameID, { players: updatedPlayers });
+    // If the room was full and the game hasn't started, reopen it
+    if (game.status === "full") {
+        gameRooms.updateGame(gameID, { status: "open" });
+    }
+    // Broadcast the removal to the remaining players
+    const message = JSON.stringify({ "type": "playerRemoved", "name": removedPlayer.name });
+    broadcast(gameID, message, removedPlayer.name, true);
+    // Return a response to the leaving player with the updated player list
+    return JSON.stringify({
+        "type": "leftGame",
+        "gameID": gameID,
+        "players": updatedPlayers.map(p => p.name)
+    });
 }
 
 export function getPlayerProgress(gameID: string): Record<string, number> {
@@ -140,6 +188,47 @@ export function getPlayerProgress(gameID: string): Record<string, number> {
     console.log(progress);
 
     return progress;
+}
+
+export function gameComplete(gameID: string, playerSocket: WebSocket, time: string, attempts: number) {
+    const game = gameRooms.getGame(gameID);
+    if (!game) {
+        console.log("[ERROR] Game not found for completion");
+        return;
+    }
+
+    // Find the player who finished
+    const playerEntry = game.players.find(p => p.websocket === playerSocket);
+    if (!playerEntry) {
+        console.log("[ERROR] Player not in game for completion");
+        return;
+    }
+
+    // Update the player's time, attempts, and status
+    playerEntry.time = time;
+    playerEntry.attempts = attempts;
+    playerEntry.status = "completed";
+
+    // Persist updated players list
+    gameRooms.updateGame(gameID, { players: game.players });
+
+    // Broadcast the completion report to all players
+    const report = JSON.stringify({
+        type: "gameCompleted",
+        players: game.players.map(p => ({
+            name: p.name,
+            time: p.time,
+            attempts: p.attempts
+        }))
+    });
+    broadcast(gameID, report, null, false);
+
+    // If all players have completed, delete the game room
+    const allDone = game.players.every(p => p.status === "completed");
+    if (allDone) {
+        gameRooms.delete(gameID);
+        console.log("[INFO] All players completed. Game deleted:", gameID);
+    }
 }
 
 export function endGame(gameID: string) {
@@ -175,7 +264,6 @@ const sendCountdown = async (gameID: string, seconds: number = 3) => {
     });
     broadcast(gameID, startMessage, null, false);
 };
-
 
 async function sendQuestions(gameID: string) {
     const game = gameRooms.getGame(gameID);
@@ -230,7 +318,6 @@ function waitForPlayerResponse(player: Player, expectedType: string, timeout = 5
         player.ws.addEventListener("message", messageHandler);
     });
 }
-
 
 export function updatePlayerStatus(gameID: string, socket: WebSocket, newStatus: string) {
     const game = gameRooms.getGame(gameID)

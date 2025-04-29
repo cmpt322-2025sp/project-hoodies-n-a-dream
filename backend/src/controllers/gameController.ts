@@ -6,7 +6,17 @@
  * Description: gameController.ts processes all websocket communication
  *              regarding controlling the game
  */
-import { createGame, joinGame, startGame, updatePlayerStatus, updatePlayerProgress, getPlayerProgress, endGame } from "../services/gameServices.ts";
+import {
+    createGame,
+    joinGame,
+    startGame,
+    updatePlayerStatus,
+    scoreUpdate,
+    gameComplete,
+    getPlayerProgress,
+    endGame,
+    leaveGame
+} from "../services/gameServices.ts";
 
 export function handleGameMessages(socket: WebSocket, data: string) {
     try{
@@ -38,6 +48,14 @@ export function handleGameMessages(socket: WebSocket, data: string) {
                 break;
             }
 
+            case "leaveGame": {
+                console.log("[INFO] Remove Player");
+                const gameID = data.gameID;
+                const response = leaveGame(gameID, socket);
+                socket.send(response);
+                break;
+            }
+
             case "startGame": {
                 console.log("[INFO] Game Start")
                 const gameID = data.gameID;
@@ -52,16 +70,20 @@ export function handleGameMessages(socket: WebSocket, data: string) {
             }
 
             case "scoreUpdate": {
+                //Client -> Server { "type": "scoreUpdate", "gameID": "1234", "score": "10", "attempts": "12" }
                 console.log("[INFO] Triggered score update")
-                const { gameID } = message;
-                updatePlayerProgress(gameID, socket);
-
-                const progress = getPlayerProgress(gameID);
-                socket.send(JSON.stringify({ type: "progressUpdate", progress }));
+                const gameID  = data.gameID;
+                const score = data.score;
+                const attempts = data.attempts
+                scoreUpdate(gameID, socket, score, attempts);
                 break;
             }
 
-            case "completeGame": {
+            case "gameComplete": {
+                const gameID = data.gameID;
+                const time =  data.time;
+                const attempts = data.attempts;
+                gameComplete(gameID, socket, time, attempts);
                 break;
             }
 

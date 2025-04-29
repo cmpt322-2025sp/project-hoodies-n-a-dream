@@ -1,5 +1,5 @@
 <!DOCTYPE html>
- <html lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>WebSocket Game Client</title>
@@ -50,9 +50,11 @@
     <button onclick="joinGame()">🎮 Join Game</button>
 </div>
 <button onclick="startGame()">🏎️ Start Game</button>
+<button id="leaveButton" onclick="leaveGame()" style="display:none">👋️ Leave Game</button>
 <button onclick="requestQuestion('easy')">❓ Request Question</button>
-<button onclick="submitScore()">📊 Submit Random Score</button>
-<button onclick="gameEnd()">❌ End Game</button>
+<button onclick="submitScore()">📊 Increment Score</button>
+<button onclick="incrementAtt()">👾 Increment Attempts</button>
+<button onclick="gameEnd()">❌ Complete</button>
 
 <!-- DISPLAY AREA -->
 <h3 id="game-info"></h3>
@@ -65,8 +67,10 @@
 <div id="log"></div>
 
 <script>
+    let score = 0;
+    let attempts = 0;
     // 1) WebSocket Setup
-    let ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
+    let ws = new WebSocket("ws://localhost:8000/ws");
 
     // 2) Tracking the Current Game
     let gameID = null;
@@ -86,11 +90,13 @@
                 // Save the new gameID
                 gameID = response.gameID;
                 document.getElementById("game-info").innerText = `Game Created! ID: ${gameID}`;
+                showLeaveButton();
                 break;
 
             case "joinedGame":
                 gameID = response.gameID;
                 document.getElementById("game-info").innerText = `Joined Game: ${gameID}`;
+                showLeaveButton();
                 break;
 
             case "playerJoined":
@@ -128,12 +134,12 @@
                 logMessage(`Score Update for ${response.name}: ${response.score}`);
                 break;
 
-            case "gameCompleted":
-                logMessage("🏆 Game Over! Results:");
-                response.players.forEach(player => {
-                    logMessage(` - ${player.name}: Score = ${player.score}, Time = ${player.time}`);
-                });
-                break;
+            // case "gameCompleted":
+            //     logMessage("🏆 Game Over! Results:");
+            //     response.players.forEach(player => {
+            //         logMessage(` - ${player.name}: Score = ${player.score}, Time = ${player.time}`);
+            //     });
+            //     break;
 
             case "ERROR":
                 logMessage(`❌ ERROR: ${response.message}`);
@@ -151,9 +157,21 @@
         logDiv.innerHTML = `<p>${msg}</p>` + logDiv.innerHTML;
     }
 
+    // Show/hide the Leave button based on game state
+    function showLeaveButton() {
+        document.getElementById("leaveButton").style.display = "inline-block";
+    }
+    function hideLeaveButton() {
+        document.getElementById("leaveButton").style.display = "none";
+    }
+
     // 5) Game Actions
     function createGame() {
         ws.send(JSON.stringify({ type: "createGame" }));
+    }
+
+    function incrementAtt() {
+        attempts += 1;
     }
 
     function joinGame() {
@@ -165,6 +183,14 @@
             gameID: roomCode,
             name: name
         }));
+    }
+
+    function leaveGame() {
+        ws.send(JSON.stringify({
+            type: "leaveGame",
+            gameID: gameID
+        }));
+        hideLeaveButton();
     }
 
     function startGame() {
@@ -185,7 +211,6 @@
             logMessage("⚠️ No Game ID. Must join or create a game first.");
             return;
         }
-        // Ask server for 20 questions
         ws.send(JSON.stringify({
             type: "requestNextQuestion",
             difficulty: difficulty
@@ -194,31 +219,25 @@
 
     // 7) Display the Question & Answers
     let currentCorrectAnswer = null;
+    let currentQuestionSet = [];
+    let currentQuestionIndex = 0;
     function displayQuestion(questionObj) {
-        // Clear old content
         const container = document.getElementById("question-container");
         container.innerHTML = "";
 
-        // Show the question text
         const questionText = document.createElement("h3");
         questionText.innerText = questionObj.question;
         container.appendChild(questionText);
 
-        // Prepare 4 answers
         const answers = [...questionObj.incorrect_answers, questionObj.correct_answer];
         answers.sort(() => Math.random() - 0.5);
-
-        // Store the correct answer
         currentCorrectAnswer = questionObj.correct_answer;
 
-        // Create a button for each possible answer
         answers.forEach(answer => {
             const btn = document.createElement("button");
             btn.className = "answer-button";
             btn.innerText = answer;
-            btn.onclick = () => {
-                checkAnswer(questionObj.id, answer);
-            };
+            btn.onclick = () => checkAnswer(questionObj.id, answer);
             container.appendChild(btn);
         });
     }
@@ -237,14 +256,12 @@
             questionID: questionID
         }));
 
-        // Move to the next question, if any exist
         setTimeout(() => {
             currentQuestionIndex++;
             if (currentQuestionIndex < currentQuestionSet.length) {
                 displayQuestion(currentQuestionSet[currentQuestionIndex]);
             } else {
                 logMessage("🎉 You’ve reached the end of the question set!");
-                // Optionally do something else: end game, show final results, etc.
             }
         }, 800);
     }
@@ -255,11 +272,12 @@
             logMessage("⚠️ No game started yet!");
             return;
         }
-        let score = Math.floor(Math.random() * 100);
+        score += 1;
         ws.send(JSON.stringify({
             type: "scoreUpdate",
             gameID: gameID,
-            score: score
+            score: score,
+            attempts: attempts
         }));
         logMessage("Score submitted: " + score);
     }
@@ -271,8 +289,10 @@
             return;
         }
         ws.send(JSON.stringify({
-            type: "endGame",
-            gameID: gameID
+            type: "gameComplete",
+            gameID: gameID,
+            time: "1:45:32",
+            attempts: 20
         }));
         logMessage("❌ Game Ended");
     }

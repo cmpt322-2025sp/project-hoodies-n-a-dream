@@ -9,6 +9,7 @@
 interface Player {
     name: string;
     websocket: WebSocket;
+    time: string;
     attempts: number;
     score: number;
     status: "waiting" | "ready" | "completed";
