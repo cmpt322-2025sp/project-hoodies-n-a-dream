@@ -159,8 +159,8 @@ function checkAnswer(button) {
                     answerStreak.style.animation = "none";
                     answerStreak.offsetWidth;
                     answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
-                    fireStreaks[0].src = "../Assets/fireStreak6.png";
-                    fireStreaks[1].src = "../Assets/fireStreak6.png";
+                    fireStreaks[0].src = "../assets/fireStreak6.png";
+                    fireStreaks[1].src = "../assets/fireStreak6.png";
                     fireStreaks[2].style.visibility = "visible";
                     break;
 
@@ -201,10 +201,10 @@ function checkAnswer(button) {
                     answerStreak.style.animation = "none";
                     answerStreak.offsetWidth;
                     answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
-                    fireStreaks[0].src = "../Assets/fireStreak3.png";
-                    fireStreaks[1].src = "../Assets/fireStreak3.png";
-                    fireStreaks[2].src = "../Assets/fireStreak3.png";
-                    fireStreaks[3].src = "../Assets/fireStreak3.png";
+                    fireStreaks[0].src = "../assets/fireStreak3.png";
+                    fireStreaks[1].src = "../assets/fireStreak3.png";
+                    fireStreaks[2].src = "../assets/fireStreak3.png";
+                    fireStreaks[3].src = "../assets/fireStreak3.png";
                     fireStreaks[4].style.visibility = "visible";
                     break;
                 case 18:
@@ -261,8 +261,8 @@ function checkAnswer(button) {
         for (let i = 0; i < fireStreaks.length; i++) {
             fireStreaks[i].style.visibility = "hidden";
         }
-        fireStreaks[0].src = "../Assets/fireStreak5.png";
-        fireStreaks[1].src = "../Assets/fireStreak5.png";
+        fireStreaks[0].src = "../assets/fireStreak5.png";
+        fireStreaks[1].src = "../assets/fireStreak5.png";
         button.style.animation = "shake 0.3s ease-in-out 3, fadeOut 4s forwards";
         wrongSound.play(8.4);
         setTimeout(() => {
