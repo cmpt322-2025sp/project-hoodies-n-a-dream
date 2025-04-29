@@ -4,8 +4,13 @@
 //Purpose: Car movement and game functions
 
 const carElements = document.querySelectorAll('#car, #car1, #car2'); // Add more IDs if needed
+const orangeCar = document.getElementById("orangeCar");
+const purpleCar = document.getElementById("purpleCar");
+const blueCar = document.getElementById("blueCar");
+
 const flipFrames = ['../assets/Car6.png', '../assets/Car7.png', '../assets/Car8.png', '../assets/Car1.png'];
-let moveSpeed = 5;
+let
+    Speed = 5;
 let isFlipping = false;
 let moving = false;
 let introPlaying = true;
@@ -28,7 +33,7 @@ let speedT = 45; // speed of Transition background
 let carSpeed = 0 //speed of Car
 let maxMapSpeed = 1;
 let maxTrackSpeed = 35;
-let positionalIndex = 0.15;
+let positionalIndex = 0.15; //The point where the car is bounded too, where its acceleration changes from + and -
 
 let maps = [map1, map2, map3];
 let index = 0;
@@ -47,7 +52,6 @@ const countSound = document.getElementById("countSound");
 const soundTrack = document.getElementById("soundTrack");
 
 const countDown1 = document.getElementById('countDown');
-
 
 const carShield = document.getElementById("carShield");
 
@@ -175,9 +179,15 @@ function GameClock() {
 }
 
 function animateCar() {
+    /*
     carElements.forEach(car => {
         car.style.left = carPosition + 'px';
     });
+     */
+    orangeCar.style.left = carPosition + 'px';
+    purpleCar.style.left = carPosition + 'px';
+    blueCar.style.left = carPosition + 'px';
+
     carStreak.style.transform = `translateX(${carPosition}px)`;
     carShield.style.transform = `translateX(${carPosition}px)`;
 

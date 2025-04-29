@@ -96,10 +96,22 @@ body {
     width: 14vw;
     height: 11vh;
     position: absolute;
-    top: 75vh;
-    left: -5vw;
-    transform: translate(-50%, -50%);
     z-index: 100;
+    border: 2px solid red;
+}
+
+#orangeCar {
+    left: -2.5vw;
+    bottom: 18.5vh;
+}
+
+#blueCar {
+    left: -5vw;
+    bottom: -1vh;
+}
+#purpleCar {
+    left: -5vw;
+    bottom: 8.5vh;
 }
 
 .equation-container{
