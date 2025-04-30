@@ -138,6 +138,40 @@
 </body>
 
 <script>
+    let ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
+    let gameID = null;
+
+    ws.onopen = () => console.log("✅ WebSocket Connected");
+    ws.onmessage = (event) => {
+        const response = JSON.parse(event.data);
+        if (response.type === "gameCreated") {
+            gameID = response.gameID;
+            console.log(`Game created with ID: ${gameID}`);
+            navigateTo("gameAnimation");
+            // Show the buttons container after game creation
+            document.getElementById('buttonContainer').style.display = 'block';
+            // Update room-code display
+            const roomCodeElem = document.getElementById('room-code');
+            if(roomCodeElem) roomCodeElem.textContent = `Game ID: ${gameID}`;
+        }
+    };
+
+    function createGameAndNavigate() {
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: "createGame" }));
+        } else {
+            console.error("WebSocket not open yet.");
+        }
+    }
+</script>
+<script src="Gamefunctions.js"></script>
+<script src="Startscreen.js"></script>
+<script src="Questions.js"></script>
+<!--<script src="FinishLine.js"></script>-->
+<script src="Finishscreen.js"></script>
+
+
+<script>
     function navigateTo(viewName) {
         // hide every view
         document.querySelectorAll('[data-view]').forEach(sec => {
