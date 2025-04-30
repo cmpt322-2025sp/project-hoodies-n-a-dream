@@ -110,7 +110,7 @@ export function startGame(gameID: string) {
 
     gameRooms.updateGame(gameID, { status: "racing" });
     sendQuestions(gameID);
-    sendCountdown(gameID, 3);
+    sendCountdown(gameID, 0);
 }
 
 export function scoreUpdate(gameID: string, player: WebSocket, score: number, attempts: number): string {
