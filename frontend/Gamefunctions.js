@@ -199,7 +199,6 @@ function animateTransition() {
 function resetTransition() {
     positionT = 0;
 }
-let totalTime = 0;
 
 // Function to create sparks
 function createPlayer2 () {
@@ -238,12 +237,13 @@ function createSpark(x, y) {
     }, randomSpeed * 1000); // Matches the duration of the animation
 }
 let clockRunning = false;
+let totalTime = 0;
+
 function GameClock() {
-    if (clockRunning) return; // prevent duplicates
-    clockRunning = true;
-    window.clockInterval = setInterval(() => {
+
+
+    const clockInterval = setInterval(() => {
         ones++;
-        totalTime++;
         if (ones === 10) {
             tens++;
             ones = 0;
@@ -256,9 +256,8 @@ function GameClock() {
                 }
             }
         }
-         window.finalTime = thous.toString() + hunds + ':' + tens + ones;
-        document.getElementById('clock').innerText = finalTime;
-        document.getElementById('clockfs').innerText = finalTime;
+         clock.style.innerHTML = thous.toString() + hunds.toString() + ':' + tens.toString() + ones.toString();
+
     }, 1000);
 }
 

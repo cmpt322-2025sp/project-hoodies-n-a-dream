@@ -101,9 +101,9 @@ body {
 }
 
 .topCar {
-    left: -7.5vw;
+    left: -10vw;
     bottom: 18.5vh;
-    animation: introMovingCar2 2s linear forwards;
+    animation: introMovingCar 2s linear forwards;
 }
 
 .bottomCar {
@@ -256,17 +256,8 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: -13%;
-    width: 47%;
-    height: 100%;
-    z-index: 80;
-}
-.car-models2 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-left: -13%;
-    width: 47%;
+    margin-left: -3%;
+    width: 30%;
     height: 100%;
     z-index: 80;
 }
@@ -274,13 +265,13 @@ button:hover {
     display:flex;
     justify-content: center;
     align-items: center;
-    width: 60%;
+    width: 40%;
     height: 100%;
-    margin-left: -35%;
+    margin-left: -10%;
     color: white;
     font-size: 1em;
     font-family: 'game-font', sans-serif;
-    margin-top: 0;
+    margin-top: -1%;
     z-index: 80;
     background: linear-gradient(to right, mediumspringgreen, springgreen);
     -webkit-background-clip: text;
@@ -314,14 +305,6 @@ button:hover {
     }
     to {
         left: -5vw;
-    }
-}
-@keyframes introMovingCar2 {
-    from {
-        left: -7.5vw;
-    }
-    to {
-        left: -2vw;
     }
 }
 
