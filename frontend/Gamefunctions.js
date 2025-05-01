@@ -58,9 +58,9 @@ const soundTrack = document.getElementById("soundTrack");
 const countDown1 = document.getElementById('countDown');
 
 const carShield = document.getElementById("carShield");
-middleCar = document.querySelector('middleCar');
-bottomCar = document.querySelector('bottomCar');
-topCar = document.querySelector('topCar');
+middleCar = document.querySelector('.middleCar');
+bottomCar = document.querySelector('.bottomCar');
+topCar = document.querySelector('.topCar');
 
 playerCountValue = playerCount.value;
 let previousValue = 0;
@@ -95,7 +95,6 @@ function createPlayerPositions(updatedResponse) {
 
 function updatePlayerCount(updatedResponse) {
 
-
     console.log('We made it to updatePlayerCount Function!!!!!!!!!!');
     console.log('number if Players:' + numberOfPlayers);
     if (numberOfPlayers === 3) {
@@ -104,7 +103,6 @@ function updatePlayerCount(updatedResponse) {
     else if(numberOfPlayers === 2) {
         console.log("We made it again");
         middleCar.style.visibility = 'visible';
-        middleCar.offsetWidth;
     }
 
 }
