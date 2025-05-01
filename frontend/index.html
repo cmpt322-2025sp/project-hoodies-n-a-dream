@@ -160,6 +160,7 @@
 </body>
 <script>
 let numberOfPlayers = 1;
+let currentPlayer = 0;
 </script>
 <script src="Questions.js"></script>
 <script src="Gamefunctions.js"></script>
@@ -191,6 +192,7 @@ let numberOfPlayers = 1;
                 gameID = response.gameID;
                 // document.getElementById("game-info").innerText = `Joined Game: ${gameID}`;
                 createPlayerPositions(response);
+                console.log(">>>> Positions Generated Triggering Join");
                 navigateTo("gameAnimation");
                 break;
 

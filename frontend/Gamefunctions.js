@@ -74,7 +74,6 @@ let bottomCar = document.querySelector('.bottomCar');
 let topCar = document.querySelector('.topCar');
 
 playerCountValue = playerCount.value;
-let currentPlayer = 0;
 let previousValue = 0;
 
 
