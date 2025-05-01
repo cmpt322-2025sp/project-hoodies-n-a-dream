@@ -109,6 +109,7 @@ function createPlayerPositions(updatedResponse) {
         middleCar.style.visibility = "visible";
         topCar.style.visibility = "visible";
     }
+    numberOfPlayers = lengthOfPlayerArray;
 }
 
 function updatePlayerCount() {
