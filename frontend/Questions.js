@@ -237,7 +237,7 @@ function checkAnswer(button) {
 
             flag2 = true;
 
-            if (questionCount >= 20) {
+            if (questionCount >= 2) {
                 ending = true
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 //window.location.href = "FinishLine.html";
