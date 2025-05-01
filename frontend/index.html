@@ -63,8 +63,8 @@
         </div>
 
         <div class="playersInGameContainer">
-            <div class="playersInGame">
-                <img class="car-models" src="../assets/Car1.png" alt="orangeCarModel">
+            <div id="p1_model" class="playersInGame">
+                <img class="car-models" src="../Assets/Car1.png" alt="orangeCarModel">
                 <h1 class="player_text"> Player   1</h1>
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
@@ -73,13 +73,25 @@
                 <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#5">
                 <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#6">
             </div>
-            <div class="playersInGame">
-                <img class="car-models2" src="../assets/PurpleCar-1.png" alt="purpleCarModel">
+            <div id="p2_model" class="playersInGame">
+                <img class="car-models" src="../assets/PurpleCar-1.png" alt="purpleCarModel">
                 <h1 class="player_text"> Player   2</h1>
+                <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
+                <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
+                <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
+                <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#4">
+                <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#5">
+                <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#6">
             </div>
-            <div class="playersInGame">
-                <img class="car-models2" src="../assets/BlueCar-4.png" alt="blueCarModel">
+            <div id="p3_model" class="playersInGame">
+                <img class="car-models" src="../assets/BlueCar-4.png" alt="blueCarModel">
                 <h1 class="player_text"> Player   3</h1>
+                <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
+                <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
+                <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
+                <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#4">
+                <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#5">
+                <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#6">
             </div>
         </div>
 
@@ -311,6 +323,33 @@ let numberOfPlayers = 1;
         });
     }
 
+    // 8) Check the selected answer
+    /*
+    function checkAnswer(questionID, chosenAnswer) {
+        const isCorrect = (chosenAnswer === currentCorrectAnswer);
+        logMessage(isCorrect ? "✅ Correct!" : "❌ Wrong!");
+
+        const points = isCorrect ? 10 : 0;
+        ws.send(JSON.stringify({
+            type: "scoreUpdate",
+            gameID: gameID,
+            score: points,
+            attempts: 1,
+            questionID: questionID
+        }));
+
+        // Move to the next question, if any exist
+        setTimeout(() => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestionSet.length) {
+                displayQuestion(currentQuestionSet[currentQuestionIndex]);
+            } else {
+                logMessage("🎉 You’ve reached the end of the question set!");
+                // Optionally do something else: end game, show final results, etc.
+            }
+        }, 800);
+    }
+     */
 </script>
 <!--<script src="Gamefunctions.js"></script>-->
 <!--<script src="Startscreen.js"></script>-->

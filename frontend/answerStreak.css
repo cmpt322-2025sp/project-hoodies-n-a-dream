@@ -120,8 +120,8 @@
 
 #carStreak {
     position: absolute;
-    left: -15vw;
-    bottom: 23vh;
+    left: -10vw;
+    bottom: 23.3vh;
     width: 18vw;
     height: 0.5vh;
     background-image: linear-gradient(to right, transparent 50%, lightpink 60%, lightsalmon 70%, lightcoral 80%, orange 90%, orangered 100%, transparent 100%);
@@ -180,8 +180,8 @@
     position: absolute;
     width: 12vw;
     height: 9vh;
-    bottom: 19.6vh;
-    left: -5.4vw;
+    bottom: 20.2vh;
+    left: -1.9vw;
     border-right: 5px solid springgreen;
     border-radius: 85%;
     /* Apply box-shadow on the right side only */

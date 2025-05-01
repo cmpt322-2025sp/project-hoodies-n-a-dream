@@ -339,6 +339,7 @@ function playCountDownSound(start, end) {
 
     let duration = (end - start) * 1000;
     setTimeout(() => {
+        countSound.pause();
         countSound.currentTime = 0;
     }, duration);
 }
