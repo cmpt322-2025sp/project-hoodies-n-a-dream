@@ -61,9 +61,9 @@
 
         <div id="room-code">Game ID: Loading...</div>
         <div>
-            <img id="orangeCar" class="car" src="../Assets/Car1.png" alt="Car">
-            <img id="blueCar" class="car" src="../Assets/BlueCar-4.png" alt="blueCar">
-            <img id="purpleCar" class="car" src="../Assets/PurpleCar-1.png.png" alt="purpleCar">
+            <img id="orangeCar" class="car" src="../assets/Car1.png" alt="Car">
+            <img id="blueCar" class="car" src="../assets/BlueCar-4.png" alt="blueCar">
+            <img id="purpleCar" class="car" src="../assets/PurpleCar-1.png.png" alt="purpleCar">
         </div>
 
         <div class="playersInGameContainer">
@@ -237,7 +237,6 @@
                 logMessage("ℹ️ Unhandled response: " + JSON.stringify(response));
         }
     };
-
 
     function createGameAndNavigate() {
         if (ws.readyState === WebSocket.OPEN) {
