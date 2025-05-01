@@ -117,10 +117,6 @@ function checkAnswer(button) {
         streak++;
         maxMapSpeed += .1;
         maxTrackSpeed += 1;
-        if (questionCount%2 === 0) {
-            positionalIndex += 0.05;
-        }
-
         button.classList.add("right-buttons");
         if (streak >= 8) {
             button.classList.add('right-buttons');
@@ -258,7 +254,7 @@ function checkAnswer(button) {
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 //window.location.href = "FinishLine.html";
                 stopGame();
-                clearInterval(clockInterval);
+                //clearInterval(clockInterval);
                 setTimeout ( () => navigateTo('finishLine'), 1500);
 
                 // carPosition = 20;
