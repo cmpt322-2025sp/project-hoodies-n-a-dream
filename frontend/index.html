@@ -190,9 +190,8 @@ let currentPlayer = 0;
 
             case "joinedGame":
                 gameID = response.gameID;
-                // document.getElementById("game-info").innerText = `Joined Game: ${gameID}`;
+                document.getElementById("room-code").innerText = `Game ID: ${gameID}`;
                 createPlayerPositions(response);
-                console.log(">>>> Positions Generated Triggering Join");
                 navigateTo("gameAnimation");
                 break;
 
@@ -208,6 +207,7 @@ let currentPlayer = 0;
 
             case "gameStarted":
                 logMessage("🏁 The race (game) has started!");
+                document.getElementById("room-code").style.visibility = "hidden";
                 Lights();
                 break;
 
