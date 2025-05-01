@@ -189,7 +189,7 @@ let numberOfPlayers = 1;
                 break;
 
             case "gameStarting":
-                Lights();
+                // Lights();
                 break;
 
             case "gameStarted":
@@ -276,9 +276,9 @@ let numberOfPlayers = 1;
          */
 
         // Trigger existing race‑start visuals/countdown
-        if (typeof Lights === "function") {
-            Lights();
-        }
+        // if (typeof Lights === "function") {
+        //     Lights();
+        // }
     }
 
     let currentCorrectAnswer = null;
@@ -311,28 +311,6 @@ let numberOfPlayers = 1;
         });
     }
 
-    // 8) Check the selected answer
-    // function checkAnswer(questionID, chosenAnswer) {
-    //     const isCorrect = (chosenAnswer === currentCorrectAnswer);
-    //     logMessage(isCorrect ? "✅ Correct!" : "❌ Wrong!");
-    //
-    //     const points = isCorrect ? 10 : 0;
-    //     ws.send(JSON.stringify({"type": "scoreUpdate",
-    //         gameID: gameID,
-    //         score: ,
-    //         attempts: 0}));
-    //
-    //     // Move to the next question, if any exist
-    //     setTimeout(() => {
-    //         currentQuestionIndex++;
-    //         if (currentQuestionIndex < currentQuestionSet.length) {
-    //             displayQuestion(currentQuestionSet[currentQuestionIndex]);
-    //         } else {
-    //             logMessage("🎉 You’ve reached the end of the question set!");
-    //             // Optionally do something else: end game, show final results, etc.
-    //         }
-    //     }, 800);
-    // }
 </script>
 <!--<script src="Gamefunctions.js"></script>-->
 <!--<script src="Startscreen.js"></script>-->

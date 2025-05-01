@@ -237,13 +237,11 @@ function createSpark(x, y) {
         spark.remove();
     }, randomSpeed * 1000); // Matches the duration of the animation
 }
-// let clockRunning = false;
+
 function GameClock() {
-    // if (clockRunning) return; // prevent duplicates
-    // clockRunning = true;
     window.clockInterval = setInterval(() => {
+        // totalTime++;
         ones++;
-        totalTime++;
         if (ones === 10) {
             tens++;
             ones = 0;
@@ -256,9 +254,10 @@ function GameClock() {
                 }
             }
         }
-         window.finalTime = thous.toString() + hunds + ':' + tens + ones;
+
+         window.finalTime = thous.toString() + hunds.toString() + ':' + tens.toString() + ones.toString();
         document.getElementById('clock').innerText = finalTime;
-        document.getElementById('clockfs').innerText = finalTime;
+        //document.getElementById('clockfs').innerText = finalTime;
     }, 1000);
 }
 
@@ -340,7 +339,6 @@ function playCountDownSound(start, end) {
 
     let duration = (end - start) * 1000;
     setTimeout(() => {
-        countSound.pause();
         countSound.currentTime = 0;
     }, duration);
 }
@@ -365,7 +363,7 @@ function moveCar() {
  */
 
 function countDown() {
-
+    console.log("countDown");
     let counter = 4;
 
     let countInterval = setInterval(() => {
@@ -374,6 +372,7 @@ function countDown() {
         game_border.offsetWidth;
         switch (counter) {
             case 3:
+                console.log(counter);
                 red.classList.add('active');
                 game_border.style.boxShadow = "inset 0 0 50px 25px lightcoral";
                 game_border.style.animation = "flashingLight 1s ease-in forwards";
@@ -381,6 +380,7 @@ function countDown() {
                 countSound.p
                 break;
             case 2:
+                console.log(counter);
                 red.classList.remove('active');
                 yellow.classList.add('active');
                 game_border.style.boxShadow = "inset 0 0 50px 25px lightcoral";
@@ -388,6 +388,7 @@ function countDown() {
                 playCountDownSound(4.7, 5.7);
                 break;
             case 1:
+                console.log(counter);
                 yellow.classList.remove('active');
                 yellow.classList.add('active');
                 game_border.style.boxShadow = "inset 0 0 50px 25px lightcoral";
@@ -395,6 +396,7 @@ function countDown() {
                 playCountDownSound(4.7, 5.7);
                 break;
             case 0:
+                console.log(counter);
                 yellow.classList.remove('active');
                 green.classList.add('active');
                 game_border.style.boxShadow = "inset 0 0 50px 25px lightcoral";
@@ -408,6 +410,7 @@ function countDown() {
                 light.style.animation = "slideDown 2s reverse forwards";
                 break;
             default:
+                console.log(counter);
                 game_border.style.boxShadow = "none";
                 clearInterval(countInterval);
                 document.querySelector(".equation-container").style.visibility = "visible";
@@ -439,5 +442,6 @@ function startGame() {
 
         setInterval(resetTransition, 20000);
     }, 15000);
-    // GameClock();
+
+    GameClock();
 }
