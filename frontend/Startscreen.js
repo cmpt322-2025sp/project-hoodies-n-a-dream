@@ -25,7 +25,7 @@ function addition() {
     localStorage.setItem("difficulty",value);
     // When a player clicks one of the three buttons, proceed to game
     navigateTo("gameAnimation");
-    d
+
 }
 function subtraction() {
     let  value = "subtraction";

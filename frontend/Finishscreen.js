@@ -1,28 +1,23 @@
- let leaderboardtime = localStorage.getItem('finalTime') || "00:00"; // Default to "00:00" if no value exists
-document.getElementById('clock').innerText = leaderboardtime;
-function timeToSeconds(timeStr) {
-    const [minutes, seconds] = timeStr.split(':').map(Number);
-    return minutes * 60 + seconds;
-}
-function podium() {
-    const last_car = document.getElementById('last_car');
-    const totalTime = timeToSeconds(leaderboardtime);
 
-    // Add transition for smooth animation
-    last_car.style.transition = 'transform 2s ease-in-out';
+let Baljeet = document.getElementById("clockfs").innerText;
 
-    if (totalTime < 30) {
-        last_car.style.bottom = '12%';
-        last_car.style.left = '45%';
- 
-    } else if (totalTime >= 30 && totalTime < 60) {
-        last_car.style.bottom = '2%';
-        last_car.style.left = '30%';
-    } else if (totalTime >= 60) {
-        last_car.style.bottom = '2%';
-        last_car.style.left = '50%';
+const Ferb = document.getElementById('car3');
 
-    }
+Baljeet = timeToSeconds(Baljeet);
+Ferb.style.transition = 'transform 2s ease-in-out';
+
+if (Baljeet < 30) {
+    console.log(Baljeet);
+    Ferb.style.bottom = '12%';
+    Ferb.style.left = '45%';
+} else if (Baljeet < 60) {
+    console.log(Baljeet);
+    Ferb.style.bottom = '2%';
+    Ferb.style.left = '30%';
+} else {
+    console.log(Baljeet);
+    Ferb.style.bottom = '2%';
+    Ferb.style.left = '55%';
 }
 //window.onload = podium();
 window.Restart = function() {

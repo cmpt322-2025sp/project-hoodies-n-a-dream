@@ -3,15 +3,19 @@
 //Update:2/25/2025
 //Purpose: Car movement and game functions
 
-const carElements = document.querySelectorAll('#car, #car1, #car2'); // Add more IDs if needed
+let car = document.getElementById('car');
 const flipFrames = ['../assets/Car6.png', '../assets/Car7.png', '../assets/Car8.png', '../assets/Car1.png'];
 let moveSpeed = 5;
 let isFlipping = false;
 let moving = false;
 let introPlaying = true;
-
+let ones = 0;
+let tens = 0;
+let hunds = 0;
+let thous = 0;
 let targetPosition = window.innerWidth * 0.10;
 let carPosition = 20;
+let leaderboardtime = localStorage.getItem("Doof");
 
 const map1 = document.getElementById("map1");
 const map2 = document.getElementById("map2");
@@ -73,6 +77,7 @@ function animateGame() {
 }
 
 function stopGame() {
+    leaderboardtime = localStorage.getItem("Doof");
     maps[index].style.backgroundPosition = `${positionB}px`;
     if (speedB > 0) {
         speedB = speedB - .01;
@@ -144,12 +149,8 @@ function createSpark(x, y) {
 }
 
 function GameClock() {
-    let ones = 0;
-    let tens = 0;
-    let hunds = 0;
-    let thous = 0;
 
-    setInterval(() => {
+    window.clockInterval = setInterval(() => {
         ones++;
         totalTime++;
         if (ones === 10) {
@@ -164,32 +165,31 @@ function GameClock() {
                 }
             }
         }
-
-        let finalTime = thous.toString() + hunds + ':' + tens + ones;
+         window.finalTime = thous.toString() + hunds + ':' + tens + ones;
         document.getElementById('clock').innerText = finalTime;
-
-        // Store the final time string in localStorage
-        localStorage.setItem('finalTime', finalTime);
-
+        document.getElementById('clockfs').innerText = finalTime;
     }, 1000);
 }
 
 function animateCar() {
-    carElements.forEach(car => {
-        car.style.left = carPosition + 'px';
-    });
+    car.style.left = carPosition + 'px';
     carStreak.style.transform = `translateX(${carPosition}px)`;
     carShield.style.transform = `translateX(${carPosition}px)`;
 
     if (ending && carSpeed < 6) {
         carSpeed += 1;
-    } else if (carSpeed < 1 && carPosition <= window.innerWidth * positionalIndex) {
+    }
+
+    else if (carSpeed < 1 && carPosition <= window.innerWidth * positionalIndex) {
         carSpeed += 0.01;
-    } else if (carSpeed > -1 && carPosition >= window.innerWidth * positionalIndex) {
+    }
+
+    else if (carSpeed > -1 && carPosition >= window.innerWidth * positionalIndex) {
         carSpeed -= 0.01;
     }
 
     carPosition += carSpeed;
+
 
     requestAnimationFrame(animateCar);
 }
@@ -201,9 +201,7 @@ function performFlip() {
         let flipIndex = 0;
         const flipInterval = setInterval(() => {
             if (flipIndex < flipFrames.length) {
-                carElements.forEach(car => {
-                    car.src = flipFrames[flipIndex];
-                });
+                car.src = flipFrames[flipIndex];
                 flipIndex++;
             } else {
                 clearInterval(flipInterval);
@@ -212,7 +210,6 @@ function performFlip() {
         }, 100);
     }
 }
-
 
 window.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
@@ -257,9 +254,7 @@ function moveCar() {
             return;
         }
         carPosition += moveSpeed;
-        carElements.forEach(car => {
-            car.style.left = carPosition + 'px';
-        });
+        car.style.left = carPosition + 'px';
         requestAnimationFrame(moveCar);
     }
 }
