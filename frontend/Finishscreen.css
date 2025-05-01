@@ -103,7 +103,7 @@
 @keyframes flipCar {
     0% { content: url("../assets/Car5.png"); }
     25% { content: url("../assets/Car6.png"); }
-    50% { content: url("../assets/Car7.png"); }
+    50% { content: url("../assets/Car1.png"); }
     75% { content: url("../assets/Car8.png"); }
     100% { content: url("../assets/Car5.png"); }
 }
