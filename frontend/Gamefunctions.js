@@ -4,14 +4,23 @@
 //Purpose: Car movement and game functions
 
 const carElements = document.querySelectorAll('#car, #car1, #car2'); // Add more IDs if needed
+const orangeCar = document.getElementById("orangeCar");
+let orangeCarPosition = -2;
+const purpleCar = document.getElementById("purpleCar");
+let purpleCarPosition = -5;
+const blueCar = document.getElementById("blueCar");
+let blueCarPosition = -2;
+const playerCount = document.getElementById("playerCount");
+
 const flipFrames = ['../assets/Car6.png', '../assets/Car7.png', '../assets/Car8.png', '../assets/Car1.png'];
-let moveSpeed = 5;
+let
+    Speed = 5;
 let isFlipping = false;
 let moving = false;
 let introPlaying = true;
 
 let targetPosition = window.innerWidth * 0.10;
-let carPosition = 20;
+let carPosition = 0;
 
 const map1 = document.getElementById("map1");
 const map2 = document.getElementById("map2");
@@ -28,7 +37,7 @@ let speedT = 45; // speed of Transition background
 let carSpeed = 0 //speed of Car
 let maxMapSpeed = 1;
 let maxTrackSpeed = 35;
-let positionalIndex = 0.15;
+let positionalIndex = 0.15; //The point where the car is bounded too, where its acceleration changes from + and -
 
 let maps = [map1, map2, map3];
 let index = 0;
@@ -48,8 +57,59 @@ const soundTrack = document.getElementById("soundTrack");
 
 const countDown1 = document.getElementById('countDown');
 
-
 const carShield = document.getElementById("carShield");
+middleCar = document.querySelector('.middleCar');
+bottomCar = document.querySelector('.bottomCar');
+topCar = document.querySelector('.topCar');
+
+playerCountValue = playerCount.value;
+let previousValue = 0;
+let numberOfPlayers = 1;
+
+function createPlayerPositions(updatedResponse) {
+    let lengthOfPlayerArray = updatedResponse.players.length;
+    console.log('>>>CreatePlayerPositions Triggered!!');
+
+    topCar.style.visibility = 'hidden';
+    orangeCar.classList.remove('topCar');
+    purpleCar.classList.remove('middleCar');
+    blueCar.classList.remove('bottomCar');
+
+    if (lengthOfPlayerArray === 2) {
+        orangeCar.classList.add('middleCar');
+        middleCar.style.visibility = "visible";
+        purpleCar.classList.add('topCar');
+        topCar.style.visibility = "visible";
+        blueCar.classList.add('bottomCar');
+
+    }
+    else if (lengthOfPlayerArray === 3) {
+        orangeCar.classList.add('bottomCar');
+        bottomCar.style.visibility = "visible";
+        purpleCar.classList.add('middleCar');
+        middleCar.style.visibility = "visible";
+        blueCar.classList.add('topCar');
+        topCar.style.visibility = "visible";
+    }
+}
+
+function updatePlayerCount(updatedResponse) {
+
+    console.log('We made it to updatePlayerCount Function!!!!!!!!!!');
+    console.log('number if Players:' + numberOfPlayers);
+    if (numberOfPlayers === 3) {
+        bottomCar.style.visibility = 'visible';
+    }
+    else if(numberOfPlayers === 2) {
+        console.log("We made it again");
+        middleCar.style.visibility = 'visible';
+    }
+
+}
+
+function updatePlayers(updatedResponse) {
+
+}
 
 
 function animateGame() {
@@ -61,6 +121,7 @@ function animateGame() {
     positionB -= speedB;
 
     track.style.backgroundPosition = `${positionTrack}px`;
+
     if (speedTrack < maxTrackSpeed) {
         speedTrack = speedTrack + .25;
     }
@@ -119,6 +180,18 @@ function resetTransition() {
 let totalTime = 0;
 
 // Function to create sparks
+function createPlayer2 () {
+    const purpleCar = document.createElement("img");
+    purpleCar.src = "../Assets/PurpleCar-1.png.png";
+    purpleCar.id = "purpleCar";
+    purpleCar.classList.add('car');
+}
+function createPlayer3 () {
+    const blueCar = document.createElement("img");
+    blueCar.src = "../Assets/BlueCar-4.png";
+    blueCar.id = "blueCar";
+    blueCar.classList.add('car');
+}
 function createSpark(x, y) {
     const spark = document.createElement('div');
     spark.classList.add('spark');
@@ -149,7 +222,7 @@ function GameClock() {
     let hunds = 0;
     let thous = 0;
 
-    setInterval(() => {
+    const clockInterval = setInterval(() => {
         ones++;
         totalTime++;
         if (ones === 10) {
@@ -175,9 +248,15 @@ function GameClock() {
 }
 
 function animateCar() {
+    /*
     carElements.forEach(car => {
         car.style.left = carPosition + 'px';
     });
+     */
+    orangeCar.style.left = carPosition + 'px';
+    blueCar.style.left = carPosition + 'px';
+    purpleCar.style.left = carPosition + 'px';
+
     carStreak.style.transform = `translateX(${carPosition}px)`;
     carShield.style.transform = `translateX(${carPosition}px)`;
 
@@ -222,7 +301,7 @@ window.addEventListener('keydown', (event) => {
 
 function intro() {
     moving = true;
-    moveCar();
+    //moveCar();
 }
 
 function Lights() {
@@ -249,6 +328,7 @@ function playCountDownSound(start, end) {
     }, duration);
 }
 
+/*
 function moveCar() {
     if (moving) {
         if (introPlaying && carPosition >= targetPosition) {
@@ -258,11 +338,15 @@ function moveCar() {
         }
         carPosition += moveSpeed;
         carElements.forEach(car => {
-            car.style.left = carPosition + 'px';
+            orangeCar.style.left = carPosition + 'vw';
+            purpleCar.style.left = carPosition + 'vw';
+            blueCar.style.left = carPosition + 'vw';
         });
         requestAnimationFrame(moveCar);
     }
 }
+ */
+
 function countDown() {
 
     let counter = 4;
@@ -310,6 +394,7 @@ function countDown() {
                 game_border.style.boxShadow = "none";
                 clearInterval(countInterval);
                 document.querySelector(".equation-container").style.visibility = "visible";
+                document.querySelector(".button-container").style.visibility = "visible";
                 countDown1.style.visibility = "hidden";
         }
         if (counter > 0) {
@@ -327,6 +412,9 @@ function startGame() {
 
     soundTrack.play();
     animateGame();
+    orangeCar.style.animation = "none";
+    purpleCar.style.animation = "none";
+    blueCar.style.animation = "none";
     animateCar();
 
     setTimeout(() => {
@@ -336,8 +424,3 @@ function startGame() {
     }, 15000);
     GameClock();
 }
-
-window.onload = function () {
-    console.log("Window loaded!");
-    intro();
-};

@@ -3,6 +3,7 @@ moving = false;
 const finish_car = document.getElementById("finish_car");
 let finishLine = false;
 let storedTime = localStorage.getItem('finalTime') || "00:00";
+let finish_carPosition = 20;
 
 // At the top of FinishLine.js
 
@@ -17,19 +18,18 @@ function shiftCar() {
     console.log(">>> shiftCar Called");
     targetPosition = window.innerWidth * 0.9;
     if (!moving) return;
-    if (carPosition >= targetPosition) {
+    if (finish_carPosition >= targetPosition) {
         moving = false;
         setTimeout(() => navigateTo("finishScreen"), 3000);
         return;
     }
-    carPosition += moveSpeed;
-    finish_car.style.left = carPosition + 'px';
+    finish_carPosition += moveSpeed;
+    finish_car.style.left = finish_carPosition + 'px';
     requestAnimationFrame(shiftCar);
 }
 
 function finish() {
     // Reset car position at the start of finish
-    carPosition = 20;
     finish_car.style.left = carPosition + 'px';
     console.log(">>> finish");
     const totalSeconds = timeToSeconds(storedTime);
