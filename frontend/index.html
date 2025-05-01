@@ -51,7 +51,7 @@
         </div>
 
         <div id="overlay"></div>
-        <button id="startGame" onclick=" sendStartGame(); Lights()">Start Race</button>
+        <button id="startGame" onclick=" sendStartGame()">Start Race</button>
         <div id="countDown"></div>
 
         <div id="answerStreak"></div>
@@ -190,22 +190,12 @@ let numberOfPlayers = 1;
                 break;
 
             case "gameStarting":
-                logMessage(`⏳ Game starting in ${response.countdown} seconds...`);
+                Lights();
                 break;
 
             case "gameStarted":
                 logMessage("🏁 The race (game) has started!");
-                gameStarted = true;
-                if (pendingDifficulty) {
-                    ws.send(JSON.stringify({
-                        type: "requestNextQuestion",
-                        gameID: gameID,
-                        difficulty: pendingDifficulty
-                    }));
-
-
-                    pendingDifficulty = null;
-                }
+                Lights();
                 break;
 
             case "questions":

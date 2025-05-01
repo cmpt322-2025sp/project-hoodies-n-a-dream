@@ -264,6 +264,12 @@ function checkAnswer(button) {
                 // carPosition = 20;
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }
+            ws.send(JSON.stringify({
+                type: "scoreUpdate",
+                gameID: gameID,
+                score: questionCount,
+                attempts: 0
+            }));
             currentQuestionIndex++;
             if (currentQuestionIndex < currentQuestionSet.length) {
                 displayEquation(currentQuestionSet[currentQuestionIndex]);
