@@ -58,25 +58,60 @@ const soundTrack = document.getElementById("soundTrack");
 const countDown1 = document.getElementById('countDown');
 
 const carShield = document.getElementById("carShield");
+middleCar = document.querySelector('middleCar');
+bottomCar = document.querySelector('bottomCar');
+topCar = document.querySelector('topCar');
 
 playerCountValue = playerCount.value;
 let previousValue = 0;
+let numberOfPlayers = 1;
 
-playerCount.addEventListener('input', () => {
-    const currentValue = Number(playerCount.value);
+function createPlayerPositions(updatedResponse) {
+    let lengthOfPlayerArray = updatedResponse.players.length;
+    console.log('>>>CreatePlayerPositions Triggered!!');
 
-    if (!isNaN(currentValue) && currentValue >= 2) {
-        blueCar.style.visibility = 'visible';
+    topCar.style.visibility = 'hidden';
+    orangeCar.classList.remove('topCar');
+    purpleCar.classList.remove('middleCar');
+    blueCar.classList.remove('bottomCar');
+
+    if (lengthOfPlayerArray === 2) {
+        orangeCar.classList.add('middleCar');
+        middleCar.style.visibility = "visible";
+        purpleCar.classList.add('topCar');
+        topCar.style.visibility = "visible";
+        blueCar.classList.add('bottomCar');
+
     }
-    else if(!isNaN(currentValue) && currentValue >= 1) {
-        purpleCar.style.visibility = 'visible';
-        blueCar.style.visibility = 'hidden';
+    else if (lengthOfPlayerArray === 3) {
+        orangeCar.classList.add('bottomCar');
+        bottomCar.style.visibility = "visible";
+        purpleCar.classList.add('middleCar');
+        middleCar.style.visibility = "visible";
+        blueCar.classList.add('topCar');
+        topCar.style.visibility = "visible";
     }
-    else {
-        purpleCar.style.visibility = 'hidden';
+}
+
+function updatePlayerCount(updatedResponse) {
+
+
+    console.log('We made it to updatePlayerCount Function!!!!!!!!!!');
+    console.log('number if Players:' + numberOfPlayers);
+    if (numberOfPlayers === 3) {
+        bottomCar.style.visibility = 'visible';
     }
-    previousValue = currentValue;
-});
+    else if(numberOfPlayers === 2) {
+        console.log("We made it again");
+        middleCar.style.visibility = 'visible';
+        middleCar.offsetWidth;
+    }
+
+}
+
+function updatePlayers(updatedResponse) {
+
+}
 
 
 function animateGame() {
@@ -88,6 +123,7 @@ function animateGame() {
     positionB -= speedB;
 
     track.style.backgroundPosition = `${positionTrack}px`;
+
     if (speedTrack < maxTrackSpeed) {
         speedTrack = speedTrack + .25;
     }

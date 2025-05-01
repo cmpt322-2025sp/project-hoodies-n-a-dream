@@ -31,7 +31,6 @@
         <img src ="../assets/Join.png" class = "Join" alt = "Join" onclick="Code()"/>
     </section>
 
-
     <section data-view="gameAnimation">
         <div id="carShield"></div>
 
@@ -51,19 +50,17 @@
             <img src="https://th.bing.com/th/id/R.1f4a53e7d20f061e3ac2616988fc024b?rik=Em5fLqVRGqZukQ&pid=ImgRaw&r=0" >
         </div>
 
-
         <div id="overlay"></div>
         <button id="startGame" onclick=" sendStartGame(); Lights()">Start Race</button>
         <div id="countDown"></div>
 
         <div id="answerStreak"></div>
 
-
         <div id="room-code">Game ID: Loading...</div>
         <div>
-            <img id="orangeCar" class="car" src="../assets/Car1.png" alt="Car">
-            <img id="blueCar" class="car" src="../assets/BlueCar-4.png" alt="blueCar">
-            <img id="purpleCar" class="car" src="../assets/PurpleCar-1.png.png" alt="purpleCar">
+            <img id="orangeCar" class="topCar car orange" src="../assets/Car1.png" alt="Car">
+            <img id="blueCar" class="middleCar car blue" src="../assets/BlueCar-4.png" alt="blueCar">
+            <img id="purpleCar" class="bottomCar car purple" src="../assets/PurpleCar-1.png.png" alt="purpleCar">
         </div>
 
         <div class="playersInGameContainer">
@@ -174,10 +171,13 @@
             case "joinedGame":
                 gameID = response.gameID;
                 document.getElementById("game-info").innerText = `Joined Game: ${gameID}`;
+                createPlayerPositions(response);
                 break;
 
             case "playerJoined":
                 logMessage(`👤 Player Joined: ${response.name}`);
+                numberOfPlayers += 1;
+                updatePlayerCount();
                 break;
 
             case "gameStarting":
