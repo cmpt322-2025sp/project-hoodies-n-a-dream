@@ -82,7 +82,7 @@
                 <h1 class="player_text"> Player   2</h1>
             </div>
             <div class="playersInGame">
-                <img class="car-models2" src="../assets/BlueCar-4.png." alt="blueCarModel">
+                <img class="car-models2" src="../assets/BlueCar-4.png" alt="blueCarModel">
                 <h1 class="player_text"> Player   3</h1>
             </div>
         </div>
@@ -158,19 +158,86 @@
     ws.onopen = () => console.log("✅ WebSocket Connected");
     ws.onmessage = (event) => {
         const response = JSON.parse(event.data);
-        if (response.type === "gameCreated") {
-            gameID = response.gameID;
-            console.log(`Game created with ID: ${gameID}`);
-            navigateTo("gameAnimation");
-            // Show the buttons container after game creation
-            document.getElementById('buttonContainer').style.display = 'block';
-            // Update room-code display
-            const roomCodeElem = document.getElementById('room-code');
-            if(roomCodeElem) roomCodeElem.textContent = `Game ID: ${gameID}`;
-        } else {
-            console.log(response);
+        console.log(response);
+        switch (response.type) {
+            case "gameCreated":
+                gameID = response.gameID;
+                console.log(`Game created with ID: ${gameID}`);
+                navigateTo("gameAnimation");
+                // Show the buttons container after game creation
+                document.getElementById('buttonContainer').style.display = 'block';
+                // Update room-code display
+                const roomCodeElem = document.getElementById('room-code');
+                if(roomCodeElem) roomCodeElem.textContent = `Game ID: ${gameID}`;
+                break;
+
+            case "joinedGame":
+                gameID = response.gameID;
+                document.getElementById("game-info").innerText = `Joined Game: ${gameID}`;
+                break;
+
+            case "playerJoined":
+                logMessage(`👤 Player Joined: ${response.name}`);
+                break;
+
+            case "gameStarting":
+                logMessage(`⏳ Game starting in ${response.countdown} seconds...`);
+                break;
+
+            case "gameStarted":
+                logMessage("🏁 The race (game) has started!");
+                gameStarted = true;
+                if (pendingDifficulty) {
+                    ws.send(JSON.stringify({
+                        type: "requestNextQuestion",
+                        gameID: gameID,
+                        difficulty: pendingDifficulty
+                    }));
+
+
+                    pendingDifficulty = null;
+                }
+                break;
+
+            case "questions":
+                // The server sent an array of question objects
+                if (response.questions && response.questions.length > 0) {
+                    // 1) Store them
+                    currentQuestionSet = response.questions;
+                    // 2) Reset index
+                    currentQuestionIndex = 0;
+                    // 3) Display the first question
+                    displayEquation(currentQuestionSet[currentQuestionIndex]);
+                }
+
+                // Optionally, acknowledge we got them
+                ws.send(JSON.stringify({
+                    type: "questionsReceived",
+                    gameID: gameID,
+                    status: "200"
+                }));
+                break;
+
+            case "scoreReport":
+                logMessage(`Score Update for ${response.name}: ${response.score}`);
+                break;
+
+            case "gameCompleted":
+                logMessage("🏆 Game Over! Results:");
+                response.players.forEach(player => {
+                    logMessage(` - ${player.name}: Score = ${player.score}, Time = ${player.time}`);
+                });
+                break;
+
+            case "ERROR":
+                logMessage(`❌ ERROR: ${response.message}`);
+                break;
+
+            default:
+                logMessage("ℹ️ Unhandled response: " + JSON.stringify(response));
         }
     };
+
 
     function createGameAndNavigate() {
         if (ws.readyState === WebSocket.OPEN) {
@@ -203,11 +270,13 @@
 
         const difficulty = localStorage.getItem("difficulty");
         logMessage(`➡️ Requesting questions (${difficulty}) via WebSocket`);
+        /*
         ws.send(JSON.stringify({
             type: "requestNextQuestion",
             gameID: gameID,
             difficulty: difficulty
         }));
+         */
 
         // Trigger existing race‑start visuals/countdown
         if (typeof Lights === "function") {
