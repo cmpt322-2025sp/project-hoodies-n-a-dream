@@ -53,7 +53,7 @@
 
 
         <div id="overlay"></div>
-        <button id="startGame" onclick="Lights()">Start Race</button>
+        <button id="startGame" onclick=" sendStartGame(); Lights()">Start Race</button>
         <div id="countDown"></div>
 
         <div id="answerStreak"></div>
@@ -112,7 +112,7 @@
         <div id="cup"></div>
         <div id="finish_track"></div>
         <div>
-            <<img id="finish_car" class="car1" src="../assets/Car1.png" alt="finish_car">
+            <img id="finish_car" class="car1" src="../assets/Car1.png" alt="finish_car">
         </div>
     </section>
 
@@ -153,6 +153,8 @@
             // Update room-code display
             const roomCodeElem = document.getElementById('room-code');
             if(roomCodeElem) roomCodeElem.textContent = `Game ID: ${gameID}`;
+        } else {
+            console.log(response);
         }
     };
 
@@ -162,6 +164,97 @@
         } else {
             console.error("WebSocket not open yet.");
         }
+    }
+
+    // --- added from test.html ---
+    // Simple console logger to mirror test client behaviour
+    function logMessage(msg) {
+        console.log(msg);
+    }
+
+    // Starts the game on the server, then immediately asks for the first batch
+    // of questions at the difficulty stored in localStorage. Afterwards, it
+    // invokes the existing Lights() countdown so original animations remain.
+    function sendStartGame() {
+        console.log("Called Start Game");
+        if (!gameID) {
+            logMessage("⚠️ No Game ID. Cannot start.");
+            return;
+        }
+        logMessage("🏎️ Starting Game!");
+        ws.send(JSON.stringify({
+            type: "startGame",
+            gameID: gameID
+        }));
+
+        const difficulty = localStorage.getItem("difficulty");
+        logMessage(`➡️ Requesting questions (${difficulty}) via WebSocket`);
+        ws.send(JSON.stringify({
+            type: "requestNextQuestion",
+            gameID: gameID,
+            difficulty: difficulty
+        }));
+
+        // Trigger existing race‑start visuals/countdown
+        if (typeof Lights === "function") {
+            Lights();
+        }
+    }
+
+    let currentCorrectAnswer = null;
+    function displayQuestion(questionObj) {
+        // Clear old content
+        const container = document.getElementById("question-container");
+        container.innerHTML = "";
+
+        // Show the question text
+        const questionText = document.createElement("h3");
+        questionText.innerText = questionObj.question;
+        container.appendChild(questionText);
+
+        // Prepare 4 answers
+        const answers = [...questionObj.incorrect_answers, questionObj.correct_answer];
+        answers.sort(() => Math.random() - 0.5);
+
+        // Store the correct answer
+        currentCorrectAnswer = questionObj.correct_answer;
+
+        // Create a button for each possible answer
+        answers.forEach(answer => {
+            const btn = document.createElement("button");
+            btn.className = "answer-button";
+            btn.innerText = answer;
+            btn.onclick = () => {
+                checkAnswer(questionObj.id, answer);
+            };
+            container.appendChild(btn);
+        });
+    }
+
+    // 8) Check the selected answer
+    function checkAnswer(questionID, chosenAnswer) {
+        const isCorrect = (chosenAnswer === currentCorrectAnswer);
+        logMessage(isCorrect ? "✅ Correct!" : "❌ Wrong!");
+
+        const points = isCorrect ? 10 : 0;
+        ws.send(JSON.stringify({
+            type: "scoreUpdate",
+            gameID: gameID,
+            score: points,
+            attempts: 1,
+            questionID: questionID
+        }));
+
+        // Move to the next question, if any exist
+        setTimeout(() => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestionSet.length) {
+                displayQuestion(currentQuestionSet[currentQuestionIndex]);
+            } else {
+                logMessage("🎉 You’ve reached the end of the question set!");
+                // Optionally do something else: end game, show final results, etc.
+            }
+        }, 800);
     }
 </script>
 <script src="Gamefunctions.js"></script>

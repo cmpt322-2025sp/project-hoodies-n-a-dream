@@ -14,11 +14,11 @@ type QuizQuestion = {
     incorrect_answers: number[];
 };
 
-export function getQuestions(difficutly: string): QuizQuestion[] {
+export function getQuestions(difficulty: string): QuizQuestion[] {
     // This will hold all 100 questions
     const questions: QuizQuestion[] = [];
 
-    switch (difficutly) {
+    switch (difficulty) {
 
         case "easy": {
             const oneDigitAddition = generateQuestions("addition", 1, 20);
@@ -43,7 +43,8 @@ export function getQuestions(difficutly: string): QuizQuestion[] {
         }
 
         default:
-            console.error("[ERROR] Invalid difficulty: ", difficutly);
+            console.error("[ERROR] Invalid difficulty: ", difficulty);
+            return [];
     }
 
     // 2) 20 one-digit subtractions

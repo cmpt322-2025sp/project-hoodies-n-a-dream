@@ -50,7 +50,9 @@
     <button onclick="joinGame()">🎮 Join Game</button>
 </div>
 <button onclick="startGame()">🏎️ Start Game</button>
-<button onclick="requestQuestion('easy')">❓ Request Question</button>
+<button onclick="fetchQuestions('easy')">❓ Request Easy</button>
+<button onclick="fetchQuestions('medium')">❓ Request Medium</button>
+<button onclick="fetchQuestions('hard')">❓ Request Hard</button>
 <button onclick="submitScore()">📊 Submit Random Score</button>
 <button onclick="gameEnd()">❌ End Game</button>
 
@@ -70,6 +72,8 @@
 
     // 2) Tracking the Current Game
     let gameID = null;
+    let gameStarted = false;
+    let pendingDifficulty = null;
 
     // 3) Connection Handlers
     ws.onopen = () => logMessage("✅ WebSocket Connected");
@@ -103,6 +107,17 @@
 
             case "gameStarted":
                 logMessage("🏁 The race (game) has started!");
+                gameStarted = true;
+                if (pendingDifficulty) {
+                    ws.send(JSON.stringify({
+                        type: "requestNextQuestion",
+                        gameID: gameID,
+                        difficulty: pendingDifficulty
+                    }));
+
+
+                    pendingDifficulty = null;
+                }
                 break;
 
             case "questions":
@@ -177,6 +192,13 @@
             type: "startGame",
             gameID: gameID
         }));
+        const difficulty = localStorage.getItem("difficulty");
+        logMessage(`➡️ Requesting questions (${difficulty}) via WebSocket`);
+        ws.send(JSON.stringify({
+            type: "requestNextQuestion",
+            gameID: gameID,
+            difficulty: difficulty
+        }));
     }
 
     // 6) Request a Question
@@ -185,9 +207,19 @@
             logMessage("⚠️ No Game ID. Must join or create a game first.");
             return;
         }
-        // Ask server for 20 questions
+        if (!gameStarted) {
+            logMessage(`➡️ Game not started. Starting game and queuing questions (${difficulty})…`);
+            pendingDifficulty = difficulty;
+            ws.send(JSON.stringify({
+                type: "startGame",
+                gameID: gameID
+            }));
+            return;
+        }
+        logMessage(`➡️ Requesting questions (${difficulty}) via WebSocket`);
         ws.send(JSON.stringify({
             type: "requestNextQuestion",
+            gameID: gameID,
             difficulty: difficulty
         }));
     }
@@ -275,6 +307,11 @@
             gameID: gameID
         }));
         logMessage("❌ Game Ended");
+    }
+    // 7) Fetch questions via WebSocket proxy
+    function fetchQuestions(difficulty) {
+        logMessage(`➡️ Requesting questions (${difficulty}) via WebSocket`);
+        requestQuestion(difficulty);
     }
 </script>
 

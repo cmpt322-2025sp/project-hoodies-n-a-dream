@@ -1,32 +1,37 @@
+let value = "";
 function createGame() {
-    ws.send(JSON.stringify({ type: "createGame" }));
+
+    ws.send(JSON.stringify({ type: "createGame", difficulty: value, name: "***" }));
 }
 
 function Create() {
-    createGame();
+    //createGame();
     // Show the three option buttons after creating the game
     document.getElementById("buttonContainer").style.display = "block";
 }
 
 function addition() {
-    let  value = "addition";
+    value = "easy";
     // Holds difficulty for questions
     localStorage.setItem("difficulty",value);
     // When a player clicks one of the three buttons, proceed to game
+    createGame();
     navigateTo("gameAnimation");
 
 }
 function subtraction() {
-    let  value = "subtraction";
+    value = "medium";
     // Holds difficulty
     localStorage.setItem("difficulty",value);
     // holds difficulty
+    createGame();
     navigateTo("gameAnimation");
 }
 function multiplication() {
-    let  value = "multiplication";
+    value = "hard";
     // When a player clicks one of the three buttons, proceed to game
     localStorage.setItem("difficulty",value);
+    createGame();
     navigateTo("gameAnimation");
 }
 function Code() {
