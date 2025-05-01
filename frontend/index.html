@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="answerStreak.css" />
     <link rel="stylesheet" href="Finishline.css" />
     <link rel="stylesheet" href="Finishscreen.css" />
-
 </head>
 <body>
 
@@ -150,9 +149,9 @@
 <script>
 let numberOfPlayers = 1;
 </script>
+<script src="Questions.js"></script>
 <script src="Gamefunctions.js"></script>
 <script src="Startscreen.js"></script>
-<script src="Questions.js"></script>
 <script src="FinishLine.js"></script>
 <script src="Finishscreen.js"></script>
 <script>
@@ -313,30 +312,27 @@ let numberOfPlayers = 1;
     }
 
     // 8) Check the selected answer
-    function checkAnswer(questionID, chosenAnswer) {
-        const isCorrect = (chosenAnswer === currentCorrectAnswer);
-        logMessage(isCorrect ? "✅ Correct!" : "❌ Wrong!");
-
-        const points = isCorrect ? 10 : 0;
-        ws.send(JSON.stringify({
-            type: "scoreUpdate",
-            gameID: gameID,
-            score: points,
-            attempts: 1,
-            questionID: questionID
-        }));
-
-        // Move to the next question, if any exist
-        setTimeout(() => {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < currentQuestionSet.length) {
-                displayQuestion(currentQuestionSet[currentQuestionIndex]);
-            } else {
-                logMessage("🎉 You’ve reached the end of the question set!");
-                // Optionally do something else: end game, show final results, etc.
-            }
-        }, 800);
-    }
+    // function checkAnswer(questionID, chosenAnswer) {
+    //     const isCorrect = (chosenAnswer === currentCorrectAnswer);
+    //     logMessage(isCorrect ? "✅ Correct!" : "❌ Wrong!");
+    //
+    //     const points = isCorrect ? 10 : 0;
+    //     ws.send(JSON.stringify({"type": "scoreUpdate",
+    //         gameID: gameID,
+    //         score: ,
+    //         attempts: 0}));
+    //
+    //     // Move to the next question, if any exist
+    //     setTimeout(() => {
+    //         currentQuestionIndex++;
+    //         if (currentQuestionIndex < currentQuestionSet.length) {
+    //             displayQuestion(currentQuestionSet[currentQuestionIndex]);
+    //         } else {
+    //             logMessage("🎉 You’ve reached the end of the question set!");
+    //             // Optionally do something else: end game, show final results, etc.
+    //         }
+    //     }, 800);
+    // }
 </script>
 <!--<script src="Gamefunctions.js"></script>-->
 <!--<script src="Startscreen.js"></script>-->
