@@ -14,6 +14,7 @@ import { handleGameWebSocket } from "./routes/gameWebSockets.ts";
 const BASE_PATH = Deno.cwd();
 const FRONTEND_PATH = join(BASE_PATH, "/frontend"); // Adjust for backend/src structure
 const ASSETS_PATH = join(BASE_PATH, "/assets");
+const AUDIO_PATH = join(BASE_PATH, "/audio");
 
 console.log(`[INFO] Serving frontend from: ${FRONTEND_PATH}`);
 console.log(`[INFO] Server assets from ${ASSETS_PATH}`);
@@ -67,9 +68,14 @@ const handler = async (req: Request): Promise<Response> => {
         return serveFile(ASSETS_PATH, pathway.replace("/assets/", ""));
     }
 
+    if (pathway.startsWith("/audio/")) {
+        // Remove the "/assets/" prefix and serve from ASSETS_PATH
+        return serveFile(AUDIO_PATH, pathway.replace("/audio/", ""));
+    }
+
     // For the root request, send Startsection.html
     if (pathway === "/") {
-        return serveFile(FRONTEND_PATH, "Startsection.html");
+        return serveFile(FRONTEND_PATH, "index.html");
     }
 
     // For all other requests, attempt to serve the file from the frontend folder.
