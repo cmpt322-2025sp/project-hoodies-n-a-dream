@@ -12,7 +12,8 @@
 
 </head>
 <body>
-    <section data-view="startScreen" class="active StartScreen">
+
+<section data-view="startScreen" class="active StartScreen">
         <div id="buttonContainer" style="display: none; position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); text-align: center;">
             <button onclick="addition()" class="level-button">
                 <img src="../assets/Easy.png" alt="Easy">
@@ -35,7 +36,6 @@
         <div id="carShield"></div>
 
         <div id = "carStreak"></div>
-
         <div id="map1"></div>
         <div id="map2"></div>
         <div id="map3"></div>
@@ -62,20 +62,28 @@
         <div id="room-code">Game ID: Loading...</div>
         <div>
             <img id="orangeCar" class="car" src="../Assets/Car1.png" alt="Car">
-            <img id="blueCar" class="car" src="../Assets/BlueCar-4.png" alt="BlueCar">
-            <img id="purpleCar" class="car" src="../Assets/PurpleCar-1.png.png" alt="PurpleCar">
+            <img id="blueCar" class="car" src="../Assets/BlueCar-4.png" alt="blueCar">
+            <img id="purpleCar" class="car" src="../Assets/PurpleCar-1.png.png" alt="purpleCar">
         </div>
 
-        <div class="players">
-            <div class="player1">
-                <img id="car1-model" src="../assets/Car1.png">
-                <h1 class="player-border"> Player   1</h1>
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#1">
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#2">
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#3">
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#4">
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#5">
-
+        <div class="playersInGameContainer">
+            <div class="playersInGame">
+                <img class="car-models" src="../assets/Car1.png" alt="orangeCarModel">
+                <h1 class="player_text"> Player   1</h1>
+                <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
+                <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
+                <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
+                <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#4">
+                <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#5">
+                <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#6">
+            </div>
+            <div class="playersInGame">
+                <img class="car-models2" src="../assets/PurpleCar-1.png.png" alt="purpleCarModel">
+                <h1 class="player_text"> Player   2</h1>
+            </div>
+            <div class="playersInGame">
+                <img class="car-models2" src="../assets/BlueCar-4.png." alt="blueCarModel">
+                <h1 class="player_text"> Player   3</h1>
             </div>
         </div>
 
@@ -85,12 +93,12 @@
 
         <div class="equation-container">
             <h1 id="equation"></h1>
-            <div class="button-container">
-                <button id="bt1" class = "buttons" onclick="checkAnswer(this)"><span id = "bt1span"></span></button>
-                <button id="bt2" class = "buttons" onclick="checkAnswer(this)"><span id = "bt2span"></span></button>
-                <button id="bt3" class = "buttons" onclick="checkAnswer(this)"><span id = "bt3span"></span></button>
-                <button id="bt4" class = "buttons" onclick="checkAnswer(this)"><span id = "bt4span"></span></button>
-            </div>
+        </div>
+        <div class="button-container">
+            <button id="bt1" class = "buttons" onclick="checkAnswer(this)"><span id = "bt1span"></span></button>
+            <button id="bt2" class = "buttons" onclick="checkAnswer(this)"><span id = "bt2span"></span></button>
+            <button id="bt3" class = "buttons" onclick="checkAnswer(this)"><span id = "bt3span"></span></button>
+            <button id="bt4" class = "buttons" onclick="checkAnswer(this)"><span id = "bt4span"></span></button>
         </div>
 
         <div id="game-border"></div>
@@ -106,6 +114,10 @@
         <audio id="wrongSound" src="../audio/wrongSound2.mp3" preload="auto"></audio>
         <audio id="soundTrack" src="../audio/soundtrack.wav" preload="auto" loop></audio>
         <audio id="streakSound" src="../audio/streakSound.wav" preload="auto"></audio>
+
+        <label>
+            <input id=playerCount type="number">
+        </label>
     </section>
 
 
@@ -188,6 +200,7 @@
         }
         else if (!target) console.warn(`No view found for "${viewName}"`);
     }
+
 </script>
 <script src="Gamefunctions.js"></script>
 <script src="Startscreen.js"></script>
