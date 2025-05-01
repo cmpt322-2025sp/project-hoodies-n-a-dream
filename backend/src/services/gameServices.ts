@@ -212,7 +212,7 @@ export function getPlayerProgress(gameID: string): Record<string, number> {
     return progress;
 }
 
-export function gameComplete(gameID: string, playerSocket: WebSocket, time: string, attempts: number) {
+export function gameComplete(gameID: string, playerSocket: WebSocket, time: string, score: number) {
     let game = gameRooms.getGame(gameID);
     if (!game) {
         console.log("[ERROR] Game not found for completion");
@@ -228,7 +228,7 @@ export function gameComplete(gameID: string, playerSocket: WebSocket, time: stri
 
     // Update the player's time, attempts, and status
     playerEntry.time = time;
-    playerEntry.attempts = attempts;
+    playerEntry.score = score;
     playerEntry.status = "completed";
 
     // Persist updated players list

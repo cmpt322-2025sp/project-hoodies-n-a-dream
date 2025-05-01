@@ -82,8 +82,8 @@ export function handleGameMessages(socket: WebSocket, data: string) {
             case "gameComplete": {
                 const gameID = data.gameID;
                 const time =  data.time;
-                const attempts = data.attempts;
-                gameComplete(gameID, socket, time, attempts);
+                const score = data.score;
+                gameComplete(gameID, socket, time, score);
                 break;
             }
 
