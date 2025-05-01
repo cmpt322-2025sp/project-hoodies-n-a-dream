@@ -170,8 +170,9 @@
 
             case "joinedGame":
                 gameID = response.gameID;
-                document.getElementById("game-info").innerText = `Joined Game: ${gameID}`;
+                // document.getElementById("game-info").innerText = `Joined Game: ${gameID}`;
                 createPlayerPositions(response);
+                navigateTo("gameAnimation");
                 break;
 
             case "playerJoined":
