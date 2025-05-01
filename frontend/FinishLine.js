@@ -1,45 +1,75 @@
 moveSpeed = 5;
-moving = false;
-const finish_car = document.getElementById("finish_car");
 let finishLine = false;
-let storedTime = localStorage.getItem('finalTime') || "00:00";
-let finish_carPosition = 20;
+let Finalspot = 20;
 
-// At the top of FinishLine.js
-
-
-// Convert stored time (e.g., "01:15") to seconds
+// Helper to convert "mm:ss" into total seconds
 function timeToSeconds(timeStr) {
+    timeStr = String(timeStr); // force it into a string
     const [minutes, seconds] = timeStr.split(':').map(Number);
-    return minutes * 60 + seconds;
+    return (isNaN(minutes) || isNaN(seconds)) ? 0 : minutes * 60 + seconds;
 }
 
 function shiftCar() {
-    console.log(">>> shiftCar Called");
-    targetPosition = window.innerWidth * 0.9;
-    if (!moving) return;
-    if (finish_carPosition >= targetPosition) {
-        moving = false;
-        setTimeout(() => navigateTo("finishScreen"), 3000);
+    const carl = document.getElementById('car2');
+    if (!carl) {
+        console.warn('Car element not found!');
         return;
     }
-    finish_carPosition += moveSpeed;
-    finish_car.style.left = finish_carPosition + 'px';
-    requestAnimationFrame(shiftCar);
+
+    carl.style.position = 'absolute';
+    carl.style.transform = 'none'; // <- Critical line to prevent shifting off-screen
+
+    let spot = window.innerWidth * 0.9;
+
+    if (moving) {
+        if (Finalspot + moveSpeed >= spot) {
+            Finalspot = spot;
+            carl.style.left = Finalspot + 'px';
+            moving = false;
+            setTimeout(() => {
+                navigateTo("finishScreen");
+            }, 3000);
+            return;
+        }
+
+        Finalspot += moveSpeed;
+        carl.style.left = Finalspot + 'px';
+        requestAnimationFrame(shiftCar);
+    }
 }
 
+
 function finish() {
-    // Reset car position at the start of finish
-    finish_car.style.left = carPosition + 'px';
-    console.log(">>> finish");
+    let storedTime = localStorage.getItem("AgentP") || "00:00";
     const totalSeconds = timeToSeconds(storedTime);
-    if (totalSeconds > 30 && totalSeconds < 60) {
-        finish_car.style.top = '85%';
-    } else if (totalSeconds > 60) {
-        finish_car.style.top = '95%';
+    const carl = document.getElementById('car2');
+console.log(storedTime);
+console.log(localStorage.getItem("AgentP"));
+    if (!carl) {
+        console.warn('Car element not found!');
+        return;
     }
+
+    // ✅ STOP gameplay animation
+    moving = false;
+    carSpeed = 0;
+
+    // ✅ Reset finish car position
+    Finalspot = 20;
+    carl.style.left = Finalspot + 'px';
+    carl.style.position = 'absolute';
+    carl.style.transform = 'none';
+
+    // ✅ Position car vertically based on time
+    if (totalSeconds > 30 && totalSeconds < 60) {
+        carl.style.top = '75%';
+    } else if (totalSeconds > 60) {
+        carl.style.top = '85%';
+    } else {
+        carl.style.top = '65%';
+    }
+
+    // ✅ Start finish line movement
     moving = true;
     shiftCar();
 }
-
-// window.onload = finish;
