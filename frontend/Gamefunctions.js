@@ -186,9 +186,10 @@ function createSpark(x, y) {
         spark.remove();
     }, randomSpeed * 1000); // Matches the duration of the animation
 }
-
+let clockRunning = false;
 function GameClock() {
-
+    if (clockRunning) return; // prevent duplicates
+    clockRunning = true;
     window.clockInterval = setInterval(() => {
         ones++;
         totalTime++;

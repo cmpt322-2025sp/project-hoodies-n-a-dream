@@ -3,7 +3,6 @@ let Baljeet = document.getElementById("clockfs").innerText;
 
 const Ferb = document.getElementById('car3');
 
-Baljeet = timeToSeconds(Baljeet);
 Ferb.style.transition = 'transform 2s ease-in-out';
 
 if (Baljeet < 30) {
