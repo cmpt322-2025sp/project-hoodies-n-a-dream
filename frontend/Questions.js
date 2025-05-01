@@ -242,8 +242,13 @@ function checkAnswer(button) {
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 //window.location.href = "FinishLine.html";
                 stopGame();
+                clearInterval(window.clockInterval);
+                clockRunning = false;
+                console.log("hit");
+                localStorage.setItem('AgentP',finalTime)
+                localStorage.setItem('Doof', finalTime);
                 setTimeout ( () => navigateTo('finishLine'), 1500);
-                
+
                 // carPosition = 20;
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }

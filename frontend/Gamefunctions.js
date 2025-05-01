@@ -4,14 +4,27 @@
 //Purpose: Car movement and game functions
 
 const carElements = document.querySelectorAll('#car, #car1, #car2'); // Add more IDs if needed
+const orangeCar = document.getElementById("orangeCar");
+let orangeCarPosition = -2;
+const purpleCar = document.getElementById("purpleCar");
+let purpleCarPosition = -5;
+const blueCar = document.getElementById("blueCar");
+let blueCarPosition = -2;
+const playerCount = document.getElementById("playerCount");
+
 const flipFrames = ['../assets/Car6.png', '../assets/Car7.png', '../assets/Car8.png', '../assets/Car1.png'];
-let moveSpeed = 5;
+let
+    Speed = 5;
 let isFlipping = false;
 let moving = false;
 let introPlaying = true;
-
+let ones = 0;
+let tens = 0;
+let hunds = 0;
+let thous = 0;
 let targetPosition = window.innerWidth * 0.10;
-let carPosition = 20;
+let leaderboardtime = localStorage.getItem("Doof");
+let carPosition = 0;
 
 const map1 = document.getElementById("map1");
 const map2 = document.getElementById("map2");
@@ -28,7 +41,7 @@ let speedT = 45; // speed of Transition background
 let carSpeed = 0 //speed of Car
 let maxMapSpeed = 1;
 let maxTrackSpeed = 35;
-let positionalIndex = 0.15;
+let positionalIndex = 0.15; //The point where the car is bounded too, where its acceleration changes from + and -
 
 let maps = [map1, map2, map3];
 let index = 0;
@@ -48,8 +61,26 @@ const soundTrack = document.getElementById("soundTrack");
 
 const countDown1 = document.getElementById('countDown');
 
-
 const carShield = document.getElementById("carShield");
+
+playerCountValue = playerCount.value;
+let previousValue = 0;
+
+playerCount.addEventListener('input', () => {
+    const currentValue = Number(playerCount.value);
+
+    if (!isNaN(currentValue) && currentValue >= 2) {
+        blueCar.style.visibility = 'visible';
+    }
+    else if(!isNaN(currentValue) && currentValue >= 1) {
+        purpleCar.style.visibility = 'visible';
+        blueCar.style.visibility = 'hidden';
+    }
+    else {
+        purpleCar.style.visibility = 'hidden';
+    }
+    previousValue = currentValue;
+});
 
 
 function animateGame() {
@@ -73,6 +104,7 @@ function animateGame() {
 }
 
 function stopGame() {
+    leaderboardtime = localStorage.getItem("Doof");
     maps[index].style.backgroundPosition = `${positionB}px`;
     if (speedB > 0) {
         speedB = speedB - .01;
@@ -119,6 +151,18 @@ function resetTransition() {
 let totalTime = 0;
 
 // Function to create sparks
+function createPlayer2 () {
+    const purpleCar = document.createElement("img");
+    purpleCar.src = "../Assets/PurpleCar-1.png.png";
+    purpleCar.id = "purpleCar";
+    purpleCar.classList.add('car');
+}
+function createPlayer3 () {
+    const blueCar = document.createElement("img");
+    blueCar.src = "../Assets/BlueCar-4.png";
+    blueCar.id = "blueCar";
+    blueCar.classList.add('car');
+}
 function createSpark(x, y) {
     const spark = document.createElement('div');
     spark.classList.add('spark');
@@ -142,14 +186,11 @@ function createSpark(x, y) {
         spark.remove();
     }, randomSpeed * 1000); // Matches the duration of the animation
 }
-
+let clockRunning = false;
 function GameClock() {
-    let ones = 0;
-    let tens = 0;
-    let hunds = 0;
-    let thous = 0;
-
-    setInterval(() => {
+    if (clockRunning) return; // prevent duplicates
+    clockRunning = true;
+    window.clockInterval = setInterval(() => {
         ones++;
         totalTime++;
         if (ones === 10) {
@@ -164,32 +205,39 @@ function GameClock() {
                 }
             }
         }
-
-        let finalTime = thous.toString() + hunds + ':' + tens + ones;
+         window.finalTime = thous.toString() + hunds + ':' + tens + ones;
         document.getElementById('clock').innerText = finalTime;
-
-        // Store the final time string in localStorage
-        localStorage.setItem('finalTime', finalTime);
-
+        document.getElementById('clockfs').innerText = finalTime;
     }, 1000);
 }
 
 function animateCar() {
+    /*
     carElements.forEach(car => {
         car.style.left = carPosition + 'px';
     });
+     */
+    orangeCar.style.left = carPosition + 'px';
+    blueCar.style.left = carPosition + 'px';
+    purpleCar.style.left = carPosition + 'px';
+
     carStreak.style.transform = `translateX(${carPosition}px)`;
     carShield.style.transform = `translateX(${carPosition}px)`;
 
     if (ending && carSpeed < 6) {
         carSpeed += 1;
-    } else if (carSpeed < 1 && carPosition <= window.innerWidth * positionalIndex) {
+    }
+
+    else if (carSpeed < 1 && carPosition <= window.innerWidth * positionalIndex) {
         carSpeed += 0.01;
-    } else if (carSpeed > -1 && carPosition >= window.innerWidth * positionalIndex) {
+    }
+
+    else if (carSpeed > -1 && carPosition >= window.innerWidth * positionalIndex) {
         carSpeed -= 0.01;
     }
 
     carPosition += carSpeed;
+
 
     requestAnimationFrame(animateCar);
 }
@@ -201,9 +249,7 @@ function performFlip() {
         let flipIndex = 0;
         const flipInterval = setInterval(() => {
             if (flipIndex < flipFrames.length) {
-                carElements.forEach(car => {
-                    car.src = flipFrames[flipIndex];
-                });
+                car.src = flipFrames[flipIndex];
                 flipIndex++;
             } else {
                 clearInterval(flipInterval);
@@ -213,7 +259,6 @@ function performFlip() {
     }
 }
 
-
 window.addEventListener('keydown', (event) => {
     if (event.code === 'Space') {
         performFlip();
@@ -222,7 +267,7 @@ window.addEventListener('keydown', (event) => {
 
 function intro() {
     moving = true;
-    moveCar();
+    //moveCar();
 }
 
 function Lights() {
@@ -249,6 +294,7 @@ function playCountDownSound(start, end) {
     }, duration);
 }
 
+/*
 function moveCar() {
     if (moving) {
         if (introPlaying && carPosition >= targetPosition) {
@@ -258,11 +304,15 @@ function moveCar() {
         }
         carPosition += moveSpeed;
         carElements.forEach(car => {
-            car.style.left = carPosition + 'px';
+            orangeCar.style.left = carPosition + 'vw';
+            purpleCar.style.left = carPosition + 'vw';
+            blueCar.style.left = carPosition + 'vw';
         });
         requestAnimationFrame(moveCar);
     }
 }
+ */
+
 function countDown() {
 
     let counter = 4;
@@ -310,6 +360,7 @@ function countDown() {
                 game_border.style.boxShadow = "none";
                 clearInterval(countInterval);
                 document.querySelector(".equation-container").style.visibility = "visible";
+                document.querySelector(".button-container").style.visibility = "visible";
                 countDown1.style.visibility = "hidden";
         }
         if (counter > 0) {
@@ -327,6 +378,9 @@ function startGame() {
 
     soundTrack.play();
     animateGame();
+    orangeCar.style.animation = "none";
+    purpleCar.style.animation = "none";
+    blueCar.style.animation = "none";
     animateCar();
 
     setTimeout(() => {
@@ -336,8 +390,3 @@ function startGame() {
     }, 15000);
     GameClock();
 }
-
-window.onload = function () {
-    console.log("Window loaded!");
-    intro();
-};

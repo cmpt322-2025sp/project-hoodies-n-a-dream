@@ -12,7 +12,8 @@
 
 </head>
 <body>
-    <section data-view="startScreen" class="active StartScreen">
+
+<section data-view="startScreen" class="active StartScreen">
         <div id="buttonContainer" style="display: none; position: absolute; bottom: 20%; left: 50%; transform: translateX(-50%); text-align: center;">
             <button onclick="addition()" class="level-button">
                 <img src="../assets/Easy.png" alt="Easy">
@@ -35,7 +36,6 @@
         <div id="carShield"></div>
 
         <div id = "carStreak"></div>
-
         <div id="map1"></div>
         <div id="map2"></div>
         <div id="map3"></div>
@@ -53,7 +53,7 @@
 
 
         <div id="overlay"></div>
-        <button id="startGame" onclick="Lights()">Start Race</button>
+        <button id="startGame" onclick=" sendStartGame(); Lights()">Start Race</button>
         <div id="countDown"></div>
 
         <div id="answerStreak"></div>
@@ -61,19 +61,29 @@
 
         <div id="room-code">Game ID: Loading...</div>
         <div>
-            <img id="car" class="car" src="../assets/Car1.png" alt="Car">
+            <img id="orangeCar" class="car" src="../assets/Car1.png" alt="Car">
+            <img id="blueCar" class="car" src="../assets/BlueCar-4.png" alt="blueCar">
+            <img id="purpleCar" class="car" src="../assets/PurpleCar-1.png" alt="purpleCar">
         </div>
 
-        <div class="players">
-            <div class="player1">
-                <img id="car1-model" src="../assets/Car1.png">
-                <h1 class="player-border"> Player   1</h1>
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#1">
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#2">
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#3">
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#4">
-                <img class="fireStreak" src="../assets/fireStreak1.png" alt="streak#5">
-
+        <div class="playersInGameContainer">
+            <div class="playersInGame">
+                <img class="car-models" src="../assets/Car1.png" alt="orangeCarModel">
+                <h1 class="player_text"> Player   1</h1>
+                <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
+                <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
+                <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
+                <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#4">
+                <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#5">
+                <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#6">
+            </div>
+            <div class="playersInGame">
+                <img class="car-models2" src="../assets/PurpleCar-1.png" alt="purpleCarModel">
+                <h1 class="player_text"> Player   2</h1>
+            </div>
+            <div class="playersInGame">
+                <img class="car-models2" src="../assets/BlueCar-4.png" alt="blueCarModel">
+                <h1 class="player_text"> Player   3</h1>
             </div>
         </div>
 
@@ -83,12 +93,12 @@
 
         <div class="equation-container">
             <h1 id="equation"></h1>
-            <div class="button-container">
-                <button id="bt1" class = "buttons" onclick="checkAnswer(this)"><span id = "bt1span"></span></button>
-                <button id="bt2" class = "buttons" onclick="checkAnswer(this)"><span id = "bt2span"></span></button>
-                <button id="bt3" class = "buttons" onclick="checkAnswer(this)"><span id = "bt3span"></span></button>
-                <button id="bt4" class = "buttons" onclick="checkAnswer(this)"><span id = "bt4span"></span></button>
-            </div>
+        </div>
+        <div class="button-container">
+            <button id="bt1" class = "buttons" onclick="checkAnswer(this)"><span id = "bt1span"></span></button>
+            <button id="bt2" class = "buttons" onclick="checkAnswer(this)"><span id = "bt2span"></span></button>
+            <button id="bt3" class = "buttons" onclick="checkAnswer(this)"><span id = "bt3span"></span></button>
+            <button id="bt4" class = "buttons" onclick="checkAnswer(this)"><span id = "bt4span"></span></button>
         </div>
 
         <div id="game-border"></div>
@@ -104,6 +114,10 @@
         <audio id="wrongSound" src="../audio/wrongSound2.mp3" preload="auto"></audio>
         <audio id="soundTrack" src="../audio/soundtrack.wav" preload="auto" loop></audio>
         <audio id="streakSound" src="../audio/streakSound.wav" preload="auto"></audio>
+
+        <label>
+            <input id=playerCount type="number">
+        </label>
     </section>
 
 
@@ -112,14 +126,16 @@
         <div id="cup"></div>
         <div id="finish_track"></div>
         <div>
-            <<img id="finish_car" class="car1" src="../assets/Car1.png" alt="finish_car">
+            <<img id="car2" class="car1" src="../assets/Car1.png" alt="finish_car">
+            <<img id="Gumball" class="car1" src="../assets/BlueCar-3.png" alt="finish_car">
+            <<img id="Darwin" class="car1" src="../assets/PurpleCar-1.png" alt="finish_car">
         </div>
     </section>
 
 
     <section data-view="finishScreen">
         <div>
-            <img id = "last_car" class="carfs" src="../assets/Car1.png" alt="last_car">
+            <img id = "car3" class="carfs" src="../assets/Car1.png" alt="last_car">
         </div>
         <div class="players">
             <div class="player1">
@@ -138,6 +154,133 @@
 </body>
 
 <script>
+    let ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
+    let gameID = null;
+
+    ws.onopen = () => console.log("✅ WebSocket Connected");
+    ws.onmessage = (event) => {
+        const response = JSON.parse(event.data);
+        if (response.type === "gameCreated") {
+            gameID = response.gameID;
+            console.log(`Game created with ID: ${gameID}`);
+            navigateTo("gameAnimation");
+            // Show the buttons container after game creation
+            document.getElementById('buttonContainer').style.display = 'block';
+            // Update room-code display
+            const roomCodeElem = document.getElementById('room-code');
+            if(roomCodeElem) roomCodeElem.textContent = `Game ID: ${gameID}`;
+        } else {
+            console.log(response);
+        }
+    };
+
+    function createGameAndNavigate() {
+        if (ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: "createGame" }));
+        } else {
+            console.error("WebSocket not open yet.");
+        }
+    }
+
+    // --- added from test.html ---
+    // Simple console logger to mirror test client behaviour
+    function logMessage(msg) {
+        console.log(msg);
+    }
+
+    // Starts the game on the server, then immediately asks for the first batch
+    // of questions at the difficulty stored in localStorage. Afterwards, it
+    // invokes the existing Lights() countdown so original animations remain.
+    function sendStartGame() {
+        console.log("Called Start Game");
+        if (!gameID) {
+            logMessage("⚠️ No Game ID. Cannot start.");
+            return;
+        }
+        logMessage("🏎️ Starting Game!");
+        ws.send(JSON.stringify({
+            type: "startGame",
+            gameID: gameID
+        }));
+
+        const difficulty = localStorage.getItem("difficulty");
+        logMessage(`➡️ Requesting questions (${difficulty}) via WebSocket`);
+        ws.send(JSON.stringify({
+            type: "requestNextQuestion",
+            gameID: gameID,
+            difficulty: difficulty
+        }));
+
+        // Trigger existing race‑start visuals/countdown
+        if (typeof Lights === "function") {
+            Lights();
+        }
+    }
+
+    let currentCorrectAnswer = null;
+    function displayQuestion(questionObj) {
+        // Clear old content
+        const container = document.getElementById("question-container");
+        container.innerHTML = "";
+
+        // Show the question text
+        const questionText = document.createElement("h3");
+        questionText.innerText = questionObj.question;
+        container.appendChild(questionText);
+
+        // Prepare 4 answers
+        const answers = [...questionObj.incorrect_answers, questionObj.correct_answer];
+        answers.sort(() => Math.random() - 0.5);
+
+        // Store the correct answer
+        currentCorrectAnswer = questionObj.correct_answer;
+
+        // Create a button for each possible answer
+        answers.forEach(answer => {
+            const btn = document.createElement("button");
+            btn.className = "answer-button";
+            btn.innerText = answer;
+            btn.onclick = () => {
+                checkAnswer(questionObj.id, answer);
+            };
+            container.appendChild(btn);
+        });
+    }
+
+    // 8) Check the selected answer
+    function checkAnswer(questionID, chosenAnswer) {
+        const isCorrect = (chosenAnswer === currentCorrectAnswer);
+        logMessage(isCorrect ? "✅ Correct!" : "❌ Wrong!");
+
+        const points = isCorrect ? 10 : 0;
+        ws.send(JSON.stringify({
+            type: "scoreUpdate",
+            gameID: gameID,
+            score: points,
+            attempts: 1,
+            questionID: questionID
+        }));
+
+        // Move to the next question, if any exist
+        setTimeout(() => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestionSet.length) {
+                displayQuestion(currentQuestionSet[currentQuestionIndex]);
+            } else {
+                logMessage("🎉 You’ve reached the end of the question set!");
+                // Optionally do something else: end game, show final results, etc.
+            }
+        }, 800);
+    }
+</script>
+<script src="Gamefunctions.js"></script>
+<script src="Startscreen.js"></script>
+<script src="Questions.js"></script>
+<!--<script src="FinishLine.js"></script>-->
+<script src="Finishscreen.js"></script>
+
+
+<script>
     function navigateTo(viewName) {
         // hide every view
         document.querySelectorAll('[data-view]').forEach(sec => {
@@ -152,6 +295,7 @@
         }
         else if (!target) console.warn(`No view found for "${viewName}"`);
     }
+
 </script>
 <script src="Gamefunctions.js"></script>
 <script src="Startscreen.js"></script>

@@ -49,10 +49,10 @@
     height: 125px;
     position: absolute;
     top: 75%;
-    left: -5%;
-    transform: translate(-50%, -50%);
+    left: 0;
     z-index: 100;
 }
+
 
 [data-view]{
     display: none;
