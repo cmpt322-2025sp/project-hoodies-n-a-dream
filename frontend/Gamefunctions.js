@@ -5,11 +5,8 @@
 
 const carElements = document.querySelectorAll('#car, #car1, #car2'); // Add more IDs if needed
 const orangeCar = document.getElementById("orangeCar");
-let orangeCarPosition = -2;
 const purpleCar = document.getElementById("purpleCar");
-let purpleCarPosition = -5;
 const blueCar = document.getElementById("blueCar");
-let blueCarPosition = -2;
 const playerCount = document.getElementById("playerCount");
 
 const flipFrames = ['../assets/Car6.png', '../assets/Car7.png', '../assets/Car8.png', '../assets/Car1.png'];
@@ -24,7 +21,14 @@ let hunds = 0;
 let thous = 0;
 let targetPosition = window.innerWidth * 0.10;
 let leaderboardtime = localStorage.getItem("Doof");
-let carPosition = 0;
+//let carPosition = 0;
+let orangeCarPosition = 0;
+let purpleCarPosition = 0;
+let blueCarPosition = 0;
+let orangeCarSpeed = 0;
+let purpleCarSpeed = 0;
+let blueCarSpeed = 0;
+let streakPosition = 0;
 
 const map1 = document.getElementById("map1");
 const map2 = document.getElementById("map2");
@@ -42,6 +46,9 @@ let carSpeed = 0 //speed of Car
 let maxMapSpeed = 1;
 let maxTrackSpeed = 35;
 let positionalIndex = 0.15; //The point where the car is bounded too, where its acceleration changes from + and -
+let orangeCarIndex = 0.15;
+let purpleCarIndex = 0.15;
+let blueCarIndex = 0.15;
 
 let maps = [map1, map2, map3];
 let index = 0;
@@ -67,6 +74,7 @@ let bottomCar = document.querySelector('.bottomCar');
 let topCar = document.querySelector('.topCar');
 
 playerCountValue = playerCount.value;
+let currentPlayer = 0;
 let previousValue = 0;
 
 
@@ -93,6 +101,7 @@ function createPlayerPositions(updatedResponse) {
         topCar.style.visibility = "visible"; // top
         middleCar.style.visibility = "visible"; // middle
         bottomCar.style.visibility  = "hidden";  // bottom
+        currentPlayer = 1;
     }
     else if (lengthOfPlayerArray === 3) {
         console.log(">>>> 3")
@@ -108,6 +117,7 @@ function createPlayerPositions(updatedResponse) {
         bottomCar.style.visibility = "visible";
         middleCar.style.visibility = "visible";
         topCar.style.visibility = "visible";
+        currentPlayer = 2;
     }
     numberOfPlayers = lengthOfPlayerArray;
 }
@@ -129,10 +139,19 @@ function updatePlayerCount() {
 
 }
 
-function updatePlayers(updatedResponse) {
+function updatePlayerPosition(updateScoreReport) {
+    let players = updateScoreReport.players;
+    let numOfPlys = players.length;
 
+    orangeCarIndex = (0.15 + (players[0].score / 2) * 0.05);
+    if (numOfPlys >= 2) {
+        console.log('PurplCarIndex reached!!!!!!!!!!!');
+        purpleCarIndex = (0.15 + (players[1].score / 2) * 0.05);
+    }
+    if (numOfPlys >= 3) {
+        blueCarIndex = (0.15 + (players[2].score / 2) * 0.05);
+    }
 }
-
 
 function animateGame() {
     maps[index].style.backgroundPosition = `${positionB}px`;
@@ -261,36 +280,80 @@ function GameClock() {
         //document.getElementById('clockfs').innerText = finalTime;
     }, 1000);
 }
+function animateOrangeCar() {
+    orangeCar.style.left = orangeCarPosition + 'px';
 
-function animateCar() {
+    if (ending && orangeCarSpeed < 6) {
+        orangeCarSpeed += 1;
+    }
+
+    else if (orangeCarSpeed < 1 && orangeCarPosition <= window.innerWidth * orangeCarIndex) {
+        orangeCarSpeed += 0.01;
+    }
+
+    else if (orangeCarSpeed > -1 && orangeCarPosition >= window.innerWidth * orangeCarIndex) {
+        orangeCarSpeed -= 0.01;
+    }
+
+    orangeCarPosition += orangeCarSpeed;
     /*
-    carElements.forEach(car => {
-        car.style.left = carPosition + 'px';
-    });
+    if (currentPlayer === 1) {
+        streakPosition += purpleCarSpeed;
+    }
      */
-    orangeCar.style.left = carPosition + 'px';
-    blueCar.style.left = carPosition + 'px';
-    purpleCar.style.left = carPosition + 'px';
+    requestAnimationFrame(animateOrangeCar);
+}
+function animatePurpleCar() {
+    purpleCar.style.left = purpleCarPosition + 'px';
 
-    carStreak.style.transform = `translateX(${carPosition}px)`;
-    carShield.style.transform = `translateX(${carPosition}px)`;
-
-    if (ending && carSpeed < 6) {
-        carSpeed += 1;
+    if (ending && purpleCarSpeed < 6) {
+        purpleCarSpeed += 1;
     }
 
-    else if (carSpeed < 1 && carPosition <= window.innerWidth * positionalIndex) {
-        carSpeed += 0.01;
+    else if (purpleCarSpeed < 1 && purpleCarPosition <= window.innerWidth * purpleCarIndex) {
+        purpleCarSpeed += 0.01;
     }
 
-    else if (carSpeed > -1 && carPosition >= window.innerWidth * positionalIndex) {
-        carSpeed -= 0.01;
+    else if (purpleCarSpeed > -1 && purpleCarPosition >= window.innerWidth * purpleCarIndex) {
+        purpleCarSpeed -= 0.01;
     }
 
-    carPosition += carSpeed;
+    purpleCarPosition += purpleCarSpeed;
+    /*
+    if (currentPlayer === 1) {
+        streakPosition += purpleCarSpeed;
+    }
+     */
+    requestAnimationFrame(animatePurpleCar);
+}
+function animateBlueCar() {
+    blueCar.style.left = blueCarPosition + 'px';
 
+    if (ending && blueCarSpeed < 6) {
+        blueCarSpeed += 1;
+    }
 
-    requestAnimationFrame(animateCar);
+    else if (blueCarSpeed < 1 && blueCarPosition <= window.innerWidth * blueCarIndex) {
+        blueCarSpeed += 0.01;
+    }
+
+    else if (blueCarSpeed > -1 && blueCarPosition >= window.innerWidth * blueCarIndex) {
+        blueCarSpeed -= 0.01;
+    }
+
+    blueCarPosition += blueCarSpeed;
+    /*
+    if (currentPlayer === 2) {
+        streakPosition += blueCarSpeed;
+    }
+     */
+    requestAnimationFrame(animateBlueCar);
+}
+
+function animateCarStreaks () {
+    carStreak.style.transform = `translateX(${streakPosition}px)`;
+    carShield.style.transform = `translateX(${streakPosition}px)`;
+    requestAnimationFrame(animateCarStreaks);
 }
 
 
@@ -437,7 +500,10 @@ function startGame() {
     orangeCar.style.animation = "none";
     purpleCar.style.animation = "none";
     blueCar.style.animation = "none";
-    animateCar();
+    animateOrangeCar();
+    animatePurpleCar();
+    animateBlueCar();
+    //animateCarStreaks();
 
     setTimeout(() => {
         animateTransition();

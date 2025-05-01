@@ -57,9 +57,9 @@
 
         <div id="room-code">Game ID: Loading...</div>
         <div>
-            <img id="orangeCar" class="topCar car orange" src="../assets/Car1.png" alt="Car">
-            <img id="blueCar" class="bottomCar car blue" src="../assets/BlueCar-4.png" alt="blueCar">
-            <img id="purpleCar" class="middleCar car purple" src="../assets/PurpleCar-1.png" alt="purpleCar">
+            <img id="orangeCar" class="topCar car" src="../assets/Car1.png" alt="Car">
+            <img id="purpleCar" class="middleCar car" src="../assets/PurpleCar-1.png" alt="purpleCar">
+            <img id="blueCar" class="bottomCar car" src="../assets/BlueCar-4.png" alt="blueCar">
         </div>
 
         <div class="playersInGameContainer">
@@ -230,6 +230,7 @@ let numberOfPlayers = 1;
 
             case "scoreReport":
                 logMessage(`Score Update for ${response.name}: ${response.score}`);
+                updatePlayerPosition(response);
                 break;
 
             case "gameCompleted":
