@@ -36,8 +36,9 @@ function multiplication() {
 }
 function Code() {
     let userCode = prompt("Enter your code:");
-    if (userCode) {
-        ws.send(JSON.stringify({type: "joinGame", gameID: userCode, name: "fucker"}));
+    let name = prompt("Enter your name:");
+    if (userCode && name) {
+        ws.send(JSON.stringify({type: "joinGame", gameID: userCode, name: name}));
     } else {
         alert("No code entered.");
     }

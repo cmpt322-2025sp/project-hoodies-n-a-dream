@@ -58,9 +58,9 @@ const soundTrack = document.getElementById("soundTrack");
 const countDown1 = document.getElementById('countDown');
 
 const carShield = document.getElementById("carShield");
-middleCar = document.querySelector('.middleCar');
-bottomCar = document.querySelector('.bottomCar');
-topCar = document.querySelector('.topCar');
+let middleCar = document.querySelector('.middleCar');
+let bottomCar = document.querySelector('.bottomCar');
+let topCar = document.querySelector('.topCar');
 
 playerCountValue = playerCount.value;
 let previousValue = 0;
@@ -72,23 +72,37 @@ function createPlayerPositions(updatedResponse) {
 
     topCar.style.visibility = 'hidden';
     orangeCar.classList.remove('topCar');
-    purpleCar.classList.remove('middleCar');
-    blueCar.classList.remove('bottomCar');
+    purpleCar.classList.remove('bottomCar');
+    blueCar.classList.remove('middleCar');
 
+    console.log(lengthOfPlayerArray);
     if (lengthOfPlayerArray === 2) {
+        console.log(">>>> 2")
         orangeCar.classList.add('middleCar');
-        middleCar.style.visibility = "visible";
         purpleCar.classList.add('topCar');
-        topCar.style.visibility = "visible";
         blueCar.classList.add('bottomCar');
+        // Use specific element refs for visibility
+        middleCar  = document.querySelector('.middleCar');
+        bottomCar  = document.querySelector('.bottomCar');
+        topCar     = document.querySelector('.topCar');
 
+        topCar.style.visibility = "visible"; // top
+        middleCar.style.visibility = "visible"; // middle
+        bottomCar.style.visibility  = "hidden";  // bottom
     }
     else if (lengthOfPlayerArray === 3) {
+        console.log(">>>> 3")
         orangeCar.classList.add('bottomCar');
-        bottomCar.style.visibility = "visible";
         purpleCar.classList.add('middleCar');
-        middleCar.style.visibility = "visible";
         blueCar.classList.add('topCar');
+
+         middleCar = document.querySelector('.middleCar');
+         bottomCar = document.querySelector('.bottomCar');
+         topCar = document.querySelector('.topCar');
+
+
+        bottomCar.style.visibility = "visible";
+        middleCar.style.visibility = "visible";
         topCar.style.visibility = "visible";
     }
 }
