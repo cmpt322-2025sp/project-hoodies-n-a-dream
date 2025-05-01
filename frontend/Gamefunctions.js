@@ -68,7 +68,7 @@ let topCar = document.querySelector('.topCar');
 
 playerCountValue = playerCount.value;
 let previousValue = 0;
-let numberOfPlayers = 1;
+
 
 function createPlayerPositions(updatedResponse) {
     let lengthOfPlayerArray = updatedResponse.players.length;
@@ -76,8 +76,8 @@ function createPlayerPositions(updatedResponse) {
 
     topCar.style.visibility = 'hidden';
     orangeCar.classList.remove('topCar');
-    purpleCar.classList.remove('bottomCar');
-    blueCar.classList.remove('middleCar');
+    purpleCar.classList.remove('middleCar');
+    blueCar.classList.remove('bottomCar');
 
     console.log(lengthOfPlayerArray);
     if (lengthOfPlayerArray === 2) {
@@ -111,7 +111,10 @@ function createPlayerPositions(updatedResponse) {
     }
 }
 
-function updatePlayerCount(updatedResponse) {
+function updatePlayerCount() {
+    middleCar = document.querySelector('.middleCar');
+    bottomCar = document.querySelector('.bottomCar');
+    topCar = document.querySelector('.topCar');
 
     console.log('We made it to updatePlayerCount Function!!!!!!!!!!');
     console.log('number if Players:' + numberOfPlayers);
@@ -201,7 +204,7 @@ let totalTime = 0;
 // Function to create sparks
 function createPlayer2 () {
     const purpleCar = document.createElement("img");
-    purpleCar.src = "../Assets/PurpleCar-1.png.png";
+    purpleCar.src = "../Assets/PurpleCar-1.png";
     purpleCar.id = "purpleCar";
     purpleCar.classList.add('car');
 }

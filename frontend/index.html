@@ -59,8 +59,8 @@
         <div id="room-code">Game ID: Loading...</div>
         <div>
             <img id="orangeCar" class="topCar car orange" src="../assets/Car1.png" alt="Car">
-            <img id="blueCar" class="middleCar car blue" src="../assets/BlueCar-4.png" alt="blueCar">
-            <img id="purpleCar" class="bottomCar car purple" src="../assets/PurpleCar-1.png.png" alt="purpleCar">
+            <img id="blueCar" class="bottomCar car blue" src="../assets/BlueCar-4.png" alt="blueCar">
+            <img id="purpleCar" class="middleCar car purple" src="../assets/PurpleCar-1.png" alt="purpleCar">
         </div>
 
         <div class="playersInGameContainer">
@@ -75,7 +75,7 @@
                 <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#6">
             </div>
             <div class="playersInGame">
-                <img class="car-models2" src="../assets/PurpleCar-1.png.png" alt="purpleCarModel">
+                <img class="car-models2" src="../assets/PurpleCar-1.png" alt="purpleCarModel">
                 <h1 class="player_text"> Player   2</h1>
             </div>
             <div class="playersInGame">
@@ -147,8 +147,16 @@
     </section>
 
 </body>
-
 <script>
+let numberOfPlayers = 1;
+</script>
+<script src="Gamefunctions.js"></script>
+<script src="Startscreen.js"></script>
+<script src="Questions.js"></script>
+<script src="FinishLine.js"></script>
+<script src="Finishscreen.js"></script>
+<script>
+
     let ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
     let gameID = null;
 
@@ -340,11 +348,11 @@
         }, 800);
     }
 </script>
-<script src="Gamefunctions.js"></script>
-<script src="Startscreen.js"></script>
-<script src="Questions.js"></script>
-<!--<script src="FinishLine.js"></script>-->
-<script src="Finishscreen.js"></script>
+<!--<script src="Gamefunctions.js"></script>-->
+<!--<script src="Startscreen.js"></script>-->
+<!--<script src="Questions.js"></script>-->
+<!--&lt;!&ndash;<script src="FinishLine.js"></script>&ndash;&gt;-->
+<!--<script src="Finishscreen.js"></script>-->
 
 
 <script>
@@ -364,10 +372,6 @@
     }
 
 </script>
-<script src="Gamefunctions.js"></script>
-<script src="Startscreen.js"></script>
-<script src="Questions.js"></script>
-<script src="FinishLine.js"></script>
-<script src="Finishscreen.js"></script>
+
 
 </html>
