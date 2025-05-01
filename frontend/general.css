@@ -100,19 +100,19 @@ body {
     border: 2px solid red;
 }
 
-#orangeCar {
+.topCar {
     left: -7.5vw;
     bottom: 18.5vh;
     animation: introMovingCar2 2s linear forwards;
 }
 
-#blueCar {
+.bottomCar {
     left: -10vw;
     bottom: -1vh;
     animation: introMovingCar 2s linear forwards;
-    visibility: hidden;
+    visibility: hidden
 }
-#purpleCar {
+.middleCar {
     left: -10vw;
     bottom: 8.5vh;
     animation: introMovingCar 2s linear forwards;
@@ -201,6 +201,7 @@ body {
 
 #equation {
     text-align: center;
+    width: 100%;
     flex: 0 0 30%;
     font-family: 'game-font', sans-serif;
     font-size: clamp(1em, 6vw, 5em);

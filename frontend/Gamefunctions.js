@@ -62,25 +62,72 @@ const soundTrack = document.getElementById("soundTrack");
 const countDown1 = document.getElementById('countDown');
 
 const carShield = document.getElementById("carShield");
+let middleCar = document.querySelector('.middleCar');
+let bottomCar = document.querySelector('.bottomCar');
+let topCar = document.querySelector('.topCar');
 
 playerCountValue = playerCount.value;
 let previousValue = 0;
+let numberOfPlayers = 1;
 
-playerCount.addEventListener('input', () => {
-    const currentValue = Number(playerCount.value);
+function createPlayerPositions(updatedResponse) {
+    let lengthOfPlayerArray = updatedResponse.players.length;
+    console.log('>>>CreatePlayerPositions Triggered!!');
 
-    if (!isNaN(currentValue) && currentValue >= 2) {
-        blueCar.style.visibility = 'visible';
+    topCar.style.visibility = 'hidden';
+    orangeCar.classList.remove('topCar');
+    purpleCar.classList.remove('bottomCar');
+    blueCar.classList.remove('middleCar');
+
+    console.log(lengthOfPlayerArray);
+    if (lengthOfPlayerArray === 2) {
+        console.log(">>>> 2")
+        orangeCar.classList.add('middleCar');
+        purpleCar.classList.add('topCar');
+        blueCar.classList.add('bottomCar');
+        // Use specific element refs for visibility
+        middleCar  = document.querySelector('.middleCar');
+        bottomCar  = document.querySelector('.bottomCar');
+        topCar     = document.querySelector('.topCar');
+
+        topCar.style.visibility = "visible"; // top
+        middleCar.style.visibility = "visible"; // middle
+        bottomCar.style.visibility  = "hidden";  // bottom
     }
-    else if(!isNaN(currentValue) && currentValue >= 1) {
-        purpleCar.style.visibility = 'visible';
-        blueCar.style.visibility = 'hidden';
+    else if (lengthOfPlayerArray === 3) {
+        console.log(">>>> 3")
+        orangeCar.classList.add('bottomCar');
+        purpleCar.classList.add('middleCar');
+        blueCar.classList.add('topCar');
+
+         middleCar = document.querySelector('.middleCar');
+         bottomCar = document.querySelector('.bottomCar');
+         topCar = document.querySelector('.topCar');
+
+
+        bottomCar.style.visibility = "visible";
+        middleCar.style.visibility = "visible";
+        topCar.style.visibility = "visible";
     }
-    else {
-        purpleCar.style.visibility = 'hidden';
+}
+
+function updatePlayerCount(updatedResponse) {
+
+    console.log('We made it to updatePlayerCount Function!!!!!!!!!!');
+    console.log('number if Players:' + numberOfPlayers);
+    if (numberOfPlayers === 3) {
+        bottomCar.style.visibility = 'visible';
     }
-    previousValue = currentValue;
-});
+    else if(numberOfPlayers === 2) {
+        console.log("We made it again");
+        middleCar.style.visibility = 'visible';
+    }
+
+}
+
+function updatePlayers(updatedResponse) {
+
+}
 
 
 function animateGame() {
@@ -92,6 +139,7 @@ function animateGame() {
     positionB -= speedB;
 
     track.style.backgroundPosition = `${positionTrack}px`;
+
     if (speedTrack < maxTrackSpeed) {
         speedTrack = speedTrack + .25;
     }

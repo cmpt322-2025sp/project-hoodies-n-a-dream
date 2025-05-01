@@ -31,7 +31,6 @@
         <img src ="../assets/Join.png" class = "Join" alt = "Join" onclick="Code()"/>
     </section>
 
-
     <section data-view="gameAnimation">
         <div id="carShield"></div>
 
@@ -51,19 +50,17 @@
             <img src="https://th.bing.com/th/id/R.1f4a53e7d20f061e3ac2616988fc024b?rik=Em5fLqVRGqZukQ&pid=ImgRaw&r=0" >
         </div>
 
-
         <div id="overlay"></div>
         <button id="startGame" onclick=" sendStartGame(); Lights()">Start Race</button>
         <div id="countDown"></div>
 
         <div id="answerStreak"></div>
 
-
         <div id="room-code">Game ID: Loading...</div>
         <div>
-            <img id="orangeCar" class="car" src="../assets/Car1.png" alt="Car">
-            <img id="blueCar" class="car" src="../assets/BlueCar-4.png" alt="blueCar">
-            <img id="purpleCar" class="car" src="../assets/PurpleCar-1.png" alt="purpleCar">
+            <img id="orangeCar" class="topCar car orange" src="../assets/Car1.png" alt="Car">
+            <img id="blueCar" class="middleCar car blue" src="../assets/BlueCar-4.png" alt="blueCar">
+            <img id="purpleCar" class="bottomCar car purple" src="../assets/PurpleCar-1.png.png" alt="purpleCar">
         </div>
 
         <div class="playersInGameContainer">
@@ -78,7 +75,7 @@
                 <img class="fireStreak" src="../assets/fireStreak3.png" alt="streak#6">
             </div>
             <div class="playersInGame">
-                <img class="car-models2" src="../assets/PurpleCar-1.png" alt="purpleCarModel">
+                <img class="car-models2" src="../assets/PurpleCar-1.png.png" alt="purpleCarModel">
                 <h1 class="player_text"> Player   2</h1>
             </div>
             <div class="playersInGame">
@@ -116,7 +113,7 @@
         <audio id="streakSound" src="../audio/streakSound.wav" preload="auto"></audio>
 
         <label>
-            <input id=playerCount type="number">
+<!--            <input id=playerCount type="number">-->
         </label>
     </section>
 
@@ -126,16 +123,14 @@
         <div id="cup"></div>
         <div id="finish_track"></div>
         <div>
-            <<img id="car2" class="car1" src="../assets/Car1.png" alt="finish_car">
-            <<img id="Gumball" class="car1" src="../assets/BlueCar-3.png" alt="finish_car">
-            <<img id="Darwin" class="car1" src="../assets/PurpleCar-1.png" alt="finish_car">
+            <img id="finish_car" class="car1" src="../assets/Car1.png" alt="finish_car">
         </div>
     </section>
 
 
     <section data-view="finishScreen">
         <div>
-            <img id = "car3" class="carfs" src="../assets/Car1.png" alt="last_car">
+            <img id = "last_car" class="carfs" src="../assets/Car1.png" alt="last_car">
         </div>
         <div class="players">
             <div class="player1">
@@ -160,17 +155,87 @@
     ws.onopen = () => console.log("✅ WebSocket Connected");
     ws.onmessage = (event) => {
         const response = JSON.parse(event.data);
-        if (response.type === "gameCreated") {
-            gameID = response.gameID;
-            console.log(`Game created with ID: ${gameID}`);
-            navigateTo("gameAnimation");
-            // Show the buttons container after game creation
-            document.getElementById('buttonContainer').style.display = 'block';
-            // Update room-code display
-            const roomCodeElem = document.getElementById('room-code');
-            if(roomCodeElem) roomCodeElem.textContent = `Game ID: ${gameID}`;
-        } else {
-            console.log(response);
+        console.log(response);
+        switch (response.type) {
+            case "gameCreated":
+                gameID = response.gameID;
+                console.log(`Game created with ID: ${gameID}`);
+                navigateTo("gameAnimation");
+                // Show the buttons container after game creation
+                document.getElementById('buttonContainer').style.display = 'block';
+                // Update room-code display
+                const roomCodeElem = document.getElementById('room-code');
+                if(roomCodeElem) roomCodeElem.textContent = `Game ID: ${gameID}`;
+                break;
+
+            case "joinedGame":
+                gameID = response.gameID;
+                // document.getElementById("game-info").innerText = `Joined Game: ${gameID}`;
+                createPlayerPositions(response);
+                navigateTo("gameAnimation");
+                break;
+
+            case "playerJoined":
+                logMessage(`👤 Player Joined: ${response.name}`);
+                numberOfPlayers += 1;
+                updatePlayerCount();
+                break;
+
+            case "gameStarting":
+                logMessage(`⏳ Game starting in ${response.countdown} seconds...`);
+                break;
+
+            case "gameStarted":
+                logMessage("🏁 The race (game) has started!");
+                gameStarted = true;
+                if (pendingDifficulty) {
+                    ws.send(JSON.stringify({
+                        type: "requestNextQuestion",
+                        gameID: gameID,
+                        difficulty: pendingDifficulty
+                    }));
+
+
+                    pendingDifficulty = null;
+                }
+                break;
+
+            case "questions":
+                // The server sent an array of question objects
+                if (response.questions && response.questions.length > 0) {
+                    // 1) Store them
+                    currentQuestionSet = response.questions;
+                    // 2) Reset index
+                    currentQuestionIndex = 0;
+                    // 3) Display the first question
+                    displayEquation(currentQuestionSet[currentQuestionIndex]);
+                }
+
+                // Optionally, acknowledge we got them
+                ws.send(JSON.stringify({
+                    type: "questionsReceived",
+                    gameID: gameID,
+                    status: "200"
+                }));
+                break;
+
+            case "scoreReport":
+                logMessage(`Score Update for ${response.name}: ${response.score}`);
+                break;
+
+            case "gameCompleted":
+                logMessage("🏆 Game Over! Results:");
+                response.players.forEach(player => {
+                    logMessage(` - ${player.name}: Score = ${player.score}, Time = ${player.time}`);
+                });
+                break;
+
+            case "ERROR":
+                logMessage(`❌ ERROR: ${response.message}`);
+                break;
+
+            default:
+                logMessage("ℹ️ Unhandled response: " + JSON.stringify(response));
         }
     };
 
@@ -205,11 +270,13 @@
 
         const difficulty = localStorage.getItem("difficulty");
         logMessage(`➡️ Requesting questions (${difficulty}) via WebSocket`);
+        /*
         ws.send(JSON.stringify({
             type: "requestNextQuestion",
             gameID: gameID,
             difficulty: difficulty
         }));
+         */
 
         // Trigger existing race‑start visuals/countdown
         if (typeof Lights === "function") {

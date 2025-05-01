@@ -24,6 +24,7 @@ const streakSound = document.getElementById('streakSound');
 
 // Library of equations (you can populate this with specific equations)
 let equationLibrary = []
+/*
 function generateEquation() {
     let x, y;
     let wrongAnswer1, wrongAnswer2, wrongAnswer3, wrongAnswer4;
@@ -88,6 +89,21 @@ function generateEquation() {
     }
 }
 
+ */
+function displayEquation(questionObj) {
+    equation.innerText = questionObj.question;
+
+    const answers = [...questionObj.incorrect_answers, questionObj.correct_answer];
+    answers.sort(() => Math.random() - 0.5);
+
+    document.getElementById("bt1span").innerText = answers[0];
+    document.getElementById("bt2span").innerText = answers[1];
+    document.getElementById("bt3span").innerText = answers[2];
+    document.getElementById("bt4span").innerText = answers[3];
+
+    currentCorrectAnswer = questionObj.correct_answer;
+}
+
 function checkAnswer(button) {
     maxMapSpeed += .05;
     maxTrackSpeed += 0.5;
@@ -95,7 +111,7 @@ function checkAnswer(button) {
     let Span = button.querySelector('span');
     let buttonSpanIds = document.querySelectorAll('span');
     const buttonIds = document.querySelectorAll('button')
-    if (parseInt(button.querySelector('span').innerText) === answer) {
+    if (parseInt(button.querySelector('span').innerText) === currentCorrectAnswer) {
 
         questionCount++;
         streak++;
@@ -159,8 +175,8 @@ function checkAnswer(button) {
                     answerStreak.style.animation = "none";
                     answerStreak.offsetWidth;
                     answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
-                    fireStreaks[0].src = "../assets/fireStreak6.png";
-                    fireStreaks[1].src = "../assets/fireStreak6.png";
+                    fireStreaks[0].src = "../Assets/fireStreak6.png";
+                    fireStreaks[1].src = "../Assets/fireStreak6.png";
                     fireStreaks[2].style.visibility = "visible";
                     break;
 
@@ -201,10 +217,10 @@ function checkAnswer(button) {
                     answerStreak.style.animation = "none";
                     answerStreak.offsetWidth;
                     answerStreak.style.animation = "fadeOut2 1.5s ease forwards ";
-                    fireStreaks[0].src = "../assets/fireStreak3.png";
-                    fireStreaks[1].src = "../assets/fireStreak3.png";
-                    fireStreaks[2].src = "../assets/fireStreak3.png";
-                    fireStreaks[3].src = "../assets/fireStreak3.png";
+                    fireStreaks[0].src = "../Assets/fireStreak3.png";
+                    fireStreaks[1].src = "../Assets/fireStreak3.png";
+                    fireStreaks[2].src = "../Assets/fireStreak3.png";
+                    fireStreaks[3].src = "../Assets/fireStreak3.png";
                     fireStreaks[4].style.visibility = "visible";
                     break;
                 case 18:
@@ -237,22 +253,22 @@ function checkAnswer(button) {
 
             flag2 = true;
 
-            if (questionCount >= 2) {
+            if (questionCount >= 20) {
                 ending = true
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 //window.location.href = "FinishLine.html";
                 stopGame();
-                clearInterval(window.clockInterval);
-                clockRunning = false;
-                console.log("hit");
-                localStorage.setItem('AgentP',finalTime)
-                localStorage.setItem('Doof', finalTime);
+                clearInterval(clockInterval);
                 setTimeout ( () => navigateTo('finishLine'), 1500);
 
                 // carPosition = 20;
                 //window.location.href = "Startsection.html"; // Redirect to finish page
             }
-            generateEquation();
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestionSet.length) {
+                displayEquation(currentQuestionSet[currentQuestionIndex]);
+            }
+            //generateEquation();
         }, 800);
 
     }
@@ -266,8 +282,8 @@ function checkAnswer(button) {
         for (let i = 0; i < fireStreaks.length; i++) {
             fireStreaks[i].style.visibility = "hidden";
         }
-        fireStreaks[0].src = "../assets/fireStreak5.png";
-        fireStreaks[1].src = "../assets/fireStreak5.png";
+        fireStreaks[0].src = "../Assets/fireStreak5.png";
+        fireStreaks[1].src = "../Assets/fireStreak5.png";
         button.style.animation = "shake 0.3s ease-in-out 3, fadeOut 4s forwards";
         wrongSound.play(8.4);
         setTimeout(() => {
@@ -310,4 +326,3 @@ function stopStreakAnimation(button, buttonIds, buttonSpanIds) {
     maxMapSpeed = 1;
     maxTrackSpeed = 35;
 }
-generateEquation();
