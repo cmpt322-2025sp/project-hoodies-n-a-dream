@@ -235,6 +235,7 @@ export function gameComplete(gameID: string, playerSocket: WebSocket, time: stri
     gameRooms.updateGame(gameID, { players: game.players });
 
     // Broadcast the completion report to all players
+    game = gameRooms.getGame(gameID);
     const report = JSON.stringify({
         type: "gameCompleted",
         players: game.players.map(p => ({
