@@ -63,7 +63,7 @@ export function createGame(gameDifficulty: string, hostName: string, hostSocket:
 
 export function joinGame(gameID: string, playerName: string, playerSocket: Websocket): string {
     console.log("[INFO] Join game called in gameServices")
-    const game = gameRooms.getGame(gameID);
+    let game = gameRooms.getGame(gameID);
     // console.log("[TROUBLESHOOT] Game was found: ");
     if (!game) {
         console.log("[ERROR] Failed to update player game count");
@@ -93,11 +93,23 @@ export function joinGame(gameID: string, playerName: string, playerSocket: Webso
         gameRooms.updateGame(gameID, { status: "full" });
     }
 
-    const message = JSON.stringify({ "type": "playerJoined", "name": playerName });
+    game = gameRooms.getGame(gameID);
+    const message = JSON.stringify({ "type": "playerJoined",
+        players: game.players.map(p => ({
+            name: p.name,
+            time: p.time,
+            score: p.score
+        }))
+    });
     broadcast(gameID, message, newPlayer.name, true);
     // console.log(gameRooms.getGame(gameID));
 
-    return JSON.stringify({"type": "joinedGame", "gameID": game.id, "players": currentPlayers});
+    return JSON.stringify({"type": "joinedGame", "gameID": game.id,
+        players: game.players.map(p => ({
+            name: p.name,
+            time: p.time,
+            score: p.score
+        }))});
 }
 
 export function startGame(gameID: string) {
@@ -114,7 +126,7 @@ export function startGame(gameID: string) {
 }
 
 export function scoreUpdate(gameID: string, player: WebSocket, score: number, attempts: number): string {
-    const game = gameRooms.getGame(gameID);
+    let game = gameRooms.getGame(gameID);
     if (!game) {
         console.log("[ERROR] Failed to update player score - game not found");
         return JSON.stringify({ type: "ERROR", message: "Game not found" });
@@ -136,7 +148,12 @@ export function scoreUpdate(gameID: string, player: WebSocket, score: number, at
     gameRooms.updateGame(gameID, { players: game.players });
 
     // Broadcast the score update to other players
-    const report = JSON.stringify({ type: "scoreReport", name: playerEntry.name, score: score });
+    game = gameRooms.getGame(gameID);
+    const report = JSON.stringify({ type: "scoreReport", players: game.players.map(p => ({
+            name: p.name,
+            time: p.time,
+            score: p.score
+        }))});
     broadcast(gameID, report, playerEntry.name, true);
 
     // Return the report for the caller
@@ -145,7 +162,7 @@ export function scoreUpdate(gameID: string, player: WebSocket, score: number, at
 
 export function leaveGame(gameID: string, playerSocket: WebSocket): string {
     console.log("[INFO] Leaving Game ", gameID);
-    const game = gameRooms.getGame(gameID);
+    let game = gameRooms.getGame(gameID);
     if (!game) {
         console.log("[ERROR] Leaving Game ", gameID);
         return JSON.stringify({ "type": "ERROR", "message": "Game not found" });
@@ -164,7 +181,12 @@ export function leaveGame(gameID: string, playerSocket: WebSocket): string {
         gameRooms.updateGame(gameID, { status: "open" });
     }
     // Broadcast the removal to the remaining players
-    const message = JSON.stringify({ "type": "playerRemoved", "name": removedPlayer.name });
+    game = gameRooms.getGame(gameID);
+    const message = JSON.stringify({ "type": "playerRemoved", players: game.players.map(p => ({
+            name: p.name,
+            time: p.time,
+            score: p.score
+        }))});
     broadcast(gameID, message, removedPlayer.name, true);
     // Return a response to the leaving player with the updated player list
     return JSON.stringify({
@@ -191,7 +213,7 @@ export function getPlayerProgress(gameID: string): Record<string, number> {
 }
 
 export function gameComplete(gameID: string, playerSocket: WebSocket, time: string, attempts: number) {
-    const game = gameRooms.getGame(gameID);
+    let game = gameRooms.getGame(gameID);
     if (!game) {
         console.log("[ERROR] Game not found for completion");
         return;
@@ -218,7 +240,7 @@ export function gameComplete(gameID: string, playerSocket: WebSocket, time: stri
         players: game.players.map(p => ({
             name: p.name,
             time: p.time,
-            attempts: p.attempts
+            score: p.score
         }))
     });
     broadcast(gameID, report, null, false);
