@@ -96,10 +96,10 @@ function displayEquation(questionObj) {
     const answers = [...questionObj.incorrect_answers, questionObj.correct_answer];
     answers.sort(() => Math.random() - 0.5);
 
-    document.getElementById("bt1span").innerText = questionObj[0];
-    document.getElementById("bt2span").innerText = questionObj[1];
-    document.getElementById("bt3span").innerText = questionObj[2];
-    document.getElementById("bt4span").innerText = questionObj[3];
+    document.getElementById("bt1span").innerText = answers[0];
+    document.getElementById("bt2span").innerText = answers[1];
+    document.getElementById("bt3span").innerText = answers[2];
+    document.getElementById("bt4span").innerText = answers[3];
 
     currentCorrectAnswer = questionObj.correct_answer;
 }
@@ -266,7 +266,7 @@ function checkAnswer(button) {
             }
             currentQuestionIndex++;
             if (currentQuestionIndex < currentQuestionSet.length) {
-                displayQuestion(currentQuestionSet[currentQuestionIndex]);
+                displayEquation(currentQuestionSet[currentQuestionIndex]);
             }
             //generateEquation();
         }, 800);
