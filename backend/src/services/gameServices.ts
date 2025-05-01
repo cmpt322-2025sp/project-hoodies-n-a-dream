@@ -154,7 +154,7 @@ export function scoreUpdate(gameID: string, player: WebSocket, score: number, at
             time: p.time,
             score: p.score
         }))});
-    broadcast(gameID, report, playerEntry.name, true);
+    broadcast(gameID, report, playerEntry.name, false);
 
     // Return the report for the caller
     return report;
