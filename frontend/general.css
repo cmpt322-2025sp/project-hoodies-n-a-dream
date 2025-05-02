@@ -97,7 +97,6 @@ body {
     height: 11vh;
     position: absolute;
     z-index: 100;
-    border: 2px solid red;
 }
 
 .topCar {
@@ -130,7 +129,6 @@ body {
     transform: translate(-50%, -50%);
     z-index: 110;
     visibility: hidden;
-    border: 2px solid red;
     margin: 0;
     padding: 0;
 }
@@ -146,7 +144,6 @@ body {
     justify-content: space-between;
     align-items: center;  /* Centers elements horizontally */
     z-index: 110;
-    border: 2px solid red;
     visibility: hidden;
 }
 
@@ -209,7 +206,6 @@ body {
     -webkit-background-clip: text;
     color: white;
     text-shadow: none;
-    border: 2px solid red;
 }
 button:hover {
     transform: scale(1.3);
@@ -224,7 +220,6 @@ button:hover {
     right: 2vw;
     font-size: clamp(0.1em, 6vw, 5em);
     color: white;
-    border: 2px solid red;
     z-index: 80;
     font-family: 'game-font', sans-serif;
     background: linear-gradient(to right, mediumspringgreen, springgreen);
@@ -242,13 +237,11 @@ button:hover {
     top: 2%;
     left: 1%;
     z-index: 80;
-    border: 2px solid red;
 }
 .playersInGame {
     display: flex;
     align-items: start;
     justify-content: start;
-    border: 1px solid red;
     width: 100%;
     height: 33.33%;
 }
@@ -277,7 +270,6 @@ button:hover {
     z-index: 80;
     background: linear-gradient(to right, mediumspringgreen, springgreen);
     -webkit-background-clip: text;
-    border: solid 1px red;
 }
 @keyframes shake {
     0% { transform: translateX(0) scale(1.3); }
