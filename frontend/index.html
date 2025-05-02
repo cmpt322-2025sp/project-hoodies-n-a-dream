@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="Startscreen.css" />
     <link rel="stylesheet" href="countDown.css" />
     <link rel="stylesheet" href="answerStreak.css" />
-    <link rel="stylesheet" href="Finishline.css" />
-    <link rel="stylesheet" href="Finishscreen.css" />
+<!--    <link rel="stylesheet" href="Finishline.css" />-->
+<!--    <link rel="stylesheet" href="Finishscreen.css" />-->
 </head>
 <body>
 
@@ -67,7 +67,7 @@
         <div class="playersInGameContainer">
             <div id="p1_model" class="playersInGame">
                 <img class="car-models" src="../assets/Car1.png" alt="orangeCarModel">
-                <h1 id="player1Name" class="player_text"> Player   1</h1>
+                <h1 id="player1Name" class="player_text"> ---- </h1>
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
                 <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
@@ -77,7 +77,7 @@
             </div>
             <div id="p2_model" class="playersInGame">
                 <img class="car-models" src="../assets/PurpleCar-1.png" alt="purpleCarModel">
-                <h1 id="player2Name" class="player_text"> Player   2</h1>
+                <h1 id="player2Name" class="player_text"> ----</h1>
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
                 <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
@@ -87,7 +87,7 @@
             </div>
             <div id="p3_model" class="playersInGame">
                 <img class="car-models" src="../assets/BlueCar-4.png" alt="blueCarModel">
-                <h1 id="player3Name" class="player_text"> Player   3</h1>
+                <h1 id="player3Name" class="player_text"> ---- </h1>
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
                 <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
@@ -191,8 +191,8 @@ let currentPlayer = 0;
 <script src="Questions.js"></script>
 <script src="Gamefunctions.js"></script>
 <script src="Startscreen.js"></script>
-<script src="FinishLine.js"></script>
-<script src="Finishscreen.js"></script>
+<!--<script src="FinishLine.js"></script>-->
+<!--<script src="Finishscreen.js"></script>-->
 <script>
 
     let ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");

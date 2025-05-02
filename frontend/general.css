@@ -317,6 +317,7 @@ input {
 
 table {
     color: white;
+    font-family: 'game-font', sans-serif;
     visibility: hidden;
     position: absolute;
     top: 35vh;
