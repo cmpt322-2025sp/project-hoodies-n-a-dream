@@ -17,9 +17,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 6.4%;
-    width: 13%;
-    height: 22%;
+    margin-top: 3.6%;
+    width: 7%;
+    height: 35%;
     z-index: 80;
     visibility: hidden;
     text-shadow: 5px 5px 50px darkorange;
@@ -120,7 +120,7 @@
 
 #carStreak {
     position: absolute;
-    left: -10vw;
+    left: -10.7vw;
     bottom: 23.3vh;
     width: 18vw;
     height: 0.5vh;
@@ -181,7 +181,7 @@
     width: 12vw;
     height: 9vh;
     bottom: 20.2vh;
-    left: -1.9vw;
+    left: -2.5vw;
     border-right: 5px solid springgreen;
     border-radius: 85%;
     /* Apply box-shadow on the right side only */
