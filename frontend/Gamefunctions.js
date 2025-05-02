@@ -22,9 +22,9 @@ let thous = 0;
 let targetPosition = window.innerWidth * 0.10;
 let leaderboardtime = localStorage.getItem("Doof");
 //let carPosition = 0;
-let orangeCarPosition = 0;
-let purpleCarPosition = 0;
-let blueCarPosition = 0;
+let orangeCarPosition = -10;
+let purpleCarPosition = -10;
+let blueCarPosition = -10;
 let orangeCarSpeed = 0;
 let purpleCarSpeed = 0;
 let blueCarSpeed = 0;
@@ -49,6 +49,12 @@ let positionalIndex = 0.15; //The point where the car is bounded too, where its 
 let orangeCarIndex = 0.15;
 let purpleCarIndex = 0.15;
 let blueCarIndex = 0.15;
+let orangeCarEnding = false;
+let purpleCarEnding = false;
+let blueCarEnding = false;
+let player1Name = document.getElementById("player1Name");
+let player2Name = document.getElementById("player2Name");
+let player3Name = document.getElementById("player3Name");
 
 let maps = [map1, map2, map3];
 let index = 0;
@@ -81,13 +87,25 @@ function createPlayerPositions(updatedResponse) {
     let lengthOfPlayerArray = updatedResponse.players.length;
     console.log('>>>CreatePlayerPositions Triggered!!');
 
+    let players = updatedResponse.players;
+
     topCar.style.visibility = 'hidden';
     orangeCar.classList.remove('topCar');
     purpleCar.classList.remove('middleCar');
     blueCar.classList.remove('bottomCar');
 
     console.log(lengthOfPlayerArray);
+    if (players[0].name !== '***') {
+        player1Name.innerHTML = players[0].name;
+    }
+
     if (lengthOfPlayerArray === 2) {
+        document.getElementById("preRaceCarModel").src = "../Assets/PurpleCar-1.png";
+        document.getElementById("startRaceButton").style.display = "none";
+        document.getElementById("waiting").style.visibility = "visible";
+        document.getElementById("room-code").style.display = "none";
+        player2Name.innerHTML = players[1].name;
+        fireStreaks = document.querySelectorAll('#p2_model .fireStreak')
         console.log(">>>> 2")
         orangeCar.classList.add('middleCar');
         purpleCar.classList.add('topCar');
@@ -103,6 +121,13 @@ function createPlayerPositions(updatedResponse) {
         currentPlayer = 1;
     }
     else if (lengthOfPlayerArray === 3) {
+        document.getElementById("preRaceCarModel").src = "../Assets/BlueCar-4.png";
+        document.getElementById("startRaceButton").style.display = "none";
+        document.getElementById("waiting").style.visibility = "visible";
+        document.getElementById("room-code").style.display = "none";
+        fireStreaks = document.querySelectorAll('#p3_model .fireStreak')
+        player2Name.innerHTML = players[1].name;
+        player3Name.innerHTML = players[2].name;
         console.log(">>>> 3")
         orangeCar.classList.add('bottomCar');
         purpleCar.classList.add('middleCar');
@@ -121,7 +146,9 @@ function createPlayerPositions(updatedResponse) {
     numberOfPlayers = lengthOfPlayerArray;
 }
 
-function updatePlayerCount() {
+function updatePlayerCount(updatedResponse) {
+    let players = updatedResponse.players;
+
     middleCar = document.querySelector('.middleCar');
     bottomCar = document.querySelector('.bottomCar');
     topCar = document.querySelector('.topCar');
@@ -130,9 +157,11 @@ function updatePlayerCount() {
     console.log('number if Players:' + numberOfPlayers);
     if (numberOfPlayers === 3) {
         bottomCar.style.visibility = 'visible';
+        player3Name.innerHTML = players[2].name;
     }
     else if(numberOfPlayers === 2) {
         console.log("We made it again");
+        player2Name.innerHTML = players[1].name;
         middleCar.style.visibility = 'visible';
     }
 
@@ -144,12 +173,27 @@ function updatePlayerPosition(updateScoreReport) {
 
     orangeCarIndex = (0.15 + (players[0].score / 2) * 0.05);
     if (numOfPlys >= 2) {
-        console.log('PurplCarIndex reached!!!!!!!!!!!');
         purpleCarIndex = (0.15 + (players[1].score / 2) * 0.05);
     }
     if (numOfPlys >= 3) {
         blueCarIndex = (0.15 + (players[2].score / 2) * 0.05);
     }
+}
+
+function playersEnding (updatedPlayersEnded) {
+    console.log('Player Ended!!!!!!!!');
+   let players = updatedPlayersEnded.players;
+
+   if (players[0].score === 20) {
+       orangeCarEnding = true;
+   }
+   if (players[1].score === 20) {
+        purpleCarEnding = true;
+   }
+   if (players[2].score === 20) {
+       blueCarEnding = true;
+   }
+
 }
 
 function animateGame() {
@@ -282,7 +326,7 @@ function GameClock() {
 function animateOrangeCar() {
     orangeCar.style.left = orangeCarPosition + 'px';
 
-    if (ending && orangeCarSpeed < 6) {
+    if (orangeCarEnding && orangeCarSpeed < 6) {
         orangeCarSpeed += 1;
     }
 
@@ -295,17 +339,17 @@ function animateOrangeCar() {
     }
 
     orangeCarPosition += orangeCarSpeed;
-    /*
-    if (currentPlayer === 1) {
-        streakPosition += purpleCarSpeed;
+
+    if (currentPlayer === 0) {
+        streakPosition += orangeCarSpeed;
     }
-     */
+
     requestAnimationFrame(animateOrangeCar);
 }
 function animatePurpleCar() {
     purpleCar.style.left = purpleCarPosition + 'px';
 
-    if (ending && purpleCarSpeed < 6) {
+    if (purpleCarEnding && purpleCarSpeed < 6) {
         purpleCarSpeed += 1;
     }
 
@@ -318,17 +362,17 @@ function animatePurpleCar() {
     }
 
     purpleCarPosition += purpleCarSpeed;
-    /*
+
     if (currentPlayer === 1) {
         streakPosition += purpleCarSpeed;
     }
-     */
+
     requestAnimationFrame(animatePurpleCar);
 }
 function animateBlueCar() {
     blueCar.style.left = blueCarPosition + 'px';
 
-    if (ending && blueCarSpeed < 6) {
+    if (blueCarEnding && blueCarSpeed < 6) {
         blueCarSpeed += 1;
     }
 
@@ -341,11 +385,10 @@ function animateBlueCar() {
     }
 
     blueCarPosition += blueCarSpeed;
-    /*
+
     if (currentPlayer === 2) {
         streakPosition += blueCarSpeed;
     }
-     */
     requestAnimationFrame(animateBlueCar);
 }
 
@@ -385,7 +428,10 @@ function intro() {
 
 function Lights() {
     document.getElementById("overlay").style.display = "none";
-    document.getElementById("startGame").style.display = "none";
+    document.getElementById("startRaceButton").style.display = "none";
+    document.getElementById("waiting").style.display = "none";
+    document.getElementById("room-code").style.display = "none";
+    document.getElementById("preRaceCarModel").style.display = "none";
 
     light.style.animation = "slideDown 2s ease-out forwards";
     light.style.visibility = "visible";
@@ -502,7 +548,7 @@ function startGame() {
     animateOrangeCar();
     animatePurpleCar();
     animateBlueCar();
-    //animateCarStreaks();
+    animateCarStreaks();
 
     setTimeout(() => {
         animateTransition();

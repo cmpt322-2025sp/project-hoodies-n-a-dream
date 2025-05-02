@@ -16,10 +16,10 @@ body {
 }
 #room-code {
     position: absolute;
-    top: 10px;
+    top: 30vh;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 24px;
+    font-size: clamp(1.5rem, 2.5vw, 3em);
     font-weight: bold;
     padding: 10px;
     background: rgba(0, 0, 0, 0.7);
@@ -256,7 +256,7 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: -3%;
+    margin-left: -8%;
     width: 30%;
     height: 100%;
     z-index: 80;
@@ -265,6 +265,8 @@ button:hover {
     display:flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 2;
+    letter-spacing: 0.2em;
     width: 40%;
     height: 100%;
     margin-left: -10%;

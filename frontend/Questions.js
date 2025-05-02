@@ -14,7 +14,7 @@ const player_border = document.getElementById('player-border');
 const game_border = document.getElementById('game-border');
 let sparkIntervals = [];
 let flag2 = true;
-const fireStreaks = document.getElementsByClassName("fireStreak");
+let fireStreaks = document.querySelectorAll('#p1_model .fireStreak');
 
 const answerStreak = document.getElementById('answerStreak');
 
@@ -250,12 +250,13 @@ function checkAnswer(button) {
             flag2 = true;
 
             if (questionCount >= 20) {
+                ws.send(JSON.stringify({type: "gameComplete", gameID: gameID, time:"20", score:20}));
                 ending = true
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 //window.location.href = "FinishLine.html";
                 stopGame();
                 //clearInterval(clockInterval);
-                setTimeout ( () => navigateTo('finishLine'), 1500);
+                //setTimeout ( () => navigateTo('finishLine'), 1500);
 
                 // carPosition = 20;
                 //window.location.href = "Startsection.html"; // Redirect to finish page
