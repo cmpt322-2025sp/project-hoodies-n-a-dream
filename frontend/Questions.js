@@ -249,14 +249,8 @@ function checkAnswer(button) {
 
             flag2 = true;
 
-            if (questionCount >= 2) {
+            if (questionCount >= 20) {
                 currentPlayerEnded = true;
-                console.log(ones, tens, hunds, thous);
-                console.log(ones, tens, hunds, thous);
-                console.log(ones, tens, hunds, thous);
-                console.log(ones, tens, hunds, thous);
-                console.log(ones, tens, hunds, thous);
-                console.log(ones, tens, hunds, thous);
 
                 let thisTime = thous.toString() + hunds.toString() + ':' + tens.toString() + ones.toString();
                 ws.send(JSON.stringify({type: "gameComplete", gameID: gameID, time:thisTime, score:20}));
