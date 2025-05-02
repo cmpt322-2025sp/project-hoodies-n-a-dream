@@ -55,6 +55,7 @@ let blueCarEnding = false;
 let player1Name = document.getElementById("player1Name");
 let player2Name = document.getElementById("player2Name");
 let player3Name = document.getElementById("player3Name");
+let currentPlayerEnded = false;
 
 let maps = [map1, map2, map3];
 let index = 0;
@@ -81,6 +82,13 @@ let topCar = document.querySelector('.topCar');
 
 playerCountValue = playerCount.value;
 let previousValue = 0;
+
+
+function createHostName(updateResponse) {
+    if (updateResponse.players[0].name !== '***') {
+        player1Name.innerHTML = updateResponse.players[0].name;
+    }
+}
 
 
 function createPlayerPositions(updatedResponse) {
@@ -211,12 +219,10 @@ function animateGame() {
     }
     positionTrack -= speedTrack;
 
-    if (ending === false) {
-        requestAnimationFrame(animateGame);
+    requestAnimationFrame(animateGame);
 
-    }
 }
-
+/*
 function stopGame() {
     leaderboardtime = localStorage.getItem("Doof");
     maps[index].style.backgroundPosition = `${positionB}px`;
@@ -234,6 +240,7 @@ function stopGame() {
     requestAnimationFrame(stopGame);
 
 }
+ */
 
 function animateTransition() {
     transition.style.transform = `translateX(${positionT}px)`;
@@ -254,9 +261,8 @@ function animateTransition() {
         flag = false;
     }
 
-    if (ending === false || positionT  > -window.innerWidth - transition.offsetWidth) {
-        requestAnimationFrame(animateTransition);
-    }
+    requestAnimationFrame(animateTransition);
+
 }
 
 function resetTransition() {
@@ -302,7 +308,7 @@ function createSpark(x, y) {
 }
 
 function GameClock() {
-    window.clockInterval = setInterval(() => {
+    const clockInterval = setInterval(() => {
         // totalTime++;
         ones++;
         if (ones === 10) {
@@ -318,8 +324,11 @@ function GameClock() {
             }
         }
 
-         window.finalTime = thous.toString() + hunds.toString() + ':' + tens.toString() + ones.toString();
+        window.finalTime = thous.toString() + hunds.toString() + ':' + tens.toString() + ones.toString();
         document.getElementById('clock').innerText = finalTime;
+        if (currentPlayerEnded === true) {
+            clearInterval(clockInterval);
+        }
         //document.getElementById('clockfs').innerText = finalTime;
     }, 1000);
 }
