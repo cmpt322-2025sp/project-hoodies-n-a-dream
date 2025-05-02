@@ -249,7 +249,7 @@ function checkAnswer(button) {
 
             flag2 = true;
 
-            if (questionCount >= 20) {
+            if (questionCount >= 2) {
                 currentPlayerEnded = true;
                 console.log(ones, tens, hunds, thous);
                 console.log(ones, tens, hunds, thous);
@@ -258,12 +258,13 @@ function checkAnswer(button) {
                 console.log(ones, tens, hunds, thous);
                 console.log(ones, tens, hunds, thous);
 
-                ws.send(JSON.stringify({type: "gameComplete", gameID: gameID, time:"20", score:20}));
+                let thisTime = thous.toString() + hunds.toString() + ':' + tens.toString() + ones.toString();
+                ws.send(JSON.stringify({type: "gameComplete", gameID: gameID, time:thisTime, score:20}));
                 ending = true
                 stopStreakAnimation(button, buttonIds, buttonSpanIds);
                 //window.location.href = "FinishLine.html";
                 //stopGame();
-                //createLeaderBoard();
+                createLeaderBoard();
                 //clearInterval(clockInterval);
                 //setTimeout ( () => navigateTo('finishLine'), 1500);
 

@@ -199,12 +199,20 @@ function playersEnding (updatedPlayersEnded) {
 
    if (players[0].score === 20) {
        orangeCarEnding = true;
+       document.querySelector('#row1 .column1').innerHTML = players[0].name;
+       document.querySelector('#row1 .column2').innerHTML = players[0].time;
    }
    if (players[1].score === 20) {
         purpleCarEnding = true;
+       document.querySelector('#row2 .column1').innerHTML = players[1].name;
+       document.querySelector('#row2 .column2').innerHTML = players[1].time;
+
    }
    if (players[2].score === 20) {
        blueCarEnding = true;
+       document.querySelector('#row3 .column1').innerHTML = players[2].name;
+       document.querySelector('#row3 .column2').innerHTML = players[2].time;
+
    }
 
 }
@@ -550,6 +558,16 @@ function countDown() {
         countDown1.offsetHeight;
         countDown1.style.animation = "fadeOut2 1.3s ease 1 forwards";
     }, 1300);
+}
+
+function createLeaderBoard() {
+    clock.style.display = "none";
+    document.querySelector('.equation-container').style.display = "none";
+    document.querySelector('.button-container').style.display = "none";
+    document.querySelector('.playersInGameContainer').style.display = "none";
+    document.querySelector('table').style.visibility = "visible";
+
+
 }
 
 function startGame() {

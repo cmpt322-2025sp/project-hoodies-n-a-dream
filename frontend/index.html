@@ -119,6 +119,30 @@
             <div id="green" class="light green"></div>
         </div>
 
+        <table>
+            <thead>
+            <tr>
+                <th>Player Name</th>
+                <th>Finish Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr id="row1">
+                <td class="column1">Player 1</td>
+                <td class="column2">----</td>
+            </tr>
+            <tr id="row2">
+                <td class="column1">Player 3</td>
+                <td class="column2">---</td>
+            </tr>
+            <tr id="row3">
+                <td class="column1">Player 3</td>
+                <td class="column2">---</td>
+            </tr>
+            <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+
         <audio id="countSound" src="../audio/countdown_Bell2.wav" preload="auto"></audio>
         <audio id="rightSound" src="../audio/rightSound.wav" preload="auto"></audio>
         <audio id="wrongSound" src="../audio/wrongSound2.mp3" preload="auto"></audio>
@@ -171,7 +195,7 @@ let currentPlayer = 0;
 <script src="Finishscreen.js"></script>
 <script>
 
-    let ws = new WebSocket("ws://localhost:8000/ws");
+    let ws = new WebSocket("wss://math-nitro-racing.deno.dev/ws");
     let gameID = null;
 
     ws.onopen = () => console.log("✅ WebSocket Connected");
