@@ -113,7 +113,7 @@ function createPlayerPositions(updatedResponse) {
     }
 
     if (lengthOfPlayerArray === 2) {
-        document.getElementById("preRaceCarModel").src = "../Assets/PurpleCar-1.png";
+        document.getElementById("preRaceCarModel").src = "../assets/PurpleCar-1.png";
         document.getElementById("startRaceButton").style.display = "none";
         document.getElementById("waiting").style.visibility = "visible";
         document.getElementById("room-code").style.display = "none";
@@ -134,7 +134,7 @@ function createPlayerPositions(updatedResponse) {
         currentPlayer = 1;
     }
     else if (lengthOfPlayerArray === 3) {
-        document.getElementById("preRaceCarModel").src = "../Assets/BlueCar-4.png";
+        document.getElementById("preRaceCarModel").src = "../assets/BlueCar-4.png";
         document.getElementById("startRaceButton").style.display = "none";
         document.getElementById("waiting").style.visibility = "visible";
         document.getElementById("room-code").style.display = "none";
@@ -286,13 +286,13 @@ let totalTime = 0;
 // Function to create sparks
 function createPlayer2 () {
     const purpleCar = document.createElement("img");
-    purpleCar.src = "../Assets/PurpleCar-1.png";
+    purpleCar.src = "../assets/PurpleCar-1.png";
     purpleCar.id = "purpleCar";
     purpleCar.classList.add('car');
 }
 function createPlayer3 () {
     const blueCar = document.createElement("img");
-    blueCar.src = "../Assets/BlueCar-4.png";
+    blueCar.src = "../assets/BlueCar-4.png";
     blueCar.id = "blueCar";
     blueCar.classList.add('car');
 }
