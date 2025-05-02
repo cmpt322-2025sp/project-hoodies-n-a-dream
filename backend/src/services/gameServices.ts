@@ -53,12 +53,19 @@ export function createGame(gameDifficulty: string, hostName: string, hostSocket:
     // Save Game
     console.log("[INFO] Attempting Saving");
     const result = gameRooms.createGame(game);
-    if(result){
-        console.log("[INFO] Sending gameID");
-        return gameID;
+    if (!result) {
+        hostSocket.send(JSON.stringify({type: "ERROR", message: "Unable to make Game Room"}));
+    } else {
+        const game = gameRooms.getGame(gameID);
+        hostSocket.send(JSON.stringify({
+            type: "gameCreated", gameID: gameID,
+            players: game.players.map(p => ({
+                name: p.name,
+                time: p.time,
+                score: p.score
+            }))
+        }));
     }
-    console.log("[INFO] Failed Game Create");
-    return "ERROR";
 }
 
 export function joinGame(gameID: string, playerName: string, playerSocket: Websocket): string {

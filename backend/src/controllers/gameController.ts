@@ -29,14 +29,8 @@ export function handleGameMessages(socket: WebSocket, data: string) {
                 console.log("[INFO] Triggered game creation");
                 const difficulty = data.difficulty || "easy";
                 const name = data.name || "player1";
-                const gameID = createGame(difficulty, name, socket);
-                if (gameID != "ERROR") {
-                    socket.send(JSON.stringify({type: "gameCreated", gameID: gameID}));
-                    break;
-                } else {
-                    socket.send(JSON.stringify({type: "ERROR", message: "Unable to make Game Room"}));
-                    break;
-                }
+                createGame(difficulty, name, socket);
+                break;
             }
 
             case "joinGame": {

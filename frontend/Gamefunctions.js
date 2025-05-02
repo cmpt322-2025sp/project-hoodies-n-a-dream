@@ -83,6 +83,11 @@ let topCar = document.querySelector('.topCar');
 playerCountValue = playerCount.value;
 let previousValue = 0;
 
+function createHostName(updateResponse) {
+    if (updateResponse.players[0].name !== '***'){
+        player1Name.innerHTML = updateResponse.players[0].name;
+    }
+}
 
 function createHostName(updateResponse) {
     if (updateResponse.players[0].name !== '***') {
