@@ -50,7 +50,9 @@
         </div>
 
         <div id="overlay"></div>
-        <button id="startGame" onclick=" sendStartGame()">Start Race</button>
+        <button id="startRaceButton" onclick=" sendStartGame()">Start Race</button>
+        <h1 id="waiting">Waiting ...</h1>
+        <img id="preRaceCarModel"  src="../Assets/Car1.png">
         <div id="countDown"></div>
 
         <div id="answerStreak"></div>
@@ -65,7 +67,7 @@
         <div class="playersInGameContainer">
             <div id="p1_model" class="playersInGame">
                 <img class="car-models" src="../Assets/Car1.png" alt="orangeCarModel">
-                <h1 class="player_text"> Player   1</h1>
+                <h1 id="player1Name" class="player_text"> Player   1</h1>
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
                 <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
@@ -75,7 +77,7 @@
             </div>
             <div id="p2_model" class="playersInGame">
                 <img class="car-models" src="../assets/PurpleCar-1.png" alt="purpleCarModel">
-                <h1 class="player_text"> Player   2</h1>
+                <h1 id="player2Name" class="player_text"> Player   2</h1>
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
                 <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
@@ -85,7 +87,7 @@
             </div>
             <div id="p3_model" class="playersInGame">
                 <img class="car-models" src="../assets/BlueCar-4.png" alt="blueCarModel">
-                <h1 class="player_text"> Player   3</h1>
+                <h1 id="player3Name" class="player_text"> Player   3</h1>
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#1">
                 <img class="fireStreak" src="../assets/fireStreak5.png" alt="streak#2">
                 <img class="fireStreak" src="../assets/fireStreak6.png" alt="streak#3">
@@ -160,6 +162,7 @@
 </body>
 <script>
 let numberOfPlayers = 1;
+let currentPlayer = 0;
 </script>
 <script src="Questions.js"></script>
 <script src="Gamefunctions.js"></script>
@@ -197,7 +200,7 @@ let numberOfPlayers = 1;
             case "playerJoined":
                 logMessage(`👤 Player Joined: ${response.name}`);
                 numberOfPlayers += 1;
-                updatePlayerCount();
+                updatePlayerCount(response);
                 break;
 
             case "gameStarting":
@@ -234,10 +237,12 @@ let numberOfPlayers = 1;
                 break;
 
             case "gameCompleted":
+                console.log("Game Completed");
                 logMessage("🏆 Game Over! Results:");
                 response.players.forEach(player => {
                     logMessage(` - ${player.name}: Score = ${player.score}, Time = ${player.time}`);
                 });
+                playersEnding(response);
                 break;
 
             case "ERROR":
