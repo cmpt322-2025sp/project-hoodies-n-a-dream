@@ -320,6 +320,7 @@ table {
     font-family: 'game-font', sans-serif;
     visibility: hidden;
     position: absolute;
+    font-size: 1.3em;
     top: 35vh;
     left: 50vw;
     width: 50vw;
