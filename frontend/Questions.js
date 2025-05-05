@@ -249,7 +249,7 @@ function checkAnswer(button) {
 
             flag2 = true;
 
-            if (questionCount >= 20) {
+            if (questionCount >= 2) {
                 currentPlayerEnded = true;
 
                 let thisTime = thous.toString() + hunds.toString() + ':' + tens.toString() + ones.toString();

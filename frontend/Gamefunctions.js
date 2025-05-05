@@ -193,28 +193,32 @@ function updatePlayerPosition(updateScoreReport) {
     }
 }
 
-function playersEnding (updatedPlayersEnded) {
+function playersEnding(updatedPlayersEnded) {
     console.log('Player Ended!!!!!!!!');
-   let players = updatedPlayersEnded.players;
-
-   if (players[0].score === 20) {
-       orangeCarEnding = true;
-       document.querySelector('#row1 .column1').innerHTML = players[0].name;
-       document.querySelector('#row1 .column2').innerHTML = players[0].time;
-   }
-   if (players[1].score === 20) {
-        purpleCarEnding = true;
-       document.querySelector('#row2 .column1').innerHTML = players[1].name;
-       document.querySelector('#row2 .column2').innerHTML = players[1].time;
-
-   }
-   if (players[2].score === 20) {
-       blueCarEnding = true;
-       document.querySelector('#row3 .column1').innerHTML = players[2].name;
-       document.querySelector('#row3 .column2').innerHTML = players[2].time;
-
-   }
-
+    // Include only players whose time is a valid finish time (not "NF")
+    const finishedPlayers = updatedPlayersEnded.players.filter(p => p.time !== 'NF');
+    // Sort by time ascending (fastest first)
+    finishedPlayers.sort((a, b) => {
+        const [minA, secA] = a.time.split(':').map(Number);
+        const [minB, secB] = b.time.split(':').map(Number);
+        return (minA * 60 + secA) - (minB * 60 + secB);
+    });
+    // Clear previous leaderboard entries
+    for (let i = 1; i <= 3; i++) {
+        document.querySelector(`#row${i} .column1`).innerHTML = '';
+        document.querySelector(`#row${i} .column2`).innerHTML = '';
+    }
+    // Populate leaderboard rows with sorted finishers
+    finishedPlayers.forEach((player, index) => {
+        const rowNum = index + 1;
+        document.querySelector(`#row${rowNum} .column1`).innerHTML = player.name;
+        document.querySelector(`#row${rowNum} .column2`).innerHTML = player.time;
+    });
+    // Set ending flags on cars that have finished
+    // Match based on original player order: index 0=orange, 1=purple, 2=blue
+    orangeCarEnding = finishedPlayers.some(p => p === updatedPlayersEnded.players[0]);
+    purpleCarEnding = finishedPlayers.some(p => p === updatedPlayersEnded.players[1]);
+    blueCarEnding   = finishedPlayers.some(p => p === updatedPlayersEnded.players[2]);
 }
 
 function animateGame() {
